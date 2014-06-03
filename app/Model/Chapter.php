@@ -102,12 +102,12 @@ class Chapter extends AppModel {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
-        'TaiLieu' => array(
+        'Attachment' => array(
             'className' => 'Attachment',
             'foreignKey' => 'foreign_key',
-            'dependent' => true,
+            'dependent' => false,
             'conditions' => array(
-                'TaiLieu.model' => 'Chapter',
+                'Attachment.model' => 'Chapter',
             ),
         ),
     );
@@ -115,9 +115,9 @@ class Chapter extends AppModel {
     public function createWithAttachments($data) {
         // Sanitize your images before adding them
         $dstailieu = array();
-        if (!empty($data['TaiLieu'][0])) {
-            foreach ($data['TaiLieu'] as $i => $tailieu) {
-                if (is_array($data['TaiLieu'][$i])) {
+        if (!empty($data['Attachment'][0])) {
+            foreach ($data['Attachment'] as $i => $tailieu) {
+                if (is_array($data['Attachment'][$i])) {
                     // Force setting the `model` field to this model
                     $tailieu['model'] = $this->name;
 
@@ -129,13 +129,14 @@ class Chapter extends AppModel {
                 }
             }
         }
-        $data['TaiLieu'] = $dstailieu;
+        $data['Attachment'] = $dstailieu;
         if (empty($data[$this->name]['id'])) {
             $this->create();
         }
         if ($this->saveAll($data)) {
             return true;
         }
+        return false;
     }
 
     public function isOwnedBy($chapter, $user) {

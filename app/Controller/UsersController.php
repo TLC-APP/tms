@@ -51,6 +51,14 @@ class UsersController extends AppController {
         $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
         $this->set('user', $this->User->find('first', $options));
     }
+    
+    public function view_as_student($id = null) {
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+        $this->set('user', $this->User->find('first', $options));
+    }
 
     /**
      * add method
@@ -74,16 +82,11 @@ class UsersController extends AppController {
     /* Teacher */
 
     public function fields_manager_index() {
-        $teacher = $this->User->Group->find('all', array(
-            'conditions' => array('Group.id' => $this->User->Group->getGroupIdByAlias('teacher')),
-            'contain' => array('User' => array('fields' => array('id'), 'Group' => array('fields' => array('id'))))
-        ));
-        $result = Set::classicExtract($teacher[0]['User'], '{n}.id');
+        $result = $this->User->getTeacherIdArray();
         $this->Paginator->settings = array(
-            'recursive'=>0,
+            'recursive' => 0,
             'conditions' => array('User.id' => $result, 'User.created_user_id' => $this->Auth->user('id')));
         $this->set('users', $this->Paginator->paginate());
-
     }
 
     public function fields_manager_add() {
@@ -151,7 +154,14 @@ class UsersController extends AppController {
     }
 
     public function search_teacher() {
-        
+        $teacher = $this->User->getTeacherIdArray();
+        $conditions = array('User.id' => $teacher);
+        if (!empty($this->request->data['name'])) {
+            $name = $this->request->data['name'];
+            $conditions = Set::merge($conditions, array('User.name like' => "%{$name}%"));
+        }
+        $this->Paginator->settings = array('conditions' => $conditions, 'recursive' => 0);
+        $this->set('users', $this->Paginator->paginate());
     }
 
     /* end teacher */

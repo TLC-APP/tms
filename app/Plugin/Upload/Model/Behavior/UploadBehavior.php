@@ -1,22 +1,5 @@
 <?php
-/**
- * Upload behavior
- *
- * Enables users to easily add file uploading and necessary validation rules
- *
- * PHP versions 4 and 5
- *
- * Copyright 2010, Jose Diaz-Gonzalez
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright 2010, Jose Diaz-Gonzalez
- * @package       upload
- * @subpackage    upload.models.behaviors
- * @link          http://github.com/josegonzalez/cakephp-upload
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
- */
+
 App::uses('Folder', 'Utility');
 App::uses('UploadException', 'Upload.Lib/Error/Exception');
 App::uses('HttpSocket', 'Network/Http');
@@ -46,7 +29,7 @@ class UploadBehavior extends ModelBehavior {
 		'deleteOnUpdate' => false,
 		'mediaThumbnailType' => 'png',
 		'saveDir' => true,
-		'deleteFolderOnDelete' => false,
+		'deleteFolderOnDelete' => true,
 		'mode' => 0777,
 	);
 

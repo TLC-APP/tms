@@ -165,7 +165,7 @@ class Course extends AppModel {
     public $hasMany = array(
         'StudentsCourse' => array(
             'className' => 'StudentsCourse',
-            'foreignKey' => 'student_id',
+            'foreignKey' => 'course_id',
             'dependent' => true,
             'conditions' => '',
             'fields' => '',
@@ -189,6 +189,40 @@ class Course extends AppModel {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
+        'Attachment' => array(
+            'className' => 'Attachment',
+            'foreignKey' => 'foreign_key',
+            'dependent' => false,
+            'conditions' => array(
+                'Attachment.model' => 'Course',
+            ),
+        ),
     );
-    
+
+    public function createWithAttachments($data) {
+        // Sanitize your images before adding them
+        $dstailieu = array();
+        if (!empty($data['Attachment'][0])) {
+            foreach ($data['Attachment'] as $i => $tailieu) {
+                if (is_array($data['Attachment'][$i])) {
+                    // Force setting the `model` field to this model
+                    $tailieu['model'] = $this->name;
+
+                    // Unset the foreign_key if the user tries to specify it
+                    if (isset($tailieu['foreign_key'])) {
+                        unset($tailieu['foreign_key']);
+                    }
+                    $dstailieu[] = $tailieu;
+                }
+            }
+        }
+        $data['Attachment'] = $dstailieu;
+        if (empty($data[$this->name]['id'])) {
+            $this->create();
+        }
+        if ($this->saveAll($data)) {
+            return true;
+        }
+        return false;
+    }
 }

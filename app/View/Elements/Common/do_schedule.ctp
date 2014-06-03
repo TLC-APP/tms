@@ -1,5 +1,6 @@
 <script>
     $(function() {
+
         var date = new Date();
         var d = date.getDate(),
                 m = date.getMonth(),
@@ -106,6 +107,7 @@
                             text: content
                         }
                     });
+
                 },
                 eventResize: function(event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
 
@@ -146,8 +148,17 @@
                 },
                 eventClick: function(calEvent, jsEvent, view) {
                     xu_ly_click_su_kien(calEvent, jsEvent, view);
+                },
+                eventAfterAllRender: function(view) {
+                    <?php
+                    if (!empty($buoi_dau_tien)) {
+                        $date = new DateTime($buoi_dau_tien);
+                        ?>
+                                            $('#calendar').fullCalendar('gotoDate', <?php echo $date->format('Y'); ?>,<?php echo $date->format('m'); ?>,<?php echo $date->format('d'); ?>);
+                    <?php } ?>
                 }
             });
+
         }
         function khoi_tao_su_kien(ele) {
             ele.each(function() {

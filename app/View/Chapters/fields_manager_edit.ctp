@@ -3,7 +3,7 @@ echo $this->element('Common/tinymce');
 $this->Html->addCrumb('Chuyên đề', '/chapters');
 $this->Html->addCrumb('Thêm chuyên đề mới');
 ?>
-<div class="col-md-10">
+<div class="col-md-12">
     <?php
     echo $this->Form->create('Chapter', array(
         'type' => 'file',

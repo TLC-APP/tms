@@ -26,7 +26,7 @@
             $data = $this->Js->get('#ChapterSearchForm')->serializeForm(array('isForm' => true, 'inline' => true));
             $this->Js->get('#ChapterSearchForm')->event(
                     'submit', $this->Js->request(
-                            array('action' => 'search'), array(
+                            array('fields_manager'=>false,'action' => 'search'), array(
                         'update' => '#results',
                         'data' => $data,
                         'async' => true,

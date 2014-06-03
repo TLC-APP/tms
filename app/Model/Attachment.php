@@ -29,7 +29,7 @@ class Attachment extends AppModel {
         $file_name = $this->field('attachment');
         $dir = $this->field('dir');
         $model = $this->field('model');
-        $path =WEBROOT_DIR.DS.FILE_DIR . DS . strtolower($assciationName) . DS . $assciationClass . DS . $dir . DS . $file_name;
+        $path = WEBROOT_DIR . DS . FILE_DIR . DS . strtolower($assciationName) . DS . $assciationClass . DS . $dir . DS . $file_name;
         return $path;
     }
 

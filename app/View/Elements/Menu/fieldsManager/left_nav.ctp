@@ -17,7 +17,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li  >
-                <a href="/">
+                <a href="/fields_manager">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>

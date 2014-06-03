@@ -57,8 +57,6 @@ class AttachmentsController extends AppController {
                 $this->Session->setFlash(__('The attachment could not be saved. Please, try again.'));
             }
         }
-        $quyetDinhKiemNhiems = $this->Attachment->QuyetDinhKiemNhiem->find('list');
-        $this->set(compact('quyetDinhKiemNhiems'));
     }
 
     /**
@@ -99,15 +97,15 @@ class AttachmentsController extends AppController {
         if (!$this->Attachment->exists()) {
             throw new NotFoundException(__('Invalid attachment'));
         }
-        $this->request->onlyAllow('post', 'delete');
-        if ($this->Attachment->delete()) {
-            $this->Session->setFlash('Đã xóa đính kèm', 'Flash/flash_good');
-        } else {
-            $this->Session->setFlash('Xóa đính kèm không thành công', 'Flash/flash_bad');
+        //$this->request->onlyAllow('post', 'delete');
+        if ($this->Attachment->delete(($id))) {
+            if ($this->request->is('ajax')) {
+                echo json_encode(array('status'=>1));die;
+            } else {
+                $this->Session->setFlash('Đã xóa.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                $this->redirect($this->referer());
+            }
         }
-        return $this->redirect($this->referer());
     }
-
-    
 
 }

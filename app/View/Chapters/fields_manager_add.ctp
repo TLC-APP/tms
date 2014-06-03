@@ -27,7 +27,7 @@ $this->Html->addCrumb('Thêm chuyên đề mới');
         echo $this->Form->input('decriptions', array('label' => 'Miêu tả'));
         echo $this->Form->input('image', array('label' => 'Ảnh đại diện', 'type' => 'file', 'class' => false));
         echo $this->Form->input('image_path', array('type' => 'hidden'));
-        echo $this->element('Common/dinh_kem', array('model' => 'TaiLieu'));
+        echo $this->element('Common/dinh_kem', array('model' => 'Attachment'));
         ?>
     </fieldset>
     <div class="btn-toolbar" style="text-align: center;">

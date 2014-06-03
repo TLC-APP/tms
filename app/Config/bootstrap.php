@@ -9,7 +9,6 @@ CakePlugin::load('AclManager', array('bootstrap' => true));
 CakePlugin::load('DebugKit');
 CakePlugin::load('Upload');
 CakePlugin::load('TinymceElfinder');
-
 Configure::write('Dispatcher.filters', array(
     'AssetDispatcher',
     'CacheDispatcher'
@@ -32,6 +31,17 @@ CakeLog::config('error', array(
 /* System Configuration */
 Configure::write('System.name', 'Hệ thống quản lý Công tác Tập huấn giáo viên');
 /* User default group */
+
+/* System Configuration */
+Configure::write('SEND_MAIL_WHEN_CANCEL_COURSE', 1);
+
+Configure::write('SEND_MAIL_WHEN_ENROLLED_COURSE', 1);
+/* System Configuration */
+Configure::write('SEND_MAIL_WHEN_OPEN_COURSE', 1);
+
+/* System Configuration */
+Configure::write('SEND_MAIL_WHEN_HAS_CERT', 1);
+
 if (!defined("EMAIL_FROM_ADDRESS")) {
     define("EMAIL_FROM_ADDRESS", 'thaitoan2210@gmail.com');
 }

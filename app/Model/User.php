@@ -73,29 +73,24 @@ class User extends AppModel {
             'notEmpty' => array(
                 'rule' => array('notEmpty'),
             //'message' => 'Your custom message here',
-            
             ),
         ),
         'username' => array(
             'notEmpty' => array(
                 'rule' => array('notEmpty'),
-
             ),
         ),
         'password' => array(
             'notEmpty' => array(
                 'rule' => array('notEmpty'),
-
             ),
         ),
         'email' => array(
             'email' => array(
                 'rule' => array('email'),
-            
             ),
             'notEmpty' => array(
                 'rule' => array('notEmpty'),
-            
             ),
         ),
     );
@@ -194,7 +189,7 @@ class User extends AppModel {
             'foreignKey' => 'teacher_id',
             'dependent' => false,
             'conditions' => '',
-            'fields' => array('id','name'),
+            'fields' => array('id', 'name'),
             'order' => '',
             'limit' => '',
             'offset' => '',
@@ -243,6 +238,13 @@ class User extends AppModel {
             'conditions' => '',
             'fields' => '',
             'order' => ''
+        ),
+        'Department' => array(
+            'className' => 'Department',
+            'foreignKey' => 'department_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
         )
     );
 
@@ -266,14 +268,23 @@ class User extends AppModel {
             'finderQuery' => '',
         )
     );
-    
-    public function isAdmin(){
-        $user=$this->find('first', array('fields'=>array('id'),'contain' => array('Group'=>array('fields'=>array('id','alias'),'conditions'=>array('Group.alias'=>'admin'))), 'conditions' => array('User.id' => AuthComponent::user('id'))));
-        return count($user['Group'])>0;
+
+    public function isAdmin() {
+        $user = $this->find('first', array('fields' => array('id'), 'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'admin'))), 'conditions' => array('User.id' => AuthComponent::user('id'))));
+        return count($user['Group']) > 0;
     }
-    public function isManager(){
-        $user=$this->find('first', array('fields'=>array('id'),'contain' => array('Group'=>array('fields'=>array('id','alias'),'conditions'=>array('Group.alias'=>'manager'))), 'conditions' => array('User.id' => AuthComponent::user('id'))));
-        return count($user['Group'])>0;
+
+    public function isManager() {
+        $user = $this->find('first', array('fields' => array('id'), 'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'manager'))), 'conditions' => array('User.id' => AuthComponent::user('id'))));
+        return count($user['Group']) > 0;
+    }
+
+    public function getTeacherIdArray() {
+        $teacher = $this->Group->find('all', array(
+            'conditions' => array('Group.id' => $this->Group->getGroupIdByAlias('teacher')),
+            'contain' => array('User' => array('fields' => array('id'), 'Group' => array('fields' => array('id'))))
+        ));
+        return Set::classicExtract($teacher[0]['User'], '{n}.id');
     }
 
 }
