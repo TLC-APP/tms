@@ -22,6 +22,7 @@ class AppController extends Controller {
         'Form' => array('className' => 'BoostCake.BoostCakeForm'),
         'Paginator' => array('className' => 'BoostCake.BoostCakePaginator')
     );
+    public $uses = array('Course', 'CoursesRoom');
 
     public function beforeRender() {
         parent::beforeRender();
@@ -32,7 +33,7 @@ class AppController extends Controller {
         if (!empty($this->params['prefix'])) {
             $this->layout = $this->params['prefix'];
         }
-        if (in_array($this->action, array('home', 'login','new_courses'))) {
+        if (in_array($this->action, array('home', 'login', 'new_courses'))) {
             $this->Auth->allow($this->action);
         }
 
@@ -54,6 +55,7 @@ class AppController extends Controller {
             'admin' => false,
             'plugin' => false
         );
+        $this->__checkCompleteCourse();
     }
 
     public function isAuthorized($user) {
@@ -68,6 +70,18 @@ class AppController extends Controller {
 
     public function connector() {
         $this->TinymceElfinder->connector();
+    }
+
+    public function __checkCompleteCourse() {
+        $uncomplete_courses = $this->Course->getCoursesUnCompleted();
+        if (!empty($uncomplete_courses)) {
+            $khoa_con_buoi = $this->CoursesRoom->layKhoaConBuoi();
+            $id_giong = array_intersect($uncomplete_courses, $khoa_con_buoi);
+            $khoa_hoan_thanh = Set::diff($uncomplete_courses, $id_giong);
+            if (!empty($khoa_hoan_thanh)) {
+                $this->Course->updateAll(array('Course.status' => COURSE_COMPLETED), array('Course.id' => $khoa_hoan_thanh));
+            }
+        }
     }
 
 }

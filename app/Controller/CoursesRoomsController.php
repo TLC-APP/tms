@@ -1,7 +1,7 @@
 <?php
 
 App::uses('AppController', 'Controller');
-
+App::uses('CakeTime', 'Utility');
 /**
  * CoursesRooms Controller
  *
@@ -155,7 +155,7 @@ class CoursesRoomsController extends AppController {
             $db_end_date = new DateTime($this->CoursesRoom->field('end'));
             if ($minuteDelta > 0) {
                 $db_end_date->modify('+ ' . abs($minuteDelta) . ' minutes');
-            }else{
+            } else {
                 $db_end_date->modify('- ' . abs($minuteDelta) . ' minutes');
             }
             $end = date('Y-m-d H:i:s', strtotime($db_end_date->format($format)));
@@ -263,5 +263,35 @@ class CoursesRoomsController extends AppController {
         }
         $this->set('response', $response);
     }
+
+    public function student_lich_homnay() {
+        $contain = array(
+            'Course' => array('Chapter' => array('id', 'name'), 'Teacher' => array('id', 'name')),
+            'Room' => array('id', 'name')
+        );
+        $khoa_da_dang_ky = $this->CoursesRoom->Course->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
+        $today = new DateTime();
+        $batdau = CakeTime::daysAsSql($today, $today, 'CoursesRoom.start');
+        $conditions = array(array('Course.id' => $khoa_da_dang_ky), $batdau);
+        $courses_today = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain));
+        $this->set(compact('courses_today'));
+        return $courses_today;
+    }
+
+     public function teacher_lich_homnay() {
+        $contain = array(
+            'Course' => array('Chapter' => array('id', 'name'), 'Teacher'=>array('id','name')),
+            'Room' => array('id', 'name')
+                
+        );
+        $teacher_id = $this->Auth->user('id');
+        $today = new DateTime();
+        $batdau = CakeTime::daysAsSql($today, $today, 'CoursesRoom.start');
+        $conditions = array(array('Course.teacher_id' => $teacher_id), $batdau);
+        $teacher_courses_today = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain));
+        $this->set(compact('teacher_courses_today'));
+        return $teacher_courses_today;
+    }
+
 
 }

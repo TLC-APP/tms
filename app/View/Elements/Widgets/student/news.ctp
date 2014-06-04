@@ -1,21 +1,35 @@
+<?php if(count($courses_register)>0) {?>
 <div class="panel panel-theme">
     <div class="panel-heading">
-        <h3 class="panel-title"><i class=" glyphicon glyphicon-bullhorn"></i> Thông báo từ hệ thống</h3>
+        <h3 class="panel-title"><i class=" glyphicon glyphicon-bullhorn"></i> Khóa học mới đăng kí</h3>
     </div>
     <div class="panel-body">
-
-        <ul>                      
-            <li><a href="#">THÔNG BÁO LỊCH HỌC ĐỢT 2
-                    Lớp Cao học Lý luận và phương pháp dạy học bộ môn Ngữ văn khóa 2 - đợt 3
-                    <span class="badge">12/04/2014</span></a></li>
-            <li><a href="#">THÔNG BÁO LỊCH HỌC ĐỢT 2
-                    Lớp Cao học Lý luận và phương pháp dạy học bộ môn Ngữ văn khóa 2 - đợt 3
-                    <span class="badge">12/04/2014</span></a></li>
-            <li><a href="#">THÔNG BÁO LỊCH HỌC ĐỢT 2
-                    Lớp Cao học Lý luận và phương pháp dạy học bộ môn Ngữ văn khóa 2 - đợt 3
-                    <span class="badge">12/04/2014</span></a></li>
-        </ul>
+        <div class="table-responsive">                      
+            <table class="table table-condensed">
+                <thead>
+                <th>STT</th><th>Tên khóa học</th>
+                </thead>
+                <tbody>
+                    <?php
+                   
+                    $stt = ($this->Paginator->param('page') - 1) * $this->Paginator->param('limit') + 1; ?>
+                    <?php foreach ($courses_register as $course_register): ?>
+                        <tr>
+                            <td><?php echo $stt++; ?></td>
+                            <td><?php echo $this->Html->link($course_register['Course']['name'], array('student' => true, 'controller' => 'courses', 'action' => 'view', $course_register['Course']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax')) ?></td>
+                            <td><a href="/students_courses/canceled/<?php echo $course_register['Course']['id']?>"><button class="btn btn-info btn-sm">Hủy</button></a></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table><!--//table-->
+        </div>
 
     </div>
-
 </div>
+<?php }else{ ?>
+<div class="panel panel-theme">
+    <div class="panel-heading">
+        <h3 class="panel-title"><i class=" glyphicon glyphicon-bullhorn"></i> Bạn chưa đăng kí khóa học mới nào.</h3>
+    </div>
+   </div>
+<?php }?>

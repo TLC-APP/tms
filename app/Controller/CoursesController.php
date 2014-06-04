@@ -122,6 +122,15 @@ class CoursesController extends AppController {
 
     /* ket thuc vung sinh vien */
 
+    /* Vùng Giáo viên */
+
+    public function teacher_index() {
+        /* Hiển thị tất cả các khóa học đang được tập huấn */
+        /* Hiển thị lịch tập huấn trong tháng */
+        /* Hiển thị tin nhắn từ người học và hệ thống */
+    }
+
+    /* Kết thúc vùng giáo viên */
     /*     * Fields manager */
 
     public function fields_manager_view($id = null) {
@@ -255,6 +264,37 @@ class CoursesController extends AppController {
         return $this->redirect(array('action' => 'index'));
     }
 
+    public function fields_manager_open($id) {
+        $this->Course->id = $id;
+        if (!$this->Course->exists()) {
+            throw new NotFoundException('Không tìm thấy khóa học này');
+        }
+
+        $this->request->onlyAllow('post');
+        if ($this->Course->field('status') == COURSE_UNCOMPLETED) {
+            $this->Session->setFlash('Khóa học đã mở rồi!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            return $this->redirect($this->referer());
+        }
+        if ($this->Course->saveField('status', COURSE_UNCOMPLETED)) {
+            $this->Session->setFlash('Đã mở khóa học thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+            /* Gửi mail thông báo */
+            $gui = Configure::read('SEND_MAIL_WHEN_CANCEL_COURSE');
+            if ($gui) {
+                $ten_khoa_hoc = $this->Course->field('name');
+                $subject = 'Thông báo khóa học ' . $ten_khoa_hoc . ' đã được mở';
+                $message = "Khóa học {$ten_khoa_hoc} đã  được mở. Quý học viên vui lòng tham dự đầy đủ. Xin cảm ơn.";
+                $ds_sinh_vien = $this->Course->StudentsCourse->find('all', array('conditions' => array('StudentsCourse.course_id' => $id), 'contain' => array('Student' => array('id', 'name', 'email'))));
+                foreach ($ds_sinh_vien as $sinh_vien) {
+                    $to = $sinh_vien['Student']['email'];
+                    $this->__sendMail($to, $subject, $message);
+                }
+            }
+        } else {
+            $this->Session->setFlash('Mở khóa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+        }
+        return $this->redirect($this->referer());
+    }
+
     public function huy($id) {
         $this->Course->id = $id;
         if (!$this->Course->exists()) {
@@ -267,12 +307,12 @@ class CoursesController extends AppController {
             /* Gửi mail thông báo */
             $gui = Configure::read('SEND_MAIL_WHEN_CANCEL_COURSE');
             if ($gui) {
-                $ten_khoa_hoc=$this->Course->field('name');
-                $subject='Thông báo HỦY khóa học '.$ten_khoa_hoc;
-                $message="Vì khóa học {$ten_khoa_hoc} không đủ điều kiện mở lớp nên đã bị hủy. Mọi thắc mắc xin liên hệ 102 để được giải đáp";
+                $ten_khoa_hoc = $this->Course->field('name');
+                $subject = 'Thông báo HỦY khóa học ' . $ten_khoa_hoc;
+                $message = "Vì khóa học {$ten_khoa_hoc} không đủ điều kiện mở lớp nên đã bị hủy. Mọi thắc mắc xin liên hệ 102 để được giải đáp";
                 $ds_sinh_vien = $this->Course->StudentsCourse->find('all', array('conditions' => array('StudentsCourse.course_id' => $id), 'contain' => array('Student' => array('id', 'name', 'email'))));
                 foreach ($ds_sinh_vien as $sinh_vien) {
-                    $to=$sinh_vien['Student']['email'];
+                    $to = $sinh_vien['Student']['email'];
                     $this->__sendMail($to, $subject, $message);
                 }
             }
@@ -364,6 +404,41 @@ class CoursesController extends AppController {
         );
         $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $course_id), 'contain' => $contain);
         $this->set('course', $this->Course->find('first', $options));
+    }
+
+    public function student_khoamoidangki() {
+        $contain = array(
+            'User' => array('fields' => array('id', 'name')), //create user
+            'Teacher' => array('fields' => array('id', 'name')), //Teacher
+            'CoursesRoom' => array('Room' => array('id', 'name')),
+            'StudentsCourse', //Khoa hoc
+            'Chapter' => array('fields' => array('id', 'name'))//Chuyen de
+        );
+        $today = new DateTime();
+        $khoa_da_dang_ky = $this->Course->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
+
+        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'));
+        $courses_register = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain));
+        return $courses_register;
+    }
+
+    //Trả về danh sách các lớp của login là teacher
+    public function teacher_courses() {
+        $contain = array(
+            'User' => array('fields' => array('id', 'name')), //create user
+            'Teacher' => array('fields' => array('id', 'name')), //Teacher
+            'CoursesRoom' => array('Room' => array('id', 'name'), 'fields' => array('id', 'title')),
+            'StudentsCourse', //Khoa hoc
+            'Chapter' => array('fields' => array('id', 'name'))//Chuyen de
+        );
+        $fields = array('id', 'name');
+        
+        $teacher_id = $this->Auth->user('id');
+        $conditions = array('Course.teacher_id' => $teacher_id, 'Course.status' => COURSE_UNCOMPLETED);
+
+        $khoa_chua_hoan_thanh = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain, 'fields' => $fields));
+
+        return $khoa_chua_hoan_thanh;
     }
 
 }

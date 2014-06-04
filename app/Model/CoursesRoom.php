@@ -108,5 +108,13 @@ class CoursesRoom extends AppModel {
 
         return($existing < 1);
     }
-
+    
+    /* Lấy danh sách các khóa học hết buổi*/
+    public function layKhoaConBuoi(){
+        $today=new DateTime();
+        //Lấy danh sách các buổi có thời gian kết thúc >today
+        $conditions=array('CoursesRoom.end >'=>$today->format('Y-m-d H:i:s'));
+        $rows=  $this->find('all',array('conditions'=>$conditions,'recursive'=>-1,'fields'=>array('DISTINCT CoursesRoom.course_id')));
+        return Set::classicExtract($rows, '{n}.CoursesRoom.course_id');
+    }
 }

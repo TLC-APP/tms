@@ -3,27 +3,12 @@
         <h3 class="panel-title"><i class="fa fa-thumb-tack"></i> Lớp tập huấn có thể đăng ký</h3>
     </div>
     <div class="panel-body">
-
-        <?php echo $this->Form->create(null, array('method' => 'post', 'action' => 'new_courses', 'class' => 'course-finder-form')); ?>
-        <div class="row">
-            <div class="col-md-3 col-sm-3 subject">
-                <?php echo $this->Form->input('field_id', array('label' => false, 'type' => 'select', 'options' => $fields, 'class' => "form-control subject", 'empty' => 'Chọn lĩnh vực')); ?>
-
-            </div> 
-            <div class="col-md-4 col-sm-4 subject">
-                
-                <?php echo $this->Form->input('chapter_id',array('label'=>false,'empty'=>'Chọn chuyên đề','type'=>'select','options'=>$chapters,'class'=>"form-control subject"));?>
-
-            </div> 
-            <button type="submit" class="btn btn-theme"><i class="fa fa-search"></i></button>
-        </div>                     
-        <?php echo $this->Form->end(); ?><!--//course-finder-form-->
-        <div class="table-responsive">                      
+             <div class="table-responsive">                      
             <table class="table table-condensed">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Tên khóa học</th>
+                        <th style="width: 15%">Tên khóa học</th>
                         <th>Chuyên đề</th>
                         <th>Số buổi</th>
                         <th>Giới hạn đăng ký</th>
@@ -43,7 +28,7 @@
                             <td><?php echo $course['Course']['session_number'] ?></td>
                             <td><?php echo $course['Course']['max_enroll_number']; ?></td>
                             <td><?php echo ($course['Course']['max_enroll_number'] - $course['Course']['register_student_number']); ?></td>
-                            <td><?php echo $course['Course']['enrolling_expiry_date']; ?></td>
+                            <td><?php  $start= new DateTime($course['Course']['enrolling_expiry_date']);echo " Giờ: "; echo $start->format('H:i'); echo", Ngày: ";echo $start->format('d/m/Y');?></td>
 
                             <td><a href="/students_courses/register/<?php echo $course['Course']['id']?>"><span class="label label-success">Đăng ký</span></a></td>
                         </tr>

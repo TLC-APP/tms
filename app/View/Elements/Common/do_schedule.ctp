@@ -154,7 +154,7 @@
                     if (!empty($buoi_dau_tien)) {
                         $date = new DateTime($buoi_dau_tien);
                         ?>
-                                            $('#calendar').fullCalendar('gotoDate', <?php echo $date->format('Y'); ?>,<?php echo $date->format('m'); ?>,<?php echo $date->format('d'); ?>);
+                                            $('#calendar').fullCalendar('gotoDate', <?php echo $date->format('Y'); ?>,<?php echo ($date->format('m')-1); ?>,<?php echo $date->format('d'); ?>);
                     <?php } ?>
                 }
             });

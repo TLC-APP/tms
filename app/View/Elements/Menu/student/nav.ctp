@@ -10,13 +10,17 @@
         </div><!--//navbar-header-->            
         <div class="navbar-collapse collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active nav-item"><a href="/" >Trang chủ</a></li>
-                <li class="nav-item dropdown">
-                    <a class="dropdown-toggle" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Khóa học của tôi</a>
+                <li class="nav-item"><a href="/student" >Trang chủ</a></li>
+                <li class="nav-item">
+                    <a href="/student/students_courses/courses_studying">Khóa học đang tham dự</a>
+
+                </li>
+                <li class="nav-item">
+                    <a href="/student/students_courses/studying">Khóa học đã tham dự</a>
 
                 </li>
 
-                <li class="nav-item"><a href="#" >Liên hệ</a></li>
+
             </ul><!--//nav-->
         </div><!--//navabr-collapse-->
     </div><!--//container-->

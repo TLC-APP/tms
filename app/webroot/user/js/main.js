@@ -1,51 +1,64 @@
 var map;
 jQuery(document).ready(function() {
 
-    /* ======= Flexslider ======= */
+    var path = window.location.pathname;
+    path = path.replace(/\/$/, "");
+    path = decodeURIComponent(path);
+    
+    $(".nav a").each(function() {
+        var href = $(this).attr('href');
+
+        if (path === href) {
+            $(this).closest('li').addClass('active');      
+            $(this).closest('.nav-item').addClass('active');   
+        }
+    });
+
+    /* ======= Flexslider ======= 
     $('.flexslider').flexslider({
         animation: "fade"
     });
-
-    /* ======= jQuery Placeholder ======= */
+*/
+    /* ======= jQuery Placeholder ======= 
     $('input, textarea').placeholder();
-    
-    
-    /* ======= Carousels ======= */
+*/
+
+    /* ======= Carousels ======= 
     $('#news-carousel').carousel({interval: false});
     $('#videos-carousel').carousel({interval: false});
     $('#testimonials-carousel').carousel({interval: 6000, pause: "hover"});
     $('#awards-carousel').carousel({interval: false});
-    
-    
-    /* ======= Flickr PhotoStream ======= */
+
+
+    /* ======= Flickr PhotoStream ======= 
     $('#flickr-photos').jflickrfeed({
         limit: 12,
         qstrings: {
-        id: '32104790@N02' /* Use idGettr.com to find the flickr user id */
+            id: '32104790@N02' /* Use idGettr.com to find the flickr user id 
         },
         itemTemplate:
-            '<li>' +
-            '<a rel="prettyPhoto[flickr]" href="{{image}}" title="{{title}}">' +
-            	'<img src="{{image_s}}" alt="{{title}}" />' +
-            '</a>' +
-            '</li>'
-			
+                '<li>' +
+                '<a rel="prettyPhoto[flickr]" href="{{image}}" title="{{title}}">' +
+                '<img src="{{image_s}}" alt="{{title}}" />' +
+                '</a>' +
+                '</li>'
+
     }, function(data) {
-    	$('#flickr-photos a').prettyPhoto();
+        $('#flickr-photos a').prettyPhoto();
     });
-    
-    /* ======= Pretty Photo ======= */
+
+    /* ======= Pretty Photo ======= 
     // http://www.no-margin-for-errors.com/projects/prettyphoto-jquery-lightbox-clone/ 
     $('a.prettyphoto').prettyPhoto();
-    
-    /* ======= Twitter Bootstrap hover dropdown ======= */
-    
+
+    /* ======= Twitter Bootstrap hover dropdown ======= 
+
     // apply dropdownHover to all elements with the data-hover="dropdown" attribute
     $('[data-hover="dropdown"]').dropdownHover();
-    
-    
+
+
     /* ======= Style Switcher ======= */
-    
+
     $('#config-trigger').on('click', function(e) {
         var $panel = $('#config-panel');
         var panelVisible = $('#config-panel').is(':visible');
@@ -56,26 +69,26 @@ jQuery(document).ready(function() {
         }
         e.preventDefault();
     });
-    
+
     $('#config-close').on('click', function(e) {
         e.preventDefault();
         $('#config-panel').hide();
     });
-    
-    
+
+
     $('#color-options a').on('click', function(e) {
         var $styleSheet = $(this).attr('data-style');
         var $logoImage = $(this).attr('data-logo');
-		$('#theme-style').attr('href', $styleSheet);
-		$('#logo').attr('src', $logoImage);		
-				
-		var $listItem = $(this).closest('li');
-		$listItem.addClass('active');
-		$listItem.siblings().removeClass('active');
-		
-		e.preventDefault();
-		
-	});
+        $('#theme-style').attr('href', $styleSheet);
+        $('#logo').attr('src', $logoImage);
+
+        var $listItem = $(this).closest('li');
+        $listItem.addClass('active');
+        $listItem.siblings().removeClass('active');
+
+        e.preventDefault();
+
+    });
 
 
 });

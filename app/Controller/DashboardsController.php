@@ -8,42 +8,45 @@ App::uses('AppController', 'Controller');
  */
 class DashboardsController extends AppController {
 
-    public $uses = array('User', 'Group', 'Course', 'Chapter','StudentsCourse','CoursesRoom','Room');
+    public $uses = array('User', 'Group', 'Course', 'Chapter', 'StudentsCourse', 'CoursesRoom', 'Room');
 
     public function home() {
         if ($this->Auth->loggedIn()) {
             $user = $this->User->find('first', array('recursive' => 1, 'conditions' => array('User.id' => $this->Auth->user('id'))));
             if (count($user['Group']) == 1) {
-                $this->Session->write('layout', $user['Group'][0]['alias']);
-                $this->Session->write('change_layout', 0);
-                $this->Session->write('group_name', $user['Group'][0]['name']);
                 return $this->redirect(array('controller' => 'dashboards', 'action' => $user['Group'][0]['alias'] . '_home'));
             }
+            $this->set('users', $user);
         }
+        $contain = array(
+            'User' => array('fields' => array('id', 'name')), //create user
+            'Teacher' => array('fields' => array('id', 'name')), //Teacher
+            'StudentsCourse', //Khoa hoc
+            'Chapter'//Chuyen de
+        );
+        $conditions = array('Course.status' => COURSE_REGISTERING);
+        $options = array('contain' => $contain, 'conditions' => $conditions);
+        $courses = $this->Course->find('all', $options);
+        $this->set('courses', $courses);
     }
 
     public function student_home() {
-        //debug());
-        $this->Session->write('layout', 'student');
         $this->layout = 'student';
         $contain = array(
             'User' => array('fields' => array('id', 'name')), //create user
             'Teacher' => array('fields' => array('id', 'name')), //Teacher
-            'CoursesRoom'=>array('Room'=>array('id','name')),
+            'CoursesRoom' => array('Room' => array('id', 'name')),
             'StudentsCourse', //Khoa hoc
-            'Chapter'=>array('fields'=>array('id','name'))//Chuyen de
+            'Chapter' => array('fields' => array('id', 'name'))//Chuyen de
         );
-        //Lay danh muc cac khoa da dang ky
-        $khoa_da_dang_ky=$this->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
-        //$unenroll_courses=
-        
-        $conditions = array('NOT'=>array('Course.id'=>$khoa_da_dang_ky));        
-        $course_fields = array('id', 'name', 'chapter_id','max_enroll_number', 'enrolling_expiry_date', 'register_student_number','session_number' );
-        $courses = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain, 'fields' => $course_fields));
-        //debug($courses);die;
+        $khoa_da_dang_ky = $this->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
+        $today = new DateTime();
+        $conditions = array('NOT' => array('Course.id' => $khoa_da_dang_ky), 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'));
+        $course_fields = array('id', 'name', 'chapter_id', 'max_enroll_number', 'enrolling_expiry_date', 'register_student_number', 'session_number');
+        $courses = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain, 'fields' => $course_fields,));
         $fields = $this->Course->Chapter->Field->find('list');
         $chapters = $this->Course->Chapter->find('list');
-        $this->set(compact('fields', 'chapters','courses'));
+        $this->set(compact('fields', 'chapters', 'courses'));
     }
 
     public function teacher_home() {
@@ -94,4 +97,7 @@ class DashboardsController extends AppController {
         $this->set('users', $user);
     }
 
+    public function contact(){
+        
+    }
 }

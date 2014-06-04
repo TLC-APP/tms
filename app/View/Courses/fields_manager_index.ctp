@@ -81,10 +81,11 @@ if (isset($status)) {
   <span class="fa fa-edit"></span>', array('action' => 'edit', $course['Course']['id']), array('escape' => false)); ?>
 
                             <?php
-                            
-                            echo $this->Form->postLink('
-                                
-  <span class="fa fa-play"></span>', array('action' => 'delete', $course['Course']['id']), array('escape' => false), __('Bạn có chắc mở khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
+                            //echo $status;
+                            if (isset($status) && $status != COURSE_UNCOMPLETED && $status != COURSE_COMPLETED) {
+                                echo $this->Form->postLink('                                
+  <span class="fa fa-play"></span>', array('action' => 'open', $course['Course']['id']), array('escape' => false), __('Bạn có chắc mở khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
+                            }
                             ?>     
 
                             <?php
@@ -94,7 +95,7 @@ if (isset($status)) {
   <span class="fa fa-ban"></span>', array('fields_manager' => false, 'action' => 'huy', $course['Course']['id']), array('escape' => false), __('Bạn có chắc hủy khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
                             }
                             ?>
-                            
+
                             <?php
                             if (isset($status) && $status == COURSE_CANCELLED) {
                                 echo $this->Form->postLink('
@@ -102,7 +103,7 @@ if (isset($status)) {
   <span class="fa fa-refresh"></span>', array('fields_manager' => false, 'action' => 'uncancel', $course['Course']['id']), array('escape' => false), __('Bạn có chắc phục hồi khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
                             }
                             ?>
-                            
+
                             <?php
                             //echo $this->Form->postLink('<span class="fa fa-trash-o"></span>', array('action' => 'delete', $course['Course']['id']), array('escape' => false), __('Bạn có chắc xóa khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
                             ?>
@@ -117,7 +118,7 @@ if (isset($status)) {
                     'format' => __('Trang {:page} của {:pages} trang, hiển thị {:current} của {:count} tất cả, bắt đầu từ {:start}, đến {:end}')
                 ));
                 ?>	</p>
-                <?php
+            <?php
             echo $this->Paginator->pagination(array(
                 'ul' => 'pagination'
             ));
