@@ -50,7 +50,7 @@
                                 </tr>
                                 <tr>
                                     <td>Số buổi</td>
-                                    <td><?php echo $course['Course']['session_number']; ?></td>
+                                    <td><?php echo count($course['CoursesRoom']); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Số lượng đăng ký tối đa</td> 

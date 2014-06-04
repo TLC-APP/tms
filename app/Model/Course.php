@@ -249,4 +249,9 @@ class Course extends AppModel {
         return $courses_id_array;
     }
 
+    public function getTeachingCourse($teacher_id){
+        $conditions=array('Course.teacher_id'=>$teacher_id);
+        $courses=  $this->find('all',array('conditions'=>$conditions,'recursive'=>-1,'fields'=>array('Course.id')));
+        return Set::classicExtract($courses, '{n}.Course.id');
+    }
 }

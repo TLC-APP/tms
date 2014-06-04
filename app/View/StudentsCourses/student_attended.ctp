@@ -1,6 +1,6 @@
 <div class="panel panel-theme">
     <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-thumb-tack"></i> Danh sách các khóa đang tham dự</h3>
+        <h3 class="panel-title"><i class="fa fa-thumb-tack"></i> Danh sách các khóa đã tham dự</h3>
     </div>
     <div class="panel-body">
         <?php echo $this->Form->create('Field', array('id' => 'FieldSearchForm', 'method' => 'post', 'action' => 'student_courses_attended', 'class' => 'course-finder-form')); ?>
@@ -15,7 +15,7 @@
         $data = $this->Js->get('#FieldSearchForm')->serializeForm(array('isForm' => true, 'inline' => true));
         $this->Js->get('#FieldSearchForm')->event(
                 'submit', $this->Js->request(
-                        array('action' => 'courses_studying'), array(
+                        array('action' => 'attended', 'student' => true), array(
                     'update' => '#aftersearch',
                     'data' => $data,
                     'async' => true,
@@ -27,15 +27,15 @@
         echo $this->Js->writeBuffer();
         ?>
         <div class="table-responsive" id="aftersearch">                      
-            <table class="table table-condensed">
+            <table class="table table-condensed table-hover">
                 <thead>
                     <tr>
                         <th>STT</th>
                         <th>Tên khóa</th>
                         <th>Chuyên đề</th>
                         <th>Tập huấn bởi</th>
+                        <th>Kết quả</th>
                         <th>Chứng nhận</th>
-                        <th>Trạng thái</th>
                     </tr>
                 </thead>
 
@@ -54,33 +54,25 @@
                         <td><?php echo $course_attended['Course']['Teacher']['name']; ?></td>
 
                         <td><?php
-                            if ($course_attended['StudentsCourse']['is_passed'] == 1)
-                                echo "Đã có chứng nhận";
+                            if ($course_attended['StudentsCourse']['is_passed'])
+                                echo '<small class="label label-primary"> đạt </small>';
                             else
-                                echo "Chưa có chứng nhận";
+                                echo '<small class="label label-warning"> không đạt </small>';
                             ?></td>
 
-                        <td><?php
-                            if ($course_attended['StudentsCourse']['is_recieved'] == 1)
-                                echo "Đã cấp";
-                            else
-                                echo "Chưa cấp";
+                        <td>
+                            <?php
+                            if ($course_attended['StudentsCourse']['is_passed']) {
+                                if ($course_attended['StudentsCourse']['is_recieved'] == 1)
+                                    echo '<small class="label label-primary"> đã nhận </small>';
+                                else
+                                    echo '<small class="label label-warning"> chưa nhận </small>';
+                            }
                             ?></td>
 
                     </tr>
                 <?php endforeach; ?>
             </table>
-            <p>
-                <?php
-                echo $this->Paginator->counter(array(
-                    'format' => __('Trang {:page} của {:pages} trang, hiển thị {:current} của {:count} tất cả, bắt đầu từ {:start}, đến {:end}')
-                ));
-                ?>	</p>
-            <?php
-            echo $this->Paginator->pagination(array(
-                'ul' => 'pagination'
-            ));
-            ?>
         </div>
     </div>
 </div>

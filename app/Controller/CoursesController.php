@@ -112,7 +112,8 @@ class CoursesController extends AppController {
             'User' => array('fields' => array('id', 'name')),
             'CoursesRoom' => array('conditions' => array('CoursesRoom.start is not null'), 'order' => array('CoursesRoom.priority' => 'ASC')),
             'Teacher' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'HocHam', 'HocVi'),
-            'Chapter'
+            'Chapter'=>array('Attachment'),
+            'Attachment'
         );
         $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
         //$rooms = $this->Course->CoursesRoom->Room->find('list');

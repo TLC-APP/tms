@@ -25,7 +25,7 @@
                             <td><?php echo $this->Html->link($course['Course']['name'],
                                     array('student'=>true,'controller'=>'courses','action'=>'view',$course['Course']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax')) ?></td>
                             <td><?php echo $course['Chapter']['name'] ?></td>
-                            <td><?php echo $course['Course']['session_number'] ?></td>
+                            <td><?php echo count($course['CoursesRoom']); ?></td>
                             <td><?php echo $course['Course']['max_enroll_number']; ?></td>
                             <td><?php echo ($course['Course']['max_enroll_number'] - $course['Course']['register_student_number']); ?></td>
                             <td><?php  $start= new DateTime($course['Course']['enrolling_expiry_date']);echo " Giờ: "; echo $start->format('H:i'); echo", Ngày: ";echo $start->format('d/m/Y');?></td>

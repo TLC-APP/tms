@@ -6,7 +6,7 @@
                 <ul class="nav nav-tabs">
 
                     <li ><a data-toggle="tab" href="#tab_2-4">Lịch học</a></li>
-                    <li class=""><a data-toggle="tab" href="#tab_2-5">Tài liệu</a></li>
+                    <li class=""><a data-toggle="tab" href="#tai_lieu">Tài liệu</a></li>
 
                     <li class=""><a data-toggle="tab" href="#tab_2-2">Thông tin</a></li>
                     <li class="active"><a data-toggle="tab" href="#tab_1-1">Nội dung</a></li>
@@ -41,7 +41,7 @@
                                 </tr>
                                 <tr>
                                     <td>Số buổi</td>
-                                    <td><?php echo count($course['CoursesRoom'] ); ?></td>
+                                    <td><?php echo count($course['CoursesRoom']); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Số lượng đăng ký tối đa</td> 
@@ -53,8 +53,7 @@
                                         <span class="text-red"><?php echo $course['Course']['enrolling_expiry_date']; ?></span>
                                     </td>
                                 </tr>
-                                <tr><td>Đã xuất bản</td><td><?php echo $course['Course']['is_published']; ?></td></tr>
-                                <tr><td> Tình trạng</td><td><?php echo $course['Course']['status']; ?></td></tr>
+
 
                                 <tr>
                                     <td>Chuyên đề</td>
@@ -76,7 +75,7 @@
                                 <div class="well">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            
+
                                             <div class="table-responsive">
                                                 <table class="table table-hover table-condensed">
                                                     <thead>
@@ -84,14 +83,18 @@
                                                     </thead>
                                                     <tbody>
 
-                                                        <?php $stt = 0;
+                                                        <?php
+                                                        $stt = 0;
                                                         foreach ($course['CoursesRoom'] as $buoi):
                                                             ?>
 
                                                             <tr>
                                                                 <td><?php echo ++$stt; ?></td>
                                                                 <td><?php echo $buoi['title']; ?></td>
-                                                                <td><?php $start= new DateTime($buoi['start']); echo $start->format('H:i, d - m - Y');?></td>
+                                                                <td><?php
+                                                                    $start = new DateTime($buoi['start']);
+                                                                    echo $start->format('H:i, d - m - Y');
+                                                                    ?></td>
                                                                 <td><?php echo $buoi['room']; ?></td>
                                                             </tr>
                                                         <?php endforeach; ?>
@@ -106,15 +109,52 @@
                             </div>
                         </div> 
                     </div>
-                    <div id="tab_2-5" class="tab-pane">
+                    <div id="tai_lieu" class="tab-pane">
                         <div class="row">
                             <div class="col-md-12">
 
                                 <div class="well">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <h4><a href="#"><?php echo $course['Teacher']['name'] ?></a></h4>
-                                            <span class="glyphicon glyphicon-envelope"></span> <br>
+
+                                            <div class="box box-solid">
+                                                <div class="box-body">
+                                                    <div class="table-responsive" id="chapter_attachments_list">
+                                                        <table class="table table-condensed">
+                                                            <thead><tr><th>#</th><th>Tên file</th></tr></thead>
+                                                            <tbody>
+                                                                <?php
+                                                                $stt = 0;
+                                                                foreach ($course['Chapter']['Attachment'] as $tailieu):
+                                                                    ?>
+                                                                    <tr id='attachment_<?php echo $tailieu['id'] ?>'>
+                                                                        <td><?php echo ++$stt ?></td>
+                                                                        <td><?php echo $this->Html->link($tailieu['attachment'], array('fields_manager' => false, 'controller' => 'chapters', 'action' => 'download', $tailieu['id'])); ?></td>
+                                                                    </tr>
+                                                                <?php endforeach; ?>
+                                                                <?php
+                                                                //$stt = 0;
+                                                                foreach ($course['Attachment'] as $tailieu):
+                                                                    ?>
+                                                                    <tr id='attachment_<?php echo $tailieu['id'] ?>'>
+                                                                        <td><?php echo ++$stt ?></td>
+                                                                        <td><?php echo $this->Html->link($tailieu['attachment'], array('fields_manager' => false, 'action' => 'download', $tailieu['id']));
+                                                                    ?></td>
+                                                                        <td>
+                                                                            <?php
+                                                                            //echo $this->Form->postLink('<button class="btn btn-mini btn-warning" type="button">xóa</button>', array('fields_manager' => false, 'controller' => 'attachments', 'action' => 'delete', $tailieu['Attachment']['id']), array('escape' => false), __('bạn chắc xóa file %s?', $tailieu['Attachment']['attachment']));
+                                                                            echo $this->Html->link('<button class="btn btn-mini btn-warning" type="button">xóa</button>', '/attachments/delete/' . $tailieu['id'], array('escape' => false, 'class' => 'delete-attachment-button'));
+                                                                            ?>
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endforeach; ?>
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                </div><!-- /.box-body -->
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>

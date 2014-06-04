@@ -51,7 +51,7 @@ class EmailConfig {
         'from' => array('thaitoan2210@gmail.com' => 'Trung tâm HT-PT Dạy & Học. Hệ thống Hỗ trợ công tác tập huấn giảng viên'),
         'port' => 465,
         'username' => 'thaitoan2210@gmail.com',
-        'password' => 'C27cX8',
+        'password' => 'C27cX8C27cX8',
         'transport' => 'Smtp',
         //'tls' => true
     );

@@ -25,9 +25,9 @@ $this->Html->addCrumb('Sửa khóa học '.$this->Form->value('name'));
         echo $this->Form->input('image_path', array('type' => 'hidden'));
         echo $this->Form->input('teacher_id', array('label' => 'Tập huấn bởi'));
         echo $this->Form->input('max_enroll_number', array('label' => 'Số người tối đa'));
-        echo $this->Form->input('session_number', array('label' => 'Số buổi'));
+        //echo $this->Form->input('session_number', array('label' => 'Số buổi'));
         echo $this->Form->input('is_published', array('label' => 'Xuất bản'));
-        echo $this->Form->input('enrolling_expiry_date', array('label' => 'Ngày hết hạn đăng ký: ', 'class' => 'input datetime'));
+        echo $this->Form->input('enrolling_expiry_date', array('label' => 'Ngày hết hạn đăng ký: ', 'class' => 'input datetime','dateFormat' => 'DMY', 'monthNames' => false));
         echo $this->Form->input('decription', array('label' => 'Miêu tả'));
         ?>
     </fieldset>

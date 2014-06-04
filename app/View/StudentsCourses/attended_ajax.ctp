@@ -41,3 +41,14 @@
         </tr>
     <?php endforeach; ?>
 </table>
+<p>
+    <?php
+    echo $this->Paginator->counter(array(
+        'format' => __('Trang {:page} của {:pages} trang, hiển thị {:current} của {:count} tất cả, bắt đầu từ {:start}, đến {:end}')
+    ));
+    ?>	</p>
+<?php
+echo $this->Paginator->pagination(array(
+    'ul' => 'pagination'
+));
+?>

@@ -16,7 +16,54 @@ class UsersController extends AppController {
                 $this->Session->setFlash('Đăng nhập thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'), 'auth');
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
-                $this->Session->setFlash('Tài khoản không đúng!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'), 'auth');
+                //$this->Session->setFlash('Tài khoản không đúng!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'), 'auth');
+                /* Ket noi ldap kiem tra tai khoan */
+                $username = $this->request->data['User']['username'];
+                $password = $this->request->data['User']['password'];
+
+                $user = $this->User->find('first', array('conditions' => array('User.username' => $username), 'recursive' => -1));
+                App::uses('ldap', 'Lib');
+                $ldap = new ldap();
+                if (!empty($user)) {
+                    /* Password khong hop le */
+
+                    if ($ldap->auth($username, $password)) {
+                        /* Tai khoan hop le tren LDAP */
+                        /* Doi mat khau */
+                        $user['User']['password'] = $password;
+                        $this->User->id = $user['User']['id'];
+                        $this->User->saveField('password', $password);
+                        if ($this->Auth->login($user['User'])) {
+                            $this->Session->setFlash('Đăng nhập thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'), 'auth');
+                            return $this->redirect($this->Auth->redirectUrl());
+                        } else {
+                            $this->Session->setFlash('Cập nhật tài khoản thành không thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                            return $this->redirect($this->Auth->redirectUrl());
+                        }
+                    } else {
+                        $this->Session->setFlash('Tài khoản đăng nhập không đúng!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                    }
+                } else {
+                    if ($ldap->auth($username, $password)) {
+                        $ldap_user = $ldap->getInfo($username, $password);
+                        $this->User->create();
+                        $this->request->data['User']['name'] = $ldap_user['name'];
+                        $this->request->data['User']['email'] = $ldap_user['email'];
+                        $this->request->data['User']['activated'] = 1;
+                        $this->request->data['Group']['0'] = $this->User->Group->getGroupIdByAlias('student');
+
+                        if ($this->User->save($this->request->data)) {
+                            $user = $this->User->find('first', array('conditions' => array('User.username' => $username), 'recursive' => -1));
+                            if ($this->Auth->login($user['User'])) {
+                                $this->Session->setFlash('Vui lòng cập nhật thông tin!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                                //$this->redirect(array())
+                                return $this->redirect($this->Auth->redirectUrl());
+                            }
+                        } else {
+                            $this->Session->setFlash('Không thể lưu thông tin User');
+                        }
+                    }
+                }
             }
         }
     }
@@ -51,13 +98,41 @@ class UsersController extends AppController {
         $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
         $this->set('user', $this->User->find('first', $options));
     }
-    
+
     public function view_as_student($id = null) {
         if (!$this->User->exists($id)) {
             throw new NotFoundException(__('Invalid user'));
         }
         $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
         $this->set('user', $this->User->find('first', $options));
+    }
+
+    public function student_profile($id = null) {
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id),'contain'=>array('Department'));
+        $this->set('user', $this->User->find('first', $options));
+    }
+
+    public function student_edit_profile($id) {
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            //debug($this->request->data);die;
+            if ($this->User->save($this->request->data)) {
+                $this->Session->setFlash('Đã cập nhật thành công','alert',array('plugin'=>'BoostCake','class'=>'alert-success'));
+                return $this->redirect(array('action' => 'profile',$id,'student'=>true));
+            } else {
+                $this->Session->setFlash('Lỗi cập nhật hồ sơ!','alert',array('plugin'=>'BoostCake','class'=>'alert-warning'));
+            }
+        } else {
+            $departments = $this->User->Department->find('list');
+            $this->set('departments', $departments);
+            $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+            $this->request->data = $this->User->find('first', $options);
+        }
     }
 
     /**

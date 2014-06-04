@@ -21,7 +21,7 @@
                 <div class="row cols-wrapper">
 
                     <?php echo $this->Session->flash(); ?>
-
+                    <?php echo $this->Session->flash('auth'); ?>
                     <?php echo $this->fetch('content'); ?> 
 
                 </div><!--//cols-wrapper-->
@@ -54,7 +54,7 @@
 
 
 
-        
+
     </body>
 </html> 
 

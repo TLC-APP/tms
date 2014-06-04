@@ -44,14 +44,14 @@ class AppController extends Controller {
             'plugin' => false
         );
         $this->Auth->logoutRedirect = array(
-            'controller' => 'courses',
-            'action' => 'new_courses',
+            'controller' => 'dashboards',
+            'action' => 'home',
             'admin' => false,
             'plugin' => false
         );
         $this->Auth->loginRedirect = array(
-            'controller' => 'courses',
-            'action' => 'new_courses',
+            'controller' => 'dashboards',
+            'action' => 'home',
             'admin' => false,
             'plugin' => false
         );

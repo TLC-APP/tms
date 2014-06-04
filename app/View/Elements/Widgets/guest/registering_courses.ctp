@@ -4,20 +4,6 @@
     </div>
     <div class="panel-body">
 
-        <?php echo $this->Form->create(null, array('method' => 'post', 'action' => 'new_courses', 'class' => 'course-finder-form')); ?>
-        <div class="row">
-            <div class="col-md-3 col-sm-3 subject">
-                <?php echo $this->Form->input('field_id', array('label' => false, 'type' => 'select', 'options' => $fields, 'class' => "form-control subject", 'empty' => 'Chọn lĩnh vực')); ?>
-
-            </div> 
-            <div class="col-md-4 col-sm-4 subject">
-                
-                <?php echo $this->Form->input('chapter_id',array('label'=>false,'empty'=>'Chọn chuyên đề','type'=>'select','options'=>$chapters,'class'=>"form-control subject"));?>
-
-            </div> 
-            <button type="submit" class="btn btn-theme"><i class="fa fa-search"></i></button>
-        </div>                     
-        <?php echo $this->Form->end(); ?><!--//course-finder-form-->
         <div class="table-responsive">                      
             <table class="table table-condensed">
                 <thead>

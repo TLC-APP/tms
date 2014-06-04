@@ -54,7 +54,11 @@ if (isset($status)) {
                             <?php
                             echo $this->Html->link($course['Course']['name'], array('fields_manager' => true, 'controller' => 'courses', 'action' => 'view', $course['Course']['id']));
                             $register_student_number = $course['Course']['register_student_number'];
-                            $percent = round(($register_student_number * 100) / $course['Course']['max_enroll_number']);
+                            if ($course['Course']['max_enroll_number'] > 0) {
+                                $percent = round(($register_student_number * 100) / $course['Course']['max_enroll_number']);
+                            } else {
+                                $percent = 0;
+                            }
                             ?>
 
                             <div class="progress progress-bar-yellow progress-striped">
@@ -118,7 +122,7 @@ if (isset($status)) {
                     'format' => __('Trang {:page} của {:pages} trang, hiển thị {:current} của {:count} tất cả, bắt đầu từ {:start}, đến {:end}')
                 ));
                 ?>	</p>
-            <?php
+                <?php
             echo $this->Paginator->pagination(array(
                 'ul' => 'pagination'
             ));

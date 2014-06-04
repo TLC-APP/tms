@@ -16,7 +16,7 @@
 
                 </li>
                 <li class="nav-item">
-                    <a href="/student/students_courses/studying">Khóa học đã tham dự</a>
+                    <a href="/student/students_courses/attended">Khóa học đã tham dự</a>
 
                 </li>
 
