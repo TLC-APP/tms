@@ -68,4 +68,19 @@ class AppController extends Controller {
         $this->TinymceElfinder->connector();
     }
 
+
+    public function __checkCompleteCourse() {
+        $uncomplete_courses = $this->Course->getCoursesUnCompleted();
+        if (!empty($uncomplete_courses)) {
+            $khoa_con_buoi = $this->CoursesRoom->layKhoaConBuoi();  
+            $id_giong = array_intersect($uncomplete_courses, $khoa_con_buoi);
+            $khoa_hoan_thanh = Set::diff($uncomplete_courses, $id_giong);
+            if (!empty($khoa_hoan_thanh)) {
+                $this->Course->updateAll(array('Course.status' => COURSE_COMPLETED), array('Course.id' => $khoa_hoan_thanh));
+            }
+        }
+    }
+
 }
+
+
