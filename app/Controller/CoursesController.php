@@ -276,6 +276,13 @@ class CoursesController extends AppController {
             $this->Session->setFlash('Khóa học đã mở rồi!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             return $this->redirect($this->referer());
         }
+        
+        $enrolling_expiry_date=new DateTime($this->Course->field('enrolling_expiry_date'));
+        $today=new DateTime();
+        if ($today<$enrolling_expiry_date) {
+            $this->Session->setFlash('Khóa học chưa hết hạn đăng ký!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            return $this->redirect($this->referer());
+        }
         if ($this->Course->saveField('status', COURSE_UNCOMPLETED)) {
             $this->Session->setFlash('Đã mở khóa học thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
             /* Gửi mail thông báo */
@@ -418,7 +425,7 @@ class CoursesController extends AppController {
         $today = new DateTime();
         $khoa_da_dang_ky = $this->Course->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
 
-        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'));
+        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'),'Course.status'=>COURSE_REGISTERING);
         $courses_register = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain));
         return $courses_register;
     }
