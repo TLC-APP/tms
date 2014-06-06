@@ -249,7 +249,7 @@ class StudentsCoursesController extends AppController {
                     $conditions = array('StudentsCourse.course_id' => $course);
                 }
             }
-<<<<<<< HEAD
+
             $this->set(compact('fields'));
             $this->Paginator->settings = array('conditions' => $conditions, 'contain' => $contain);
             $courses_attended = $this->Paginator->paginate();
@@ -257,7 +257,7 @@ class StudentsCoursesController extends AppController {
             if ($this->request->is('ajax')) {
                 $this->render('student_courses_studying_ajax');
             }
-=======
+
             $this->set(compact('fields'));
             $this->Paginator->settings = array('conditions' => $conditions, 'contain' => $contain);
             $courses_attended = $this->Paginator->paginate();
@@ -267,7 +267,6 @@ class StudentsCoursesController extends AppController {
         } else {
             $this->set(compact('fields'));
             $this->set('courses_attended', $courses_attended);
->>>>>>> Khoa
         }
         $this->set(compact('fields'));
         $this->set('courses_attended', $courses_attended);

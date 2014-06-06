@@ -72,18 +72,11 @@ class AppController extends Controller {
         $this->TinymceElfinder->connector();
     }
 
-<<<<<<< HEAD
-
-    public function __checkCompleteCourse() {
-        $uncomplete_courses = $this->Course->getCoursesUnCompleted();
-        if (!empty($uncomplete_courses)) {
-            $khoa_con_buoi = $this->CoursesRoom->layKhoaConBuoi();  
-=======
     public function __checkCompleteCourse() {
         $uncomplete_courses = $this->Course->getCoursesUnCompleted();
         if (!empty($uncomplete_courses)) {
             $khoa_con_buoi = $this->CoursesRoom->layKhoaConBuoi();
->>>>>>> Toan
+
             $id_giong = array_intersect($uncomplete_courses, $khoa_con_buoi);
             $khoa_hoan_thanh = Set::diff($uncomplete_courses, $id_giong);
             if (!empty($khoa_hoan_thanh)) {
@@ -93,8 +86,3 @@ class AppController extends Controller {
     }
 
 }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> Toan

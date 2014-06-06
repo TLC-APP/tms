@@ -1,15 +1,13 @@
 <?php
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 /*test master */
-=======
+
 
 
 /*kaka*/
->>>>>>> Toan
-=======
+
 /*sua cai coi*/
->>>>>>> Khoa
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
