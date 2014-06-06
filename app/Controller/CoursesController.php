@@ -418,7 +418,7 @@ class CoursesController extends AppController {
         $today = new DateTime();
         $khoa_da_dang_ky = $this->Course->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
 
-        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'));
+        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.status'=>COURSE_REGISTERING,'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'));
         $courses_register = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain));
         return $courses_register;
     }
