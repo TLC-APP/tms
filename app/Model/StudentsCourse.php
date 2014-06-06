@@ -17,6 +17,7 @@ class StudentsCourse extends AppModel {
      */
     public $displayField = 'student_id';
     public $table = 'students_courses';
+    public $actsAs = array('Containable');
 
     /**
      * Validation rules
@@ -90,4 +91,12 @@ class StudentsCourse extends AppModel {
         )
     );
 
+    public function getEnrolledCourses($user_id){        
+        //$contain=array('Course'=>array('conditions'=>array('Course.status'=>COURSE_REGISTERING,'Course.is_published'=>1)));
+        $conditions=array('StudentsCourse.student_id' => $user_id);
+        $students_courses= $this->find('all',array('conditions'=>$conditions,'recursive'=>-1));
+        $enrolled_courses_id_array=Set::classicExtract($students_courses,'{n}.StudentsCourse.course_id');
+        return $enrolled_courses_id_array;
+        
+    }
 }

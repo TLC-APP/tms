@@ -1,11 +1,9 @@
-
-<div class="col-md-10">
-
+<?php /*Chapter*/ ?>
+<div class="container">
     <div class="box box-primary">
         <div class="box-header">
             <h3 class="box-title">Danh mục chuyên đề</h3>
             <div id="commentStatus"></div>
-
             <?php
             echo $this->Form->create('Chapter', array('default' => false, 'id' => 'ChapterSearchForm'));
             ?>
@@ -24,13 +22,11 @@
                     <?php echo $this->Form->end(); ?>
                 </div>
             </div>
-
-
             <?php
             $data = $this->Js->get('#ChapterSearchForm')->serializeForm(array('isForm' => true, 'inline' => true));
             $this->Js->get('#ChapterSearchForm')->event(
                     'submit', $this->Js->request(
-                            array('action' => 'search'), array(
+                            array('fields_manager'=>false,'action' => 'search'), array(
                         'update' => '#results',
                         'data' => $data,
                         'async' => true,
@@ -58,7 +54,7 @@
                     <?php foreach ($chapters as $chapter): ?>
                         <tr>
                             <th><?php echo $stt++; ?></th>
-                            <td><?php echo $this->Html->link($chapter['Chapter']['name'], array('action' => 'view', $chapter['Chapter']['id'])); ?></td>
+                            <td><?php echo $this->Html->link($chapter['Chapter']['name'], array('fields_manager'=>true,'action' => 'view', $chapter['Chapter']['id'])); ?></td>
                             <td>
                                 <?php echo $chapter['Field']['name']; ?>
                             </td>

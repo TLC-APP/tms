@@ -9,7 +9,7 @@
         <ul class="dropdown-menu">
             <!-- User image -->
             <li class="user-header bg-light-blue">
-                <img src="img/avatar3.png" class="img-circle" alt="User Image" />
+                <img src="#" class="img-circle" alt="User Image" />
                 <p>
                     <?php echo AuthComponent::user('name')?> - <?php echo AuthComponent::user('email')?>
                     <small>Member since Nov. 2012</small>

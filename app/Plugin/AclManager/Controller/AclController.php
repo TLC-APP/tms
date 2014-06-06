@@ -23,6 +23,7 @@ class AclController extends AclManagerAppController {
 	 * beforeFitler
 	 */
 	public function beforeFilter() {
+            $this->layout='admin';
 		parent::beforeFilter();
 		
 		/**
@@ -73,6 +74,7 @@ class AclController extends AclManagerAppController {
 	 * Index action
 	 */
 	public function index() {
+            
 	}
 
 	/**

@@ -1,20 +1,49 @@
 <div class="rooms form">
-<?php echo $this->Form->create('Room'); ?>
-	<fieldset>
-		<legend><?php echo __('Add Room'); ?></legend>
-	<?php
-		echo $this->Form->input('name');
-		echo $this->Form->input('decription');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+    <?php echo $this->Html->script('jquery.form');?>
+    <div id='message'></div>
+    <?php
+    echo $this->Form->create('Room', array(
+        'inputDefaults' => array(
+            'div' => 'form-group',
+            'label' => array(
+                'class' => 'col col-sm-3 control-label'
+            ),
+            'wrapInput' => 'col col-sm-7',
+            'class' => 'form-control'
+        ),
+        'class' => 'well form-horizontal',
+        'id' => 'addRoomForm'
+    ));
+    ?>
+    <fieldset>
+        <legend>Thêm phòng học</legend>
+        <?php
+        echo $this->Form->input('name',array('label' => 'Tên phòng'));
+        echo $this->Form->input('decription',array('label' => 'Miêu tả'));
+        ?>
+    </fieldset>
+<?php echo $this->Form->end('Lưu'); ?>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
+<script>
+    $(function() {
+        $('#addRoomForm').on('submit', function(e) {
+            e.preventDefault(); // prevent native submit
+            $(this).ajaxSubmit({
+                url: '/rooms/add.json',
+                success: addRoomResponse
+            });
+            return false;
+        });
+    });
 
-		<li><?php echo $this->Html->link(__('List Rooms'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Courses Rooms'), array('controller' => 'courses_rooms', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Courses Room'), array('controller' => 'courses_rooms', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
+// post-submit callback 
+    function addRoomResponse(responseText, statusText, xhr, $form) {
+        if (responseText.response.status) {
+            $('#room-event').append('<option value="' + responseText.response.id + '" selected="selected">' + responseText.response.name + '</option>');
+            $.fancybox.close();
+        } else {
+            $('#message').html(responseText.response.message);
+        }
+        return true;
+    }
+</script>

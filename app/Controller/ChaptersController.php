@@ -29,23 +29,77 @@ class ChaptersController extends AppController {
     }
 
     public function search() {
-        
+
         if ($this->request->is('ajax')) {
             // Use data from serialized form
             $chapter_name = $this->request->data['chapter_name'];
             $this->Paginator->settings = array(
                 'conditions' => array(
                     'Chapter.created_user_id' => $this->Auth->user('id'),
-                    'Chapter.name like '=>'%'.$chapter_name.'%'
-                    ));
+                    'Chapter.name like ' => '%' . $chapter_name . '%'
+            ));
             $this->set('chapters', $this->Paginator->paginate());
             $this->render('search_results', 'ajax'); // Render the contact-ajax-response view in the ajax layout
         }
     }
 
     public function fields_manager_index() {
-        $this->Paginator->settings = array('conditions' => array('Chapter.created_user_id' => $this->Auth->user('id')));
+        $contain = array('User' => array('fields' => array('id', 'name')), 'Field');
+        $this->Paginator->settings = array('conditions' => array('Chapter.created_user_id' => $this->Auth->user('id')), 'contain' => $contain);
         $this->set('chapters', $this->Paginator->paginate());
+    }
+
+    public function fields_manager_view($id) {
+        if (!$this->Chapter->exists($id)) {
+            throw new NotFoundException(__('Invalid chapter'));
+        }
+        $contain = array('Attachment', 'User' => array('fields' => array('id', 'name')), 'Field');
+        $options = array('conditions' => array('Chapter.' . $this->Chapter->primaryKey => $id), 'contain' => $contain);
+        $this->set('chapter', $this->Chapter->find('first', $options));
+    }
+
+    public function fields_manager_add() {
+        if ($this->request->is('post')) {
+            $this->Chapter->create();
+            $this->request->data['Chapter']['created_user_id'] = $this->Auth->user('id');
+            try {
+                $this->Chapter->createWithAttachments($this->request->data);
+                $this->Session->setFlash('Thêm chuyên đề thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'index'));
+            } catch (Exception $exc) {
+                echo $exc->getTraceAsString();
+            }
+        }
+        $fields = $this->Chapter->Field->find('list');
+        $this->set(compact('fields'));
+    }
+
+    public function fields_manager_edit($id = null) {
+        if (!$this->Chapter->exists($id)) {
+            throw new NotFoundException(__('Invalid chapter'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            if ($this->Chapter->save($this->request->data)) {
+                $this->Session->setFlash('Cập nhật chuyên đề thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'index'));
+            }
+        } else {
+            $options = array('conditions' => array('Chapter.' . $this->Chapter->primaryKey => $id));
+            $this->request->data = $this->Chapter->find('first', $options);
+        }
+        $fields = $this->Chapter->Field->find('list');
+        $this->set(compact('fields'));
+    }
+
+    /* Teacher com */
+
+    public function teacher_view() {
+        if (!$this->Chapter->exists($id)) {
+            throw new NotFoundException(__('Invalid chapter'));
+        }
+        $contain = array('CreatedUser' => array('fields' => array('id', 'name')), 'Field');
+        $options = array('conditions' => array('Chapter.' . $this->Chapter->primaryKey => $id), 'contain' => $contain);
+        $this->set('chapter', $this->Chapter->find('first', $options));
     }
 
     /**
@@ -56,10 +110,12 @@ class ChaptersController extends AppController {
      * @return void
      */
     public function view($id = null) {
+
         if (!$this->Chapter->exists($id)) {
             throw new NotFoundException(__('Invalid chapter'));
         }
-        $options = array('conditions' => array('Chapter.' . $this->Chapter->primaryKey => $id));
+        $contain = array('Attachment', 'CreatedUser' => array('fields' => array('id', 'name')), 'Field');
+        $options = array('conditions' => array('Chapter.' . $this->Chapter->primaryKey => $id), 'contain' => $contain);
         $this->set('chapter', $this->Chapter->find('first', $options));
     }
 
@@ -112,16 +168,77 @@ class ChaptersController extends AppController {
      * @return void
      */
     public function delete($id = null) {
+
         $this->Chapter->id = $id;
         if (!$this->Chapter->exists()) {
             throw new NotFoundException(__('Invalid chapter'));
         }
+
+
         $this->request->onlyAllow('post', 'delete');
-        if ($this->Chapter->delete()) {
-            return $this->flash(__('The chapter has been deleted.'), array('action' => 'index'));
+        if (!$this->Chapter->isOwnedBy($id, $this->Auth->user('id')) && (!$this->Chapter->User->isAdmin() || !$this->Chapter->User->isManager())) {
+            $this->Session->setFlash('Bạn không có quyền xóa chuyên đề người khác tạo', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            return $this->redirect(array('action' => 'index'));
         } else {
-            return $this->flash(__('The chapter could not be deleted. Please, try again.'), array('action' => 'index'));
+            $course_number = $this->Chapter->field('course_number');
+            if ($course_number > 0) {
+                $this->Session->setFlash('Có ' . $course_number . ' khóa học thuộc chuyên đề này, bạn cần xóa chúng trước đã.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                return $this->redirect(array('action' => 'index'));
+            } else {
+                if ($this->Chapter->delete()) {
+                    $this->Session->setFlash('Xóa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                    return $this->redirect(array('action' => 'index'));
+                } else {
+                    $this->Session->setFlash('Xóa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                    return $this->redirect(array('action' => 'index'));
+                }
+            }
         }
     }
+
+    public function attachment_list($id) {        
+        $this->Chapter->id = $id;
+        if (!$this->Chapter->exists()) {
+            throw new Exception('Không tồn tại chuyên đề này');
+        }
+        $conditions = array('Attachment.model' => 'Chapter', 'Attachment.foreign_key' => $id);
+        $attachments = $this->Chapter->Attachment->find('all', array('conditions'=>$conditions,'recursive'=>-1));
+        $this->set('attachments',$attachments);
+    }
+
+    public function upload($id = null) {
+        $this->Chapter->id = $id;
+        if (!$this->Chapter->exists()) {
+            throw new Exception('Không tồn tại chuyên đề này');
+        }
+        if (!empty($this->request->data)) {
+            try {
+                if ($this->Chapter->createWithAttachments($this->request->data)) {
+                    echo json_encode(array('status' => 1, 'chapter_id' => $id));
+                    die();
+                } else {
+                    echo json_encode(array('status' => 0));
+                    die();
+                }
+            } catch (Exception $exc) {
+                echo $exc->getTraceAsString();
+            }
+        } else {
+            $options = array('conditions' => array('Chapter.' . $this->Chapter->primaryKey => $id));
+            $this->request->data = $this->Chapter->find('first', $options);
+        }
+    }
+
+    public function download($attachment_id) {
+        $path = $this->Chapter->Attachment->getFilePath($attachment_id, 'attachment');
+
+        $this->response->file(
+                $path, array('download' => true, 'name' => $this->Chapter->Attachment->getFileName($attachment_id))
+        );
+        // Return response object to prevent controller from trying to render
+        // a view
+        return $this->response;
+    }
+    
 
 }

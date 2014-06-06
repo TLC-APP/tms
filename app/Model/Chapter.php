@@ -16,6 +16,13 @@ class Chapter extends AppModel {
      * @var string
      */
     public $displayField = 'name';
+    public $virtualFields = array(
+        'course_number' =>
+        "SELECT count(id) as Chapter__course_number 
+         FROM  courses as Course 
+         where 
+            Course.chapter_id=Chapter.id 
+            ");
     public $actsAs = array('Containable', 'Upload.Upload' => array(
             'image' => array(
                 'fields' => array(
@@ -67,7 +74,7 @@ class Chapter extends AppModel {
             'fields' => '',
             'order' => ''
         ),
-        'CreatedUser' => array(
+        'User' => array(
             'className' => 'User',
             'foreignKey' => 'created_user_id',
             'conditions' => '',
@@ -94,11 +101,52 @@ class Chapter extends AppModel {
             'exclusive' => '',
             'finderQuery' => '',
             'counterQuery' => ''
-        )
+        ),
+        'Attachment' => array(
+            'className' => 'Attachment',
+            'foreignKey' => 'foreign_key',
+            'dependent' => false,
+            'conditions' => array(
+                'Attachment.model' => 'Chapter',
+            ),
+        ),
     );
 
-    public function isOwnedBy($chapter, $user) {
-        return $this->field('id', array('id' => $chapter, 'user_id' => $user)) !== false;
+    public function createWithAttachments($data) {
+        // Sanitize your images before adding them
+        $dstailieu = array();
+        if (!empty($data['Attachment'][0])) {
+            foreach ($data['Attachment'] as $i => $tailieu) {
+                if (is_array($data['Attachment'][$i])) {
+                    // Force setting the `model` field to this model
+                    $tailieu['model'] = $this->name;
+
+                    // Unset the foreign_key if the user tries to specify it
+                    if (isset($tailieu['foreign_key'])) {
+                        unset($tailieu['foreign_key']);
+                    }
+                    $dstailieu[] = $tailieu;
+                }
+            }
+        }
+        $data['Attachment'] = $dstailieu;
+        if (empty($data[$this->name]['id'])) {
+            $this->create();
+        }
+        if ($this->saveAll($data)) {
+            return true;
+        }
+        return false;
     }
 
+    public function isOwnedBy($chapter, $user) {
+        return $this->field('id', array('id' => $chapter, 'created_user_id' => $user)) !== false;
+    }
+
+    public function getChapterByField_id($field_id) {
+        $conditions = array('Chapter.field_id' => $field_id);
+        $chapters = $this->find('all', array('conditions' => $conditions, 'recursive' => -1));
+        $courses_id_array = Set::classicExtract($chapters, '{n}.Chapter.id');
+        return $courses_id_array;
+    }
 }

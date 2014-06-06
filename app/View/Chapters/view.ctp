@@ -1,4 +1,4 @@
-<div class="chapters view">
+<div class="col-lg-12 content-right">
 <h2><?php echo __('Chapter'); ?></h2>
 	<dl>
 		<dt><?php echo __('Name'); ?></dt>
@@ -43,19 +43,7 @@
 		</dd>
 	</dl>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Chapter'), array('action' => 'edit', $chapter['Chapter']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Chapter'), array('action' => 'delete', $chapter['Chapter']['id']), null, __('Are you sure you want to delete # %s?', $chapter['Chapter']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Chapters'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Chapter'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Fields'), array('controller' => 'fields', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Field'), array('controller' => 'fields', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Courses'), array('controller' => 'courses', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Course'), array('controller' => 'courses', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
+
 <div class="related">
 	<h3><?php echo __('Related Courses'); ?></h3>
 	<?php if (!empty($chapter['Course'])): ?>

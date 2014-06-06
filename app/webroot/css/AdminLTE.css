@@ -14,8 +14,7 @@
 html,
 body {
   overflow-x: hidden!important;
-  font-family: 'Source Sans Pro', sans-serif;
-  -webkit-font-smoothing: antialiased;
+  font-family: 'Source Sans Pro';
   min-height: 100%;
   background: #f9f9f9;
 }
@@ -2505,7 +2504,7 @@ Component: timeline
 }
 .skin-blue .treeview-menu > li.active > a,
 .skin-blue .treeview-menu > li > a:hover {
-  color: #111;
+  color: #3C8DBC;
 }
 .skin-blue .sidebar-form {
   -webkit-border-radius: 2px;

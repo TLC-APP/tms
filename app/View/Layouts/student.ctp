@@ -3,7 +3,7 @@
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
 <!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->  
     <head>
-        <?php echo $this->element('Common/header_tag');?>
+        <?php echo $this->element('Common/header_tag'); ?>
 
     </head> 
 
@@ -20,22 +20,9 @@
             <div class="content container">
                 <div class="row cols-wrapper">
 
-                    <div class="col-md-8">
-                        <!-- WIDGET Thời khóa biểu hôm nay-->
-                        <?php echo $this->element('Widgets/student/today_schedule') ?>
-                        <!-- WIDGET CÁC KHÓA HỌC SẮP TỔ CHỨC-->
-                        <?php echo $this->element('Common/new_course') ?>
-
-
-                    </div>
-                    <div class="col-md-4">
-                        <div class="row">
-                            <!--WIDGET TIN TỨC - THÔNG BÁO-->
-                            <?php echo $this->element('Widgets/student/news')?>
-                            <!--WIDGET Thống kê-->
-                            <?php echo $this->element('Widgets/student/statistics')?>
-                        </div>
-                    </div> 
+                    <?php echo $this->Session->flash(); ?>
+                    <?php echo $this->Session->flash('auth'); ?>
+                    <?php echo $this->fetch('content'); ?> 
 
                 </div><!--//cols-wrapper-->
 
@@ -67,17 +54,7 @@
 
 
 
-        <!-- Javascript -->          
-        <?php echo $this->Html->script('/user/plugins/jquery-1.10.2.min'); ?>
-        <?php echo $this->Html->script('/user/plugins/jquery-migrate-1.2.1.min'); ?>
-        <?php echo $this->Html->script('/user/plugins/bootstrap/js/bootstrap.min'); ?>
-        <?php echo $this->Html->script('/user/plugins/bootstrap-hover-dropdown.min'); ?>
-        <?php echo $this->Html->script('/user/plugins/back-to-top'); ?>
-        <?php echo $this->Html->script('/user/plugins/jquery-placeholder/jquery.placeholder'); ?>
-        <?php echo $this->Html->script('/user/plugins/pretty-photo/js/jquery.prettyPhoto'); ?>
-        <?php echo $this->Html->script('/user/plugins/flexslider/jquery.flexslider-min'); ?>
-        <?php echo $this->Html->script('/user/plugins/jflickrfeed/jflickrfeed.min'); ?>
-        <?php echo $this->Html->script('/user/js/main'); ?>
+
     </body>
 </html> 
 

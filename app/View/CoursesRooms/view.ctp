@@ -16,6 +16,11 @@
 			<?php echo h($coursesRoom['CoursesRoom']['begin']); ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('Priority'); ?></dt>
+		<dd>
+			<?php echo h($coursesRoom['CoursesRoom']['priority']); ?>
+			&nbsp;
+		</dd>
 		<dt><?php echo __('Note'); ?></dt>
 		<dd>
 			<?php echo h($coursesRoom['CoursesRoom']['note']); ?>
@@ -26,6 +31,11 @@
 			<?php echo h($coursesRoom['CoursesRoom']['created']); ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('Created User Id'); ?></dt>
+		<dd>
+			<?php echo h($coursesRoom['CoursesRoom']['created_user_id']); ?>
+			&nbsp;
+		</dd>
 		<dt><?php echo __('Modified'); ?></dt>
 		<dd>
 			<?php echo h($coursesRoom['CoursesRoom']['modified']); ?>
@@ -34,6 +44,11 @@
 		<dt><?php echo __('Id'); ?></dt>
 		<dd>
 			<?php echo h($coursesRoom['CoursesRoom']['id']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Color'); ?></dt>
+		<dd>
+			<?php echo h($coursesRoom['CoursesRoom']['color']); ?>
 			&nbsp;
 		</dd>
 	</dl>

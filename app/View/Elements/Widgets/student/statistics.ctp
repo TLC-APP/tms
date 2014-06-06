@@ -1,20 +1,19 @@
 <div class="panel panel-theme">
     <div class="panel-heading">
-        <h3 class="panel-title"><i class=" glyphicon glyphicon-bullhorn"></i> Thống kê</h3>
+        <h3 class="panel-title"><i class=" glyphicon glyphicon-bullhorn"></i> Thông báo từ hệ thống</h3>
     </div>
     <div class="panel-body">
-
-        <ul>                      
-            <li><a href="#">Đã tham gia 5 lớp tập huấn
-                    <span class="badge">12/04/2014</span></a></li>
-            <li><a href="#">Đã đăng ký 1 lớp
-                    <span class="badge">12/04/2014</span></a></li>
-            <li><a href="#">Lớp học gần nhất là XYZ vào buổi sáng ngày 12/04/2014 tại
-                    <span class="badge">12/04/2014</span></a></li>
-            <li><a href="#">Lần đăng nhập cuối
-                    <span class="badge">12/04/2014</span></a></li>
-        </ul>
-
+        <table>
+            <?php foreach ($courses_notification as $course_notification): ?>
+                <tr>
+                    <td><?php if($course_notification['StudentsCourse']['is_passed']==1&&$course_notification['StudentsCourse']['is_recieved']==0)
+                    {
+                        echo "<i class='fa fa-hand-o-right'>"."</i>"; echo " Đã có chứng nhận khóa "; echo $course_notification['Course']['name'];
+                        
+                    }   ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
     </div>
 
 </div>

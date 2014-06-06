@@ -15,7 +15,8 @@ class Department extends AppModel {
  */
 	public $displayField = 'name';
 
-/**
+        public $actsAs=array('Tree');
+        /**
  * Validation rules
  *
  * @var array

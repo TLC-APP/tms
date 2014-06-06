@@ -2,13 +2,6 @@
 
 App::uses('AppModel', 'Model');
 
-/**
- * User Model
- *
- * @property Course $Teaching
- * @property Group $Group
- * @property StudentCourse $StudentCourse
- */
 class User extends AppModel {
 
     /**
@@ -17,13 +10,47 @@ class User extends AppModel {
      * @var string
      */
     public $displayField = 'name';
-    public $actsAs = array('Acl' => array('type' => 'requester'), 'Containable','Upload.Upload' => array(
+    public $actsAs = array('Acl' => array('type' => 'requester'), 'Containable', 'Upload.Upload' => array(
             'avatar' => array(
                 'fields' => array(
                     'dir' => 'avatar_path'
                 )
             )
     ));
+    public $virtualFields = array(
+        'cancelledCourse' =>
+        "SELECT count(id) as User__completedCourse 
+         FROM  courses as Course
+         where 
+            Course.teacher_id=User.id and 
+            Course.status=5 and 
+             Course.is_published=1
+            ",
+        'registeringCourse' =>
+        "SELECT count(id) as User__completedCourse 
+         FROM  courses as Course 
+         where 
+            Course.teacher_id=User.id and 
+            Course.status=1 and 
+            Course.is_published=1
+            ",
+        'uncompletedCourse' =>
+        "SELECT count(id) as User__completedCoruse 
+         FROM  courses as Course 
+         where 
+            Course.teacher_id=User.id and 
+            Course.status=3 and 
+            Course.is_published=1
+            ",
+        'completedCourse' =>
+        "SELECT count(id) as User__completedCourse 
+         FROM  courses as Course 
+         where 
+            Course.teacher_id=User.id and 
+            Course.status=4 and 
+            Course.is_published=1
+            ",
+    );
 
     public function parentNode() {
         return null;
@@ -46,48 +73,24 @@ class User extends AppModel {
             'notEmpty' => array(
                 'rule' => array('notEmpty'),
             //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
         'username' => array(
             'notEmpty' => array(
                 'rule' => array('notEmpty'),
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
         'password' => array(
             'notEmpty' => array(
                 'rule' => array('notEmpty'),
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
         'email' => array(
             'email' => array(
                 'rule' => array('email'),
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
             'notEmpty' => array(
                 'rule' => array('notEmpty'),
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
         ),
     );
@@ -186,7 +189,7 @@ class User extends AppModel {
             'foreignKey' => 'teacher_id',
             'dependent' => false,
             'conditions' => '',
-            'fields' => '',
+            'fields' => array('id', 'name'),
             'order' => '',
             'limit' => '',
             'offset' => '',
@@ -194,7 +197,7 @@ class User extends AppModel {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
-        'StudentsCourse' => array(
+        'Course' => array(
             'className' => 'StudentsCourse',
             'foreignKey' => 'student_id',
             'dependent' => false,
@@ -235,6 +238,13 @@ class User extends AppModel {
             'conditions' => '',
             'fields' => '',
             'order' => ''
+        ),
+        'Department' => array(
+            'className' => 'Department',
+            'foreignKey' => 'department_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
         )
     );
 
@@ -258,5 +268,23 @@ class User extends AppModel {
             'finderQuery' => '',
         )
     );
+
+    public function isAdmin() {
+        $user = $this->find('first', array('fields' => array('id'), 'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'admin'))), 'conditions' => array('User.id' => AuthComponent::user('id'))));
+        return count($user['Group']) > 0;
+    }
+
+    public function isManager() {
+        $user = $this->find('first', array('fields' => array('id'), 'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'manager'))), 'conditions' => array('User.id' => AuthComponent::user('id'))));
+        return count($user['Group']) > 0;
+    }
+
+    public function getTeacherIdArray() {
+        $teacher = $this->Group->find('all', array(
+            'conditions' => array('Group.id' => $this->Group->getGroupIdByAlias('teacher')),
+            'contain' => array('User' => array('fields' => array('id'), 'Group' => array('fields' => array('id'))))
+        ));
+        return Set::classicExtract($teacher[0]['User'], '{n}.id');
+    }
 
 }

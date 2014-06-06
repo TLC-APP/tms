@@ -1,7 +1,7 @@
 <?php
 $config = array (
 	'Elfinder' => array (
-		'title' => __('Elfinder File Manager'),
+		'title' => __('Quản lý file'),
 		'width' => 900,
 		'height' => 500,
 		'resizable' => 'yes',

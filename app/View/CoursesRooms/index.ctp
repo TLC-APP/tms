@@ -5,10 +5,13 @@
 			<th><?php echo $this->Paginator->sort('course_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('room_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('begin'); ?></th>
+			<th><?php echo $this->Paginator->sort('priority'); ?></th>
 			<th><?php echo $this->Paginator->sort('note'); ?></th>
 			<th><?php echo $this->Paginator->sort('created'); ?></th>
+			<th><?php echo $this->Paginator->sort('created_user_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('modified'); ?></th>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
+			<th><?php echo $this->Paginator->sort('color'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($coursesRooms as $coursesRoom): ?>
@@ -20,10 +23,13 @@
 			<?php echo $this->Html->link($coursesRoom['Room']['name'], array('controller' => 'rooms', 'action' => 'view', $coursesRoom['Room']['id'])); ?>
 		</td>
 		<td><?php echo h($coursesRoom['CoursesRoom']['begin']); ?>&nbsp;</td>
+		<td><?php echo h($coursesRoom['CoursesRoom']['priority']); ?>&nbsp;</td>
 		<td><?php echo h($coursesRoom['CoursesRoom']['note']); ?>&nbsp;</td>
 		<td><?php echo h($coursesRoom['CoursesRoom']['created']); ?>&nbsp;</td>
+		<td><?php echo h($coursesRoom['CoursesRoom']['created_user_id']); ?>&nbsp;</td>
 		<td><?php echo h($coursesRoom['CoursesRoom']['modified']); ?>&nbsp;</td>
 		<td><?php echo h($coursesRoom['CoursesRoom']['id']); ?>&nbsp;</td>
+		<td><?php echo h($coursesRoom['CoursesRoom']['color']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $coursesRoom['CoursesRoom']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $coursesRoom['CoursesRoom']['id'])); ?>

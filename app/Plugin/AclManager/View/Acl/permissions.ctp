@@ -1,4 +1,4 @@
-<div class="form">
+<div class="col-md-11">
 <h3><?php echo sprintf(__("%s permissions"), $aroAlias); ?></h3>
 <p><?php echo $this->Paginator->counter(array('format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%'))); ?></p>
 <div class="paging">
@@ -7,9 +7,9 @@
 	<?php echo $this->Paginator->next(__('next') . ' >>', array(), null, array('class' => 'disabled'));?>
 </div>
 <?php echo $this->Form->create('Perms'); ?>
-<table>
+<table class="table table-hover">
 	<tr>
-		<th>Action</th>
+		<th>Thao tác (action)</th>
 		<?php foreach ($aros as $aro): ?>
 		<?php $aro = array_shift($aro); ?>
 		<th><?php echo h($aro[$aroDisplayField]); ?></th>
@@ -46,7 +46,8 @@ for ($i = 0; $i <= $lastIdent; $i++) {
 }
 ?></table>
 <?php
-echo $this->Form->end(__("Save"));
+echo $this->Form->button('Lưu', array('type'=>'submit','class'=>'btn btn-info'));
+echo $this->Form->end();
 ?>
 <p><?php echo $this->Paginator->counter(array('format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%'))); ?></p>
 <div class="paging">
@@ -55,7 +56,7 @@ echo $this->Form->end(__("Save"));
 	<?php echo $this->Paginator->next(__('next') . ' >>', array(), null, array('class' => 'disabled'));?>
 </div>
 </div>
-<div class="actions">
+<div class="col-md-1">
 	<h3><?php echo __('Manage for'); ?></h3>
 	<?php 
 	$aroModels = Configure::read("AclManager.aros");

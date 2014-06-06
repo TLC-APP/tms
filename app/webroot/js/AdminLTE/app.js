@@ -605,7 +605,6 @@ $(window).load(function() {
             });
 
         });
-
         function start(box) {
             //Add overlay and loading img
             box.append(overlay);
@@ -648,16 +647,30 @@ $(window).load(function() {
  * Add .active class to <li> elements if you want the menu to be open automatically
  * on page load. See above for an example.
  */
+
 (function($) {
     "use strict";
-
+    /*Them class active vao menu left dua vao url*/
     $.fn.tree = function() {
-
+        var path = window.location.pathname;
+        path = path.replace(/\/$/, "");
+        path = decodeURIComponent(path);
+        $(".sidebar-menu a").each(function() {
+            var href = $(this).attr('href');
+            if (path === href) {
+                $(this).closest('li').addClass('active');
+                //$(this).closest('li').parent('.treeview').addClass('active');
+                var treeviewmenu = $(this).closest('li').parent();
+                treeviewmenu.parent().addClass('active');
+            }
+        });
+        
         return this.each(function() {
+
             var btn = $(this).children("a").first();
             var menu = $(this).children(".treeview-menu").first();
             var isActive = $(this).hasClass('active');
-
+            //console.log(btn);
             //initialize already active menus
             if (isActive) {
                 menu.show();
@@ -680,21 +693,14 @@ $(window).load(function() {
                     btn.parent("li").addClass("active");
                 }
             });
-
             /* Add margins to submenu elements to give it a tree look */
             menu.find("li > a").each(function() {
                 var pad = parseInt($(this).css("margin-left")) + 10;
-
                 $(this).css({"margin-left": pad + "px"});
             });
-
         });
-
     };
-
-
 }(jQuery));
-
 /*
  * TODO LIST CUSTOM PLUGIN
  * -----------------------
@@ -702,7 +708,6 @@ $(window).load(function() {
  */
 (function($) {
     "use strict";
-
     $.fn.todolist = function(options) {
         // Render options
         var settings = $.extend({
@@ -713,14 +718,12 @@ $(window).load(function() {
             onUncheck: function(ele) {
             }
         }, options);
-
         return this.each(function() {
             $('input', this).on('ifChecked', function(event) {
                 var ele = $(this).parents("li").first();
                 ele.toggleClass("done");
                 settings.onCheck.call(ele);
             });
-
             $('input', this).on('ifUnchecked', function(event) {
                 var ele = $(this).parents("li").first();
                 ele.toggleClass("done");
@@ -728,9 +731,7 @@ $(window).load(function() {
             });
         });
     };
-
 }(jQuery));
-
 /* CENTER ELEMENTS */
 (function($) {
     "use strict";
@@ -748,7 +749,6 @@ $(window).load(function() {
         return this;
     }
 }(jQuery));
-
 /*
  * jQuery resize event - v1.1 - 3/14/2010
  * http://benalman.com/projects/jquery-resize-plugin/
@@ -812,7 +812,6 @@ $(window).load(function() {
         }, e[b])
     }}
 )(jQuery, this);
-
 /*!
  * SlimScroll https://github.com/rochal/jQuery-slimScroll
  * =======================================================
@@ -961,7 +960,6 @@ $(window).load(function() {
         }});
     jQuery.fn.extend({slimscroll: jQuery.fn.slimScroll})
 })(jQuery);
-
 /*! iCheck v1.0.1 by Damir Sultanov, http://git.io/arlzeA, MIT Licensed */
 (function(h) {
     function F(a, b, d) {

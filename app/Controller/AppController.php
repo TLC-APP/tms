@@ -22,19 +22,21 @@ class AppController extends Controller {
         'Form' => array('className' => 'BoostCake.BoostCakeForm'),
         'Paginator' => array('className' => 'BoostCake.BoostCakePaginator')
     );
+    public $uses = array('Course', 'CoursesRoom');
 
     public function beforeRender() {
         parent::beforeRender();
-        if ($this->Auth->loggedIn()) {
-            if ($this->Session->check('layout'))
-                $this->layout = $this->Session->read('layout');
-        }
     }
 
     function beforeFilter() {
-        if (in_array($this->action, array('home', 'login'))) {
+
+        if (!empty($this->params['prefix'])) {
+            $this->layout = $this->params['prefix'];
+        }
+        if (in_array($this->action, array('home', 'login', 'new_courses'))) {
             $this->Auth->allow($this->action);
         }
+
         $this->Auth->loginAction = array(
             'controller' => 'users',
             'action' => 'login',
@@ -53,6 +55,7 @@ class AppController extends Controller {
             'admin' => false,
             'plugin' => false
         );
+        $this->__checkCompleteCourse();
     }
 
     public function isAuthorized($user) {
@@ -61,6 +64,7 @@ class AppController extends Controller {
     }
 
     public function elfinder() {
+
         $this->TinymceElfinder->elfinder();
     }
 
@@ -68,11 +72,18 @@ class AppController extends Controller {
         $this->TinymceElfinder->connector();
     }
 
+<<<<<<< HEAD
 
     public function __checkCompleteCourse() {
         $uncomplete_courses = $this->Course->getCoursesUnCompleted();
         if (!empty($uncomplete_courses)) {
             $khoa_con_buoi = $this->CoursesRoom->layKhoaConBuoi();  
+=======
+    public function __checkCompleteCourse() {
+        $uncomplete_courses = $this->Course->getCoursesUnCompleted();
+        if (!empty($uncomplete_courses)) {
+            $khoa_con_buoi = $this->CoursesRoom->layKhoaConBuoi();
+>>>>>>> Toan
             $id_giong = array_intersect($uncomplete_courses, $khoa_con_buoi);
             $khoa_hoan_thanh = Set::diff($uncomplete_courses, $id_giong);
             if (!empty($khoa_hoan_thanh)) {
@@ -82,5 +93,8 @@ class AppController extends Controller {
     }
 
 }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> Toan

@@ -6,8 +6,11 @@
 		echo $this->Form->input('course_id');
 		echo $this->Form->input('room_id');
 		echo $this->Form->input('begin');
+		echo $this->Form->input('priority');
 		echo $this->Form->input('note');
+		echo $this->Form->input('created_user_id');
 		echo $this->Form->input('id');
+		echo $this->Form->input('color');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
