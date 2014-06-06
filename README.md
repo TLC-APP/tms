@@ -1,4 +1,4 @@
-Hệ thống quản lý công tác tập huấn giáo viên
+Hệ thống quản lý công tác tập huấn giáo viên - Nhánh Khoa
 =======
 [![CakePHP](http://cakephp.org/img/cake-logo.png)](http://www.cakephp.org)
 
