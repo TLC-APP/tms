@@ -111,7 +111,7 @@ class UsersController extends AppController {
         if (!$this->User->exists($id)) {
             throw new NotFoundException(__('Invalid user'));
         }
-        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id),'contain'=>array('Department'));
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => array('Department'));
         $this->set('user', $this->User->find('first', $options));
     }
 
@@ -122,10 +122,10 @@ class UsersController extends AppController {
         if ($this->request->is(array('post', 'put'))) {
             //debug($this->request->data);die;
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash('Đã cập nhật thành công','alert',array('plugin'=>'BoostCake','class'=>'alert-success'));
-                return $this->redirect(array('action' => 'profile',$id,'student'=>true));
+                $this->Session->setFlash('Đã cập nhật thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'profile', $id, 'student' => true));
             } else {
-                $this->Session->setFlash('Lỗi cập nhật hồ sơ!','alert',array('plugin'=>'BoostCake','class'=>'alert-warning'));
+                $this->Session->setFlash('Lỗi cập nhật hồ sơ!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             }
         } else {
             $departments = $this->User->Department->find('list');
@@ -287,6 +287,20 @@ class UsersController extends AppController {
             $this->Session->setFlash(__('The user could not be deleted. Please, try again.'));
         }
         return $this->redirect(array('action' => 'index'));
+    }
+
+    public function student_view_teacher($id = null) {
+
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $contain = array(
+            'HocHam' => array('fields' => array('id', 'name')),
+            'HocVi' => array('fields' => array('id', 'name')),
+        );
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => $contain);
+        $teacher = $this->User->find('first', $options);
+        $this->set(compact('teacher'));
     }
 
 }

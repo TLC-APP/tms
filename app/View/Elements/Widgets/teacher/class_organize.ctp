@@ -1,6 +1,6 @@
 <div class="panel panel-theme">
     <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-thumb-tack"></i> Lớp tập huấn sắp tổ chức của tôi</h3>
+        <h3 class="panel-title"><i class="fa fa-thumb-tack"></i> Lớp tập huấn đang đăng kí của tôi</h3>
     </div>
     <div class="panel-body">
         <div class="table-responsive">                      

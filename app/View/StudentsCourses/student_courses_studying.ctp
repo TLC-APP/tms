@@ -51,7 +51,9 @@
                         </td>
                         <td><?php echo $course_attended['Course']['Chapter']['name']; ?>&nbsp;</td>
 
-                        <td><?php echo $course_attended['Course']['Teacher']['name']; ?></td>
+                        <td><?php
+                            echo $this->Html->link($course_attended['Course']['Teacher']['name'], array('student' => true, 'controller' => 'users', 'action' => 'view_teacher', $course_attended['Course']['Teacher']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'))
+                            ?></td>
 
                         <td><?php
                             if ($course_attended['StudentsCourse']['is_passed'] == 1)
