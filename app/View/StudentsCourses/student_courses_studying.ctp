@@ -33,9 +33,9 @@
                         <th>STT</th>
                         <th>Tên khóa</th>
                         <th>Chuyên đề</th>
+                        <th>Số buổi</th>
                         <th>Tập huấn bởi</th>
-                        <th>Chứng nhận</th>
-                        <th>Trạng thái</th>
+                        
                     </tr>
                 </thead>
 
@@ -50,25 +50,12 @@
 
                         </td>
                         <td><?php echo $course_attended['Course']['Chapter']['name']; ?>&nbsp;</td>
-
+                        <td><?php echo $course_attended['Course']['session_number']; ?>&nbsp;</td>
                         <td><?php
                             echo $this->Html->link($course_attended['Course']['Teacher']['name'], array('student' => true, 'controller' => 'users', 'action' => 'view_teacher', $course_attended['Course']['Teacher']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'))
                             ?></td>
 
-                        <td><?php
-                            if ($course_attended['StudentsCourse']['is_passed'] == 1)
-                                echo "Đã có chứng nhận";
-                            else
-                                echo "Chưa có chứng nhận";
-                            ?></td>
-
-                        <td><?php
-                            if ($course_attended['StudentsCourse']['is_recieved'] == 1)
-                                echo "Đã cấp";
-                            else
-                                echo "Chưa cấp";
-                            ?></td>
-
+                       
                     </tr>
                 <?php endforeach; ?>
             </table>

@@ -196,7 +196,7 @@ class StudentsCoursesController extends AppController {
     }
 
     public function student_courses_studying() {
-        $contain = array('Course' => array('fields' => array('id', 'name', 'status'), 'Teacher' => array('id', 'name'), 'Chapter' => array('id', 'name')));
+        $contain = array('Course' => array('fields' => array('id', 'name', 'status','session_number'), 'Teacher' => array('id', 'name'), 'Chapter' => array('id', 'name')));
         $loggin_id = $this->Auth->user('id');
         $khoa_da_dang_ky = $this->StudentsCourse->getEnrolledCourses($loggin_id);
         $course_uncompleted = $this->StudentsCourse->Course->getCoursesUnCompleted();
@@ -255,7 +255,7 @@ class StudentsCoursesController extends AppController {
             $courses_attended = $this->Paginator->paginate();
             $this->set('courses_attended', $courses_attended);
             if ($this->request->is('ajax')) {
-                $this->render('student_courses_studying_ajax');
+                $this->render('student_attended_ajax');
             }
 
             $this->set(compact('fields'));
@@ -263,7 +263,7 @@ class StudentsCoursesController extends AppController {
             $courses_attended = $this->Paginator->paginate();
             $this->set('courses_attended', $courses_attended);
             if ($this->request->is('ajax'))
-                $this->render('student_courses_studying_ajax');
+                $this->render('student_attended_ajax');
         } else {
             $this->set(compact('fields'));
             $this->set('courses_attended', $courses_attended);
