@@ -160,7 +160,7 @@ class StudentsCoursesController extends AppController {
             'Course' => array('fields' => array('id', 'name'))
         );
         $khoa_da_dang_ky = $this->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
-        $conditions = array(array('Course.id' => $khoa_da_dang_ky));
+        $conditions = array('Course.id' => $khoa_da_dang_ky);
         $courses_notification = $this->StudentsCourse->find('all', array('conditions' => $conditions, 'contain' => $contain));
         $this->set(compact('$courses_notification'));
         return $courses_notification;
@@ -216,13 +216,13 @@ class StudentsCoursesController extends AppController {
                 $conditions = array('StudentsCourse.course_id' => $course);
             }
             $this->set(compact('fields'));
-            $this->Paginator->settings = array('conditions' => $conditions, 'contain' => $contain);
-            $this->set('courses_attended', $this->Paginator->paginate());
+            $courses_attended=$this->StudentsCourse->find('all',array('conditions' => $conditions, 'contain' => $contain)) ;
+            $this->set('courses_attended',$courses_attended);
             $this->render('student_courses_studying_ajax');
         }
-        $this->Paginator->settings = array('conditions' => $conditions, 'contain' => $contain);
+        $courses_attended=$this->StudentsCourse->find('all',array('conditions' => $conditions, 'contain' => $contain)) ;
         $this->set(compact('fields'));
-        $this->set('courses_attended', $this->Paginator->paginate());
+        $this->set('courses_attended',$courses_attended);
     }
 
     public function student_attended() {
@@ -249,7 +249,6 @@ class StudentsCoursesController extends AppController {
                     $conditions = array('StudentsCourse.course_id' => $course);
                 }
             }
-
             $this->set(compact('fields'));
             $this->Paginator->settings = array('conditions' => $conditions, 'contain' => $contain);
             $courses_attended = $this->Paginator->paginate();

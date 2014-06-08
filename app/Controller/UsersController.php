@@ -166,6 +166,7 @@ class UsersController extends AppController {
 
     public function fields_manager_add() {
         if ($this->request->is('post')) {
+
             $this->User->set($this->data);
             if ($this->User->RegisterValidate()) {
                 if (!isset($this->data['User']['user_group_id'])) {
@@ -189,7 +190,7 @@ class UsersController extends AppController {
                     $this->User->sendRegistrationMail($user);
                 }
                 $this->Session->setFlash('Đã lưu tập huấn viên thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
-                return $this->redirect(array('action' => 'index_teacher'));
+                return $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash('Có lỗi! Lưu không thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             }

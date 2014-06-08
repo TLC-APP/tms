@@ -112,7 +112,7 @@ class CoursesController extends AppController {
             'User' => array('fields' => array('id', 'name')),
             'CoursesRoom' => array('conditions' => array('CoursesRoom.start is not null'), 'order' => array('CoursesRoom.priority' => 'ASC')),
             'Teacher' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'HocHam', 'HocVi'),
-            'Chapter'=>array('Attachment'),
+            'Chapter' => array('Attachment'),
             'Attachment'
         );
         $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
@@ -161,7 +161,7 @@ class CoursesController extends AppController {
             'Teacher' => array('fields' => array('id', 'name'),
             ), 'Chapter'
         );
-        $conditions = array();
+        $conditions = array('Course.created_user_id' => $this->Auth->user('id'));
         if ($status) {
             $conditions = Set::merge($conditions, array('Course.status' => $status));
             $this->set('status', $status);
@@ -174,6 +174,7 @@ class CoursesController extends AppController {
 
         if ($this->request->is('post')) {
             $this->Course->create();
+            $this->request->data['Course']['created_user_id'] = $this->Auth->user('id');
             if ($this->Course->save($this->request->data)) {
                 $this->Session->setFlash(__('The course has been saved.'));
                 return $this->redirect(array('action' => 'index'));
@@ -276,10 +277,10 @@ class CoursesController extends AppController {
             $this->Session->setFlash('Khóa học đã mở rồi!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             return $this->redirect($this->referer());
         }
-        
-        $enrolling_expiry_date=new DateTime($this->Course->field('enrolling_expiry_date'));
-        $today=new DateTime();
-        if ($today<$enrolling_expiry_date) {
+
+        $enrolling_expiry_date = new DateTime($this->Course->field('enrolling_expiry_date'));
+        $today = new DateTime();
+        if ($today < $enrolling_expiry_date) {
             $this->Session->setFlash('Khóa học chưa hết hạn đăng ký!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             return $this->redirect($this->referer());
         }
@@ -426,9 +427,9 @@ class CoursesController extends AppController {
         $khoa_da_dang_ky = $this->Course->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
 
 
-        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.status'=>COURSE_REGISTERING,'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'));
+        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.status' => COURSE_REGISTERING, 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'));
 
-        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'),'Course.status'=>COURSE_REGISTERING);
+        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'), 'Course.status' => COURSE_REGISTERING);
 
         $courses_register = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain));
         return $courses_register;
@@ -443,14 +444,15 @@ class CoursesController extends AppController {
             'StudentsCourse', //Khoa hoc
             'Chapter' => array('fields' => array('id', 'name'))//Chuyen de
         );
-        $fields = array('id', 'name');
-        
+        $today= new DateTime();
+        $fields = array('id', 'name', 'session_number', 'max_enroll_number', 'register_student_number');
         $teacher_id = $this->Auth->user('id');
-        $conditions = array('Course.teacher_id' => $teacher_id, 'Course.status' => COURSE_UNCOMPLETED);
-
-        $khoa_chua_hoan_thanh = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain, 'fields' => $fields));
-
-        return $khoa_chua_hoan_thanh;
+        $conditions = array('Course.teacher_id' => $teacher_id,
+                            'Course.status' => COURSE_REGISTERING,
+                            'Course.enrolling_expiry_date >'=>$today->format('Y-m-d H:i:s')
+        );
+        $khoa_dang_dk = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain, 'fields' => $fields));
+        return $khoa_dang_dk;
     }
 
 }

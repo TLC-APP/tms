@@ -108,13 +108,46 @@ class CoursesRoom extends AppModel {
 
         return($existing < 1);
     }
-    
-    /* Lấy danh sách các khóa học hết buổi*/
-    public function layKhoaConBuoi(){
-        $today=new DateTime();
+
+    /* Lấy danh sách các khóa học hết buổi */
+
+    public function layKhoaConBuoi() {
+        $today = new DateTime();
         //Lấy danh sách các buổi có thời gian kết thúc >today
-        $conditions=array('CoursesRoom.end >'=>$today->format('Y-m-d H:i:s'));
-        $rows=  $this->find('all',array('conditions'=>$conditions,'recursive'=>-1,'fields'=>array('DISTINCT CoursesRoom.course_id')));
+        $conditions = array('CoursesRoom.end >' => $today->format('Y-m-d H:i:s'));
+        $rows = $this->find('all', array('conditions' => $conditions, 'recursive' => -1, 'fields' => array('DISTINCT CoursesRoom.course_id')));
         return Set::classicExtract($rows, '{n}.CoursesRoom.course_id');
     }
+
+    //Lấy ra những khóa có start < today
+    public function course_near_attend() {
+        $this->recursive = -1;
+        $today = new DateTime();
+        $field = array('DISTINCT CoursesRoom.course_id');
+        $conditions = array('CoursesRoom.start <' => $today->format('Y-m-d H:i:s'));
+        $course_near = $this->find('all', array('conditions' => $conditions, 'fields' => $field));
+        $courses_id_array = Set::classicExtract($course_near, '{n}.CoursesRoom.course_id');
+        return $courses_id_array;
+    }
+    
+    //Lấy ra những khóa có end < today
+     public function course_attend() {
+        $this->recursive = -1;
+        $today = new DateTime();
+        $field = array('DISTINCT CoursesRoom.course_id');
+        $conditions = array('CoursesRoom.end >' => $today->format('Y-m-d H:i:s'));
+        $course_near = $this->find('all', array('conditions' => $conditions, 'fields' => $field));
+        $courses_id_array = Set::classicExtract($course_near, '{n}.CoursesRoom.course_id');
+        //debug($courses_id_array);die;
+        return $courses_id_array;
+    }
+    
+    //Đếm số buổi
+     public function count_session($course_id) {
+        $conditions = array('CoursesRoom.course_id' => $course_id);
+        $students_courses = $this->find('all', array('conditions' => $conditions));
+        $sobuoi=count($students_courses);
+        return $sobuoi;
+    }
+
 }

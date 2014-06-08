@@ -2,6 +2,7 @@
 
 App::uses('AppController', 'Controller');
 App::uses('CakeTime', 'Utility');
+
 /**
  * CoursesRooms Controller
  *
@@ -278,20 +279,100 @@ class CoursesRoomsController extends AppController {
         return $courses_today;
     }
 
-     public function teacher_lich_homnay() {
+    public function teacher_lich_homnay() {
         $contain = array(
-            'Course' => array('Chapter' => array('id', 'name'), 'Teacher'=>array('id','name')),
+            'Course' => array('Chapter' => array('id', 'name'), 'Teacher' => array('id', 'name')),
             'Room' => array('id', 'name')
-                
         );
         $teacher_id = $this->Auth->user('id');
         $today = new DateTime();
         $batdau = CakeTime::daysAsSql($today, $today, 'CoursesRoom.start');
-        $conditions = array(array('Course.teacher_id' => $teacher_id), $batdau);
+        $conditions = array('Course.teacher_id' => $teacher_id, 'Course.status' => COURSE_UNCOMPLETED, $batdau);
         $teacher_courses_today = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain));
         $this->set(compact('teacher_courses_today'));
         return $teacher_courses_today;
     }
 
+    public function teacher_sap_to_chuc() {
+        $fields = $this->CoursesRoom->Course->Chapter->Field->find('list');
+        $course_start = $this->CoursesRoom->course_near_attend();
+        $teacher_id = $this->Auth->user('id');
+        $today = new DateTime();
+        $contain = array('Course' => array('Chapter' => array('id', 'name'), 'Teacher' => array('id', 'name')), 'Room' => array('id', 'name'));
+        $conditions = array('Course.teacher_id' => $teacher_id,
+            'Course.status' => COURSE_UNCOMPLETED,
+            'Course.enrolling_expiry_date <' => $today->format('Y-m-d H:i:s'),
+            'NOT' => array('Course.id' => $course_start),
+        );
+        if ($this->request->is('ajax')) {
+            $field_id = $this->request->data['field_name'];
+            if ($field_id == '') {
+                $teacher_courses = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain, 'group' => array('CoursesRoom.course_id')));
+            } else {
+                $chapter_id = $this->CoursesRoom->Course->Chapter->getChapterByField_id($field_id);
+                $course_id = $this->CoursesRoom->Course->getCoursesByChapter_id($chapter_id);
+                $conditions = array('Course.teacher_id' => $teacher_id,
+                    'Course.status' => COURSE_UNCOMPLETED,
+                    'Course.enrolling_expiry_date <' => $today->format('Y-m-d H:i:s'),
+                    'NOT' => array('Course.id' => $course_start),
+                    'Course.id' => $course_id,
+                );
+                $teacher_courses = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain, 'group' => array('CoursesRoom.course_id')));
+                
+            }
+            $this->set('teacher_courses', $teacher_courses);
+            $this->render('teacher_sap_to_chuc_ajax');
+        } else {
+            $teacher_courses = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain, 'group' => array('CoursesRoom.course_id')));
+            $this->set('teacher_courses', $teacher_courses);
+        }
+        $this->set(compact('fields'));
+    }
+
+    public function teacher_da_tap_huan() {
+        $fields = $this->CoursesRoom->Course->Chapter->Field->find('list');
+        $course_end = $this->CoursesRoom->course_attend();
+        $teacher_id = $this->Auth->user('id');
+        $contain = array('Course' => array('Chapter' => array('id', 'name'), 'Teacher' => array('id', 'name')), 'Room' => array('id', 'name'));
+        $conditions = array('Course.teacher_id' => $teacher_id,
+            'Course.status' => COURSE_COMPLETED,
+            'NOT' => array('Course.id' => $course_end),
+        );
+        if ($this->request->is('ajax')) {
+            $field_id = $this->request->data['field_name'];
+            if ($field_id == '') {
+                $teacher_courses_completed = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain, 'group' => array('CoursesRoom.course_id'),));
+            } else {
+                $chapter_id = $this->CoursesRoom->Course->Chapter->getChapterByField_id($field_id);
+                $course_id = $this->CoursesRoom->Course->getCoursesByChapter_id($chapter_id);
+                $conditions = array('Course.teacher_id' => $teacher_id,
+                    'Course.status' => COURSE_COMPLETED,
+                    'NOT' => array('Course.id' => $course_end),
+                    'Course.id' => $course_id,
+                );
+                $teacher_courses_completed = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain, 'group' => array('CoursesRoom.course_id'),));
+            }
+            $this->set('teacher_courses_completed', $teacher_courses_completed);
+            $this->render('teacher_da_tap_huan_ajax');
+        } else {
+            $teacher_courses_completed = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain, 'group' => array('CoursesRoom.course_id'),));
+            $this->set('teacher_courses_completed', $teacher_courses_completed);
+        }
+        $this->set(compact('fields'));
+
+        /* $course_end = $this->CoursesRoom->course_attend();
+          $contain = array(
+          'Course' => array('Chapter' => array('id', 'name'), 'Teacher' => array('id', 'name')),
+          'Room' => array('id', 'name')
+          );
+          $teacher_id = $this->Auth->user('id');
+          $conditions = array('Course.teacher_id' => $teacher_id,
+          'Course.status' => COURSE_COMPLETED,
+          'NOT' => array('Course.id' => $course_end),
+          );
+          $teacher_courses_completed = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain, 'group' => array('CoursesRoom.course_id'),));
+          $this->set(compact('teacher_courses_completed'));
+          return $teacher_courses_completed; */
+    }
 
 }

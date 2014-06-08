@@ -3,28 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/DashboardsController.php</file>
             <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/CoursesRoomsController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Dashboards/home.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Dashboards/teacher_home.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Layouts/student.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/StudentsCourses/student_attended.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/student_view.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Layouts/default.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/fields_manager_add.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/Group.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/StudentsCoursesController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/AppController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/teacher_index.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/User.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Users/student_edit_profile.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/fields_manager_view.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Users/student_profile.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Common/new_course.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/Course.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/CoursesController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Layouts/teacher.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/UsersController.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/CoursesRoom.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/StudentsCourse.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/CoursesRooms/teacher_sap_to_chuc.ctp</file>
         </group>
     </open-files>
 </project-private>
