@@ -19,7 +19,7 @@ class CoursesController extends AppController {
     public $components = array('Paginator', 'Session', 'TinymceElfinder.TinymceElfinder', 'Email');
     public $helpers = array('TinymceElfinder.TinymceElfinder', 'PhpExcel');
 
-    //public $uses=array('Room');
+//public $uses=array('Room');
     public function beforeFilter() {
         parent::beforeFilter();
     }
@@ -48,7 +48,7 @@ class CoursesController extends AppController {
             if (count($user['Group']) == 1) {
                 return $this->redirect(array('controller' => 'dashboards', 'action' => $user['Group'][0]['alias'] . '_home'));
             }
-            //$this->layout = 'group_select';
+//$this->layout = 'group_select';
             $this->set('users', $user);
         }
         $contain = array(
@@ -84,7 +84,7 @@ class CoursesController extends AppController {
             'Attachment'
         );
         $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
-        //$rooms = $this->Course->CoursesRoom->Room->find('list');
+//$rooms = $this->Course->CoursesRoom->Room->find('list');
         $course = $this->Course->find('first', $options);
         $this->set(compact('course'));
     }
@@ -125,7 +125,7 @@ class CoursesController extends AppController {
             'Attachment'
         );
         $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
-        //$rooms = $this->Course->CoursesRoom->Room->find('list');
+//$rooms = $this->Course->CoursesRoom->Room->find('list');
         $course = $this->Course->find('first', $options);
         $this->set(compact('course'));
     }
@@ -401,8 +401,8 @@ class CoursesController extends AppController {
         $this->response->file(
                 $path, array('download' => true, 'name' => $this->Course->Attachment->getFileName($attachment_id))
         );
-        // Return response object to prevent controller from trying to render
-        // a view
+// Return response object to prevent controller from trying to render
+// a view
         return $this->response;
     }
 
@@ -424,27 +424,6 @@ class CoursesController extends AppController {
         $this->set('course', $this->Course->find('first', $options));
     }
 
-    public function student_khoamoidangki() {
-        $contain = array(
-            'User' => array('fields' => array('id', 'name')), //create user
-            'Teacher' => array('fields' => array('id', 'name')), //Teacher
-            'CoursesRoom' => array('Room' => array('id', 'name')),
-            'StudentsCourse', //Khoa hoc
-            'Chapter' => array('fields' => array('id', 'name'))//Chuyen de
-        );
-        $today = new DateTime();
-        $khoa_da_dang_ky = $this->Course->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
-        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'), 'Course.status' => COURSE_REGISTERING);
-
-        $courses_register = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain));
-        return $courses_register;
-    }
-
-<<<<<<< HEAD
-        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.status' => COURSE_REGISTERING, 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'));
-
-        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'), 'Course.status' => COURSE_REGISTERING);
-=======
     public function guest_khoamoidangki() {
         $contain = array(
             'User' => array('fields' => array('id', 'name')), //create user
@@ -455,22 +434,19 @@ class CoursesController extends AppController {
         );
         $today = new DateTime();
 
->>>>>>> master
-
         $conditions = array('Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'), 'Course.status' => COURSE_REGISTERING);
         if ($this->Auth->loggedIn()) {
-            $loginId=$this->Auth->user('id');
+            $loginId = $this->Auth->user('id');
             $khoa_da_dang_ky = $this->Course->StudentsCourse->getEnrolledCourses($loginId);
-            $khoa_toi_day=$this->Course->getTeachingCourse($loginId);
-            $not_show=Set::merge($khoa_da_dang_ky,$khoa_toi_day);
+            $khoa_toi_day = $this->Course->getTeachingCourse($loginId);
+            $not_show = Set::merge($khoa_da_dang_ky, $khoa_toi_day);
             $conditions = Set::merge($conditions, array('NOT' => array('Course.id' => $not_show)));
-            
         }
         $courses_register = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain));
         return $courses_register;
     }
 
-    //Trả về danh sách các lớp của login là teacher
+//Trả về danh sách các lớp của login là teacher
     public function teacher_courses() {
         $contain = array(
             'User' => array('fields' => array('id', 'name')), //create user
@@ -479,17 +455,12 @@ class CoursesController extends AppController {
             'StudentsCourse', //Khoa hoc
             'Chapter' => array('fields' => array('id', 'name'))//Chuyen de
         );
-<<<<<<< HEAD
-        $today= new DateTime();
-        $fields = array('id', 'name', 'session_number', 'max_enroll_number', 'register_student_number');
-=======
+        $today = new DateTime();
         $fields = array('id', 'name');
-
->>>>>>> master
         $teacher_id = $this->Auth->user('id');
         $conditions = array('Course.teacher_id' => $teacher_id,
-                            'Course.status' => COURSE_REGISTERING,
-                            'Course.enrolling_expiry_date >'=>$today->format('Y-m-d H:i:s')
+            'Course.status' => COURSE_REGISTERING,
+            'Course.enrolling_expiry_date >' => $today->format('Y-m-d H:i:s')
         );
         $khoa_dang_dk = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain, 'fields' => $fields));
         return $khoa_dang_dk;
