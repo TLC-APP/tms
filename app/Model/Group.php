@@ -66,7 +66,9 @@ class Group extends AppModel {
         $group=$this->findByAlias("$alias");
         if(!empty($group))
             return $group['Group']['id'];
+        return null;
     }
+    
     
 
 }
