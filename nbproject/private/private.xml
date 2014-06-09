@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/CoursesRoomsController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/CoursesRoom.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/StudentsCourse.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/CoursesRooms/teacher_sap_to_chuc.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/StudentsCourses/student_courses_studying.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/StudentsCoursesController.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Widgets/teacher/new_notification.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Widgets/teacher/teacher_statistic.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Dashboards/teacher_home.ctp</file>
         </group>
     </open-files>
 </project-private>
