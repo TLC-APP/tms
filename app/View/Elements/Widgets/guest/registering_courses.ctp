@@ -23,14 +23,14 @@
                     <?php foreach ($courses as $course): ?>
                         <tr>
                             <td><?php echo $stt++;?></td>
-                            <td><?php echo $this->Html->link($course['Course']['name'],array('controller'=>'courses','action'=>'view',$course['Course']['id'])) ?></td>
+                            <td><?php echo $this->Html->link($course['Course']['name'],array('guest'=>true,'controller'=>'courses','action'=>'view',$course['Course']['id']),array('class'=>'add-button fancybox.ajax')) ?></td>
                             <td><?php echo $course['Chapter']['name'] ?></td>
                             <td><?php echo $course['Course']['session_number'] ?></td>
                             <td><?php echo $course['Course']['max_enroll_number']; ?></td>
                             <td><?php echo ($course['Course']['max_enroll_number'] - $course['Course']['register_student_number']); ?></td>
                             <td><?php echo $course['Course']['enrolling_expiry_date']; ?></td>
 
-                            <td><span class="label label-success">Đăng ký</span></td>
+                            <td><a href="/students_courses/register/<?php echo $course['Course']['id'];?>"><span class="label label-success">Đăng ký</span></a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
