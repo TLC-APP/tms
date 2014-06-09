@@ -293,6 +293,7 @@ class CoursesRoomsController extends AppController {
         return $teacher_courses_today;
     }
 
+    
     public function teacher_sap_to_chuc() {
         $fields = $this->CoursesRoom->Course->Chapter->Field->find('list');
         $course_start = $this->CoursesRoom->course_near_attend();
