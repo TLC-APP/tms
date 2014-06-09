@@ -11,9 +11,6 @@
                         <th>Tên khóa học</th>
                         <th>Chuyên đề</th>
                         <th>Số buổi</th>
-                        <th>Giới hạn đăng ký</th>
-                        <th>Có thể đăng ký thêm</th>
-
                     </tr>
                 </thead>
                 <tbody>
@@ -23,12 +20,11 @@
                     <?php foreach ($courses_organize as $course_organize): ?>
                         <tr>
                             <td><?php echo $stt++; ?></td>
-                            <td><?php echo $this->Html->link($course_organize['Course']['name'], array('student' => true, 'controller' => 'courses', 'action' => 'view', $course_organize['Course']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'))
+                            <td><?php echo $this->Html->link($course_organize['Course']['name'], array('student' => true, 'controller' => 'courses', 'action' => 'view', $course_organize['Course']['id']), array('escape' => false))
                         ?></td>
                             <td><?php echo $course_organize['Chapter']['name']; ?></td>
-                            <td><?php echo $course_organize['Course']['session_number']; ?></td>
-                            <td><?php echo $course_organize['Course']['max_enroll_number']; ?></td>
-                            <td><?php echo ($course_organize['Course']['max_enroll_number'] - $course_organize['Course']['register_student_number']); ?></td>
+                            <td><?php echo count($course_organize['CoursesRoom']); ?></td>
+
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

@@ -65,6 +65,22 @@ class CoursesController extends AppController {
         $this->set('courses', $this->Paginator->paginate());
     }
 
+    public function student_khoamoidangki() {
+        $contain = array(
+            'User' => array('fields' => array('id', 'name')), //create user
+            'Teacher' => array('fields' => array('id', 'name')), //Teacher
+            'CoursesRoom' => array('Room' => array('id', 'name')),
+            'StudentsCourse', //Khoa hoc
+            'Chapter' => array('fields' => array('id', 'name'))//Chuyen de
+        );
+        $today = new DateTime();
+        $khoa_da_dang_ky = $this->Course->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
+        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'), 'Course.status' => COURSE_REGISTERING);
+
+        $courses_register = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain));
+        return $courses_register;
+    }
+
     /**
      * view method
      *
