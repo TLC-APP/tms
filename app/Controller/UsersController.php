@@ -50,7 +50,7 @@ class UsersController extends AppController {
                         $this->request->data['User']['name'] = $ldap_user['name'];
                         $this->request->data['User']['email'] = $ldap_user['email'];
                         $this->request->data['User']['activated'] = 1;
-                        $this->request->data['Group']['0'] = $this->User->Group->getGroupIdByAlias('student');
+                        $this->request->data['Group']['Group']['0'] = $this->User->Group->getGroupIdByAlias('student');
 
                         if ($this->User->save($this->request->data)) {
                             $user = $this->User->find('first', array('conditions' => array('User.username' => $username), 'recursive' => -1));
@@ -142,6 +142,7 @@ class UsersController extends AppController {
      */
     public function add() {
         if ($this->request->is('post')) {
+           
             $this->User->create();
             if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash(__('The user has been saved.'));
@@ -170,7 +171,7 @@ class UsersController extends AppController {
             $this->User->set($this->data);
             if ($this->User->RegisterValidate()) {
                 if (!isset($this->data['User']['user_group_id'])) {
-                    $this->request->data['User']['Group'][0] = $this->User->Group->getGroupIdByAlias('teacher');
+                    $this->request->data['Group']['Group'][0] = $this->User->Group->getGroupIdByAlias('teacher');
                 }
                 if (!EMAIL_VERIFICATION) {
                     $this->request->data['User']['email_verified'] = 1;
@@ -182,6 +183,7 @@ class UsersController extends AppController {
                 $this->request->data['User']['ip_address'] = $ip;
             }
             $this->request->data['User']['created_user_id'] = $this->Auth->user('id');
+           
             $this->User->create();
             if ($this->User->save($this->request->data)) {
                 $userId = $this->User->getLastInsertID();
