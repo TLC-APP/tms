@@ -1,6 +1,6 @@
 <div class="panel panel-theme">
     <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-calendar"></i> Lịch học hôm nay</h3>
+        <h3 class="panel-title"><i class="fa fa-calendar"></i> Lịch tập huấn hôm nay</h3>
     </div>
     <div class="panel-body">
         <div class="table-responsive">                      
