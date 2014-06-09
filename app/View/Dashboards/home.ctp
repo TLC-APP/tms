@@ -1,7 +1,8 @@
 <div class="col-md-8">
 
     <!-- WIDGET CÁC KHÓA HỌC CÓ THỂ ĐĂNG KÝ-->
-    <?php echo $this->element('Widgets/guest/registering_courses',array('courses'=>$courses)); ?>
+    <?php $courses = $this->requestAction(array('guest' => true, 'controller' => 'courses', 'action' => 'khoamoidangki')) ?>
+    <?php echo $this->element('Widgets/guest/registering_courses', array('courses' => $courses)); ?>
 
     <!-- WIDGET Thời khóa biểu hôm nay-->
     <?php echo $this->element('Widgets/guest/today_schedule'); ?>
@@ -13,10 +14,11 @@
     <!--WIDGET TIN TỨC - THÔNG BÁO-->
     <?php echo $this->element('Widgets/guest/news'); ?>
     <!--WIDGET LOGIN-->
-    <?php if (!AuthComponent::user('id')) 
-        echo $this->element('Widgets/guest/login'); 
-    else{
-        echo $this->element('Common/loggedInMenu'); 
+    <?php
+    if (!AuthComponent::user('id'))
+        echo $this->element('Widgets/guest/login');
+    else {
+        echo $this->element('Common/loggedInMenu');
     }
     ?>
 

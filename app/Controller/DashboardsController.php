@@ -19,16 +19,7 @@ class DashboardsController extends AppController {
             }
             $this->set('users', $user);
         }
-        $contain = array(
-            'User' => array('fields' => array('id', 'name')), //create user
-            'Teacher' => array('fields' => array('id', 'name')), //Teacher
-            'StudentsCourse', //Khoa hoc
-            'Chapter'//Chuyen de
-        );
-        $conditions = array('Course.status' => COURSE_REGISTERING);
-        $options = array('contain' => $contain, 'conditions' => $conditions);
-        $courses = $this->Course->find('all', $options);
-        $this->set('courses', $courses);
+        
     }
 
     public function student_home() {

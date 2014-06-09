@@ -33,7 +33,7 @@ class AppController extends Controller {
         if (!empty($this->params['prefix'])) {
             $this->layout = $this->params['prefix'];
         }
-        if (in_array($this->action, array('home', 'login', 'new_courses'))) {
+        if (in_array($this->action, array('home', 'login', 'new_courses','getLastMessage','xem_thong_bao'))||$this->params['prefix']=='guest') {
             $this->Auth->allow($this->action);
         }
 
