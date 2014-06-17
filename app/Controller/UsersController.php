@@ -84,6 +84,56 @@ class UsersController extends AppController {
         $this->set('users', $this->Paginator->paginate());
     }
 
+    /* end teacher */
+
+    /**
+     * edit method
+     *
+     * @throws NotFoundException
+     * @param string $id
+     * @return void
+     */
+    public function edit($id = null) {
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            //debug($this->request->data);die;
+            if ($this->User->save($this->request->data)) {
+                $this->Session->setFlash(__('The user has been saved.'));
+                return $this->redirect(array('action' => 'index'));
+            } else {
+                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+            }
+        } else {
+            $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+            $this->request->data = $this->User->find('first', $options);
+        }
+        $groups = $this->User->Group->find('list');
+        $this->set(compact('groups'));
+    }
+
+    /**
+     * delete method
+     *
+     * @throws NotFoundException
+     * @param string $id
+     * @return void
+     */
+    public function delete($id = null) {
+        $this->User->id = $id;
+        if (!$this->User->exists()) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        $this->request->onlyAllow('post', 'delete');
+        if ($this->User->delete()) {
+            $this->Session->setFlash('Đã xóa', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+        } else {
+            $this->Session->setFlash('Xóa không thành công.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+        }
+        return $this->redirect($this->referer());
+    }
+
     /**
      * view method
      *
@@ -135,6 +185,20 @@ class UsersController extends AppController {
         }
     }
 
+    public function student_view_teacher($id = null) {
+
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $contain = array(
+            'HocHam' => array('fields' => array('id', 'name')),
+            'HocVi' => array('fields' => array('id', 'name')),
+        );
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => $contain);
+        $teacher = $this->User->find('first', $options);
+        $this->set(compact('teacher'));
+    }
+
     /**
      * add method
      *
@@ -142,7 +206,7 @@ class UsersController extends AppController {
      */
     public function add() {
         if ($this->request->is('post')) {
-           
+
             $this->User->create();
             if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash(__('The user has been saved.'));
@@ -183,9 +247,9 @@ class UsersController extends AppController {
                 $this->request->data['User']['ip_address'] = $ip;
             }
             $this->request->data['User']['created_user_id'] = $this->Auth->user('id');
-           
+
             $this->User->create();
-            debug($this->request->data);die;
+            //debug($this->request->data);die;
             if ($this->User->save($this->request->data)) {
                 $userId = $this->User->getLastInsertID();
                 $user = $this->User->findById($userId);
@@ -232,6 +296,82 @@ class UsersController extends AppController {
         $this->set('user', $this->User->find('first', $options));
     }
 
+    public function manager_index() {
+
+        $this->Paginator->settings = array('recursive' => 0);
+        $this->set('users', $this->Paginator->paginate());
+    }
+
+    public function manager_add() {
+        if ($this->request->is('post')) {
+
+            $this->User->set($this->data);
+            if ($this->User->RegisterValidate()) {
+                if (!isset($this->data['User']['user_group_id'])) {
+                    $this->request->data['Group']['Group'][0] = $this->User->Group->getGroupIdByAlias('teacher');
+                }
+                if (!EMAIL_VERIFICATION) {
+                    $this->request->data['User']['email_verified'] = 1;
+                }
+                $ip = '';
+                if (isset($_SERVER['REMOTE_ADDR'])) {
+                    $ip = $_SERVER['REMOTE_ADDR'];
+                }
+                $this->request->data['User']['ip_address'] = $ip;
+            }
+            $this->request->data['User']['created_user_id'] = $this->Auth->user('id');
+
+            $this->User->create();
+            //debug($this->request->data);die;
+            if ($this->User->save($this->request->data)) {
+                $userId = $this->User->getLastInsertID();
+                $user = $this->User->findById($userId);
+                if (SEND_REGISTRATION_MAIL && !EMAIL_VERIFICATION) {
+                    $this->User->sendRegistrationMail($user);
+                }
+                $this->Session->setFlash('Thêm thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('manager' => true, 'action' => 'index'));
+            } else {
+                $this->Session->setFlash('Có lỗi! Thêm không thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            }
+        }
+        $hocHams = $this->User->HocHam->find('list');
+        $hocVis = $this->User->HocVi->find('list');
+        $groups = $this->User->Group->find('list', array('conditions' => array('NOT' => array('Group.alias' => array('admin', 'manager')))));
+        $this->set(compact('hocHams', 'hocVis', 'groups'));
+    }
+
+    public function manager_edit($id) {
+
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException('Không tồn tại người này');
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            if ($this->User->save($this->request->data)) {
+                $this->Session->setFlash('Đã lưu thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'index_teacher'));
+            } else {
+                $this->Session->setFlash('Lưu không thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+            }
+        } else {
+            $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+            $this->request->data = $this->User->find('first', $options);
+        }
+        $hocHams = $this->User->HocHam->find('list');
+        $hocVis = $this->User->HocVi->find('list');
+        $groups = $this->User->Group->find('list', array('conditions' => array('NOT' => array('Group.alias' => array('admin', 'manager')))));
+
+        $this->set(compact('groups', 'hocHams', 'hocVis'));
+    }
+
+    public function manager_view($id) {
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+        $this->set('user', $this->User->find('first', $options));
+    }
+
     public function search_teacher() {
         $teacher = $this->User->getTeacherIdArray();
         $conditions = array('User.id' => $teacher);
@@ -243,68 +383,14 @@ class UsersController extends AppController {
         $this->set('users', $this->Paginator->paginate());
     }
 
-    /* end teacher */
-
-    /**
-     * edit method
-     *
-     * @throws NotFoundException
-     * @param string $id
-     * @return void
-     */
-    public function edit($id = null) {
-        if (!$this->User->exists($id)) {
-            throw new NotFoundException(__('Invalid user'));
+    public function manager_search() {
+        $conditions = array();
+        if (!empty($this->request->data['name'])) {
+            $name = $this->request->data['name'];
+            $conditions = array('User.name like' => "%{$name}%");
         }
-        if ($this->request->is(array('post', 'put'))) {
-            //debug($this->request->data);die;
-            if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved.'));
-                return $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
-            }
-        } else {
-            $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
-            $this->request->data = $this->User->find('first', $options);
-        }
-        $groups = $this->User->Group->find('list');
-        $this->set(compact('groups'));
-    }
-
-    /**
-     * delete method
-     *
-     * @throws NotFoundException
-     * @param string $id
-     * @return void
-     */
-    public function delete($id = null) {
-        $this->User->id = $id;
-        if (!$this->User->exists()) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-        $this->request->onlyAllow('post', 'delete');
-        if ($this->User->delete()) {
-            $this->Session->setFlash(__('The user has been deleted.'));
-        } else {
-            $this->Session->setFlash(__('The user could not be deleted. Please, try again.'));
-        }
-        return $this->redirect(array('action' => 'index'));
-    }
-
-    public function student_view_teacher($id = null) {
-
-        if (!$this->User->exists($id)) {
-            throw new NotFoundException(__('Invalid course'));
-        }
-        $contain = array(
-            'HocHam' => array('fields' => array('id', 'name')),
-            'HocVi' => array('fields' => array('id', 'name')),
-        );
-        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => $contain);
-        $teacher = $this->User->find('first', $options);
-        $this->set(compact('teacher'));
+        $this->Paginator->settings = array('conditions' => $conditions, 'recursive' => 0);
+        $this->set('users', $this->Paginator->paginate());
     }
 
 }

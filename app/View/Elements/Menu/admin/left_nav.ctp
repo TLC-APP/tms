@@ -84,10 +84,9 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/admin/users/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
                     <li><a href="/admin/groups"><i class="fa fa-angle-double-right"></i> Danh sách nhóm</a></li>
                     <li><a href="/admin/groups/add"><i class="fa fa-angle-double-right"></i> Thêm nhóm</a></li>
-                    <li><a href="/acl_manager/acl"><i class="fa fa-angle-double-right"></i> Phân quyền</a></li>
+                    <li><a href="/admin/acl_manager/acl"><i class="fa fa-angle-double-right"></i> Phân quyền</a></li>
 
                 </ul>
             </li>

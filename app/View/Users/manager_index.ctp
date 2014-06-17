@@ -1,7 +1,7 @@
 <div class="container">
     <div class="box box-primary">
         <div class="box-header">
-            <h3 class="box-title">DANH SÁCH TẬP HUẤN VIÊN</h3>
+            <h3 class="box-title">DANH SÁCH USER</h3>
             <div id="commentStatus"></div>
             <?php
             echo $this->Form->create('User', array('default' => false, 'id' => 'UserSearchForm'));
@@ -9,7 +9,7 @@
             <div class="box-tools">
                 <div class="input-group">
                     <input type="text" 
-                           placeholder="Nhập tên tập huấn viên cần tìm" 
+                           placeholder="Nhập tên user cần tìm" 
                            style="width: 300px;" 
                            class="form-control input-sm pull-right" 
                            name="name">
@@ -27,7 +27,7 @@
             $data = $this->Js->get('#UserSearchForm')->serializeForm(array('isForm' => true, 'inline' => true));
             $this->Js->get('#UserSearchForm')->event(
                     'submit', $this->Js->request(
-                            array('action' => 'search_teacher','fields_manager'=>false), array(
+                            array('action' => 'search','manager'=>true), array(
                         'update' => '#results',
                         'data' => $data,
                         'async' => true,
@@ -58,7 +58,7 @@
                     <?php foreach ($users as $user): ?>
                         <tr>
                             <th><?php echo $stt++ ?></th>
-                            <td><?php echo $this->Html->link($user['User']['name'],array('fields_manager'=>true,'action'=>'view',$user['User']['id'])); ?>&nbsp;</td>
+                            <td><?php echo $this->Html->link($user['User']['name'],array('manager'=>true,'action'=>'view',$user['User']['id'])); ?>&nbsp;</td>
                             <td><?php echo h($user['User']['username']); ?>&nbsp;</td>
                             <td><?php echo h($user['User']['email']); ?>&nbsp;</td>
                             <td><?php echo h($user['User']['phone_number']); ?>&nbsp;</td>

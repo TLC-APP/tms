@@ -1,5 +1,4 @@
 <?php echo $this->Html->script('jquery.shorten.1.0'); ?>
-
 <div class="col-lg-12 content-right">
 
     <div class="row">

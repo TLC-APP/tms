@@ -191,7 +191,7 @@ class CoursesController extends AppController {
             $conditions = Set::merge($conditions, array('Course.status' => $status));
             $this->set('status', $status);
         }
-        $this->Paginator->settings = array('contain' => $contain, 'conditions' => $conditions);
+        $this->Paginator->settings = array('contain' => $contain, 'conditions' => $conditions, 'order' => array('Course.created' => 'DESC'));
         $this->set('courses', $this->Paginator->paginate());
     }
 
@@ -201,13 +201,22 @@ class CoursesController extends AppController {
             $this->Course->create();
             $this->request->data['Course']['created_user_id'] = $this->Auth->user('id');
             if ($this->Course->save($this->request->data)) {
-                $this->Session->setFlash(__('The course has been saved.'));
+                $this->Session->setFlash('Đã thêm khóa học thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
                 return $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash(__('The course could not be saved. Please, try again.'));
             }
         }
-        $chapters = $this->Course->Chapter->find('list');
+
+        $manage_fields = $this->Course->Chapter->Field->find('all', array('fields' => array('id'), 'recursive' => -1, 'conditions' => array(
+                'Field.manage_user_id' => $this->Auth->user('id'))));
+        $manage_fields_id_array = array();
+        if (!empty($manage_fields)) {
+            $manage_fields_id_array = Set::classicExtract($manage_fields, '{n}.Field.id');
+        }
+        $chapters = $this->Course->Chapter->find('list', array('conditions' => array('Chapter.field_id' => $manage_fields_id_array)));
+
+
         $teachers = $this->Course->Teacher->find('list');
         $this->set(compact('chapters', 'teachers'));
     }
@@ -232,12 +241,116 @@ class CoursesController extends AppController {
                     'Teacher' => array('fields' => array('id', 'name'))));
             $this->request->data = $this->Course->find('first', $options);
         }
-        $chapters = $this->Course->Chapter->find('list');
+
+        $manage_fields = $this->Course->Chapter->Field->find('all', array('fields' => array('id'), 'recursive' => -1, 'conditions' => array(
+                'Field.manage_user_id' => $this->Auth->user('id'))));
+
+        $manage_fields_id_array = array();
+        if (!empty($manage_fields)) {
+            $manage_fields_id_array = Set::classicExtract($manage_fields, '{n}.Field.id');
+        }
+        $chapters = $this->Course->Chapter->find('list', array('conditions' => array('Chapter.field_id' => $manage_fields_id_array)));
+
         $teachers = $this->Course->Teacher->find('list');
         $this->set(compact('chapters', 'teachers'));
     }
 
     /*     * End Fields manager */
+
+    /* Manager */
+
+    public function manager_add() {
+        if ($this->request->is('post')) {
+            $this->Course->create();
+            $this->request->data['Course']['created_user_id'] = $this->Auth->user('id');
+            if ($this->Course->save($this->request->data)) {
+                $this->Session->setFlash('Đã thêm khóa học thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'index'));
+            } else {
+                $this->Session->setFlash('Đã thêm khóa học không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            }
+        }
+        $chapters = $this->Course->Chapter->find('list');
+        $teachers = $this->Course->Teacher->find('list');
+        $this->set(compact('chapters', 'teachers'));
+    }
+
+    public function manager_index($status = null) {
+        $conditions = array();
+        $contain = array(
+            'User' => array('fields' => array('id', 'name')),
+            'Teacher' => array('fields' => array('id', 'name'),
+            ), 'Chapter'
+        );
+
+        if ($status) {
+            $conditions = array('Course.status' => $status);
+            $this->set('status', $status);
+        }
+        $this->Paginator->settings = array('contain' => $contain, 'conditions' => $conditions, 'order' => array('Course.created' => 'DESC'));
+        $this->set('courses', $this->Paginator->paginate());
+    }
+
+    public function manager_edit($id = null) {
+        if (!$this->Course->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            if ($this->Course->save($this->request->data)) {
+                $this->Session->setFlash('Đã thêm khóa học thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect($this->referer());
+            } else {
+                $this->Session->setFlash('Thêm khóa học không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+            }
+        } else {
+            $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => array(
+                    'Chapter' => array('fields' => array('id', 'name')),
+                    'Teacher' => array('fields' => array('id', 'name'))));
+            $this->request->data = $this->Course->find('first', $options);
+        }
+        $chapters = $this->Course->Chapter->find('list');
+        $teachers = $this->Course->Teacher->find('list');
+        $this->set(compact('chapters', 'teachers'));
+    }
+
+    public function manager_view($id = null) {
+
+        if (!$this->Course->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $contain = array(
+            'User' => array('fields' => array('id', 'name')),
+            //'CoursesRoom' => array('Room' => array('id', 'name'), 'conditions' => array('CoursesRoom.course_id' => $id, 'CoursesRoom.start is null')),
+            'CoursesRoom' => array('Room' => array('id', 'name'), 'conditions' => array('CoursesRoom.course_id' => $id)),
+            'Teacher' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'HocHam', 'HocVi'),
+            'Chapter' => array('Attachment'),
+            'Attachment',
+            'StudentsCourse' => array('Student' => array('fields' => array('id', 'name', 'email', 'phone_number')))
+        );
+        $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
+        $rooms = $this->Course->CoursesRoom->Room->find('list');
+        $course = $this->Course->find('first', $options);
+        $this->set(compact('course', 'rooms'));
+    }
+
+    public function manager_score($id) {
+        if (!$this->Course->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $contain = array(
+            'User' => array('fields' => array('id', 'name')),
+            'Teacher' => array('fields' => array('id', 'name')),
+            'Chapter' => array('fields' => array('id', 'name')),
+            'StudentsCourse' => array('Student' => array('fields' => array('id', 'name', 'email', 'phone_number'))),
+            'CoursesRoom'=>array('fields'=>array('CoursesRoom.id'))
+        );
+        $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain,
+            'fields'=>array('Course.id','Course.name','Course.status','Course.max_enroll_number','enrolling_expiry_date','is_published','pass_number'));
+        $course = $this->Course->find('first', $options);
+        $this->set(compact('course'));
+    }
+
+    /* end manager */
 
     /**
      * edit method

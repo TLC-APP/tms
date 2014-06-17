@@ -10,23 +10,12 @@ App::uses('AppController', 'Controller');
  */
 class GroupsController extends AppController {
 
-    /*public function beforeFilter() {
-        parent::beforeFilter();
-        if ($this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))), $this->action)) {
-
-            $this->Acl->allow(array('User' => array('id' => $this->Auth->user('id'))), $this->action);
-        } else {
-            $this->Session->setFlash('Bạn không có quyền truy cập');
-            $this->redirect('/');
-        }
-    }*/
-
     /**
      * index method
      *
      * @return void
      */
-    public function index() {
+    public function admin_index() {
         $this->Group->recursive = 0;
         $this->set('groups', $this->Paginator->paginate());
     }
@@ -38,7 +27,7 @@ class GroupsController extends AppController {
      * @param string $id
      * @return void
      */
-    public function view($id = null) {
+    public function admin_view($id = null) {
         if (!$this->Group->exists($id)) {
             throw new NotFoundException(__('Invalid group'));
         }
@@ -51,13 +40,12 @@ class GroupsController extends AppController {
      *
      * @return void
      */
-    public function add() {
+    public function admin_add() {
         if ($this->request->is('post')) {
             $this->Group->create();
             if ($this->Group->save($this->request->data)) {
                 $this->Session->setFlash(__('The group has been saved.'));
                 $this->redirect(array('action' => 'index'));
-                
             }
         }
         $users = $this->Group->User->find('list');
@@ -71,7 +59,7 @@ class GroupsController extends AppController {
      * @param string $id
      * @return void
      */
-    public function edit($id = null) {
+    public function admin_edit($id = null) {
         if (!$this->Group->exists($id)) {
             throw new NotFoundException(__('Invalid group'));
         }
@@ -102,10 +90,11 @@ class GroupsController extends AppController {
         }
         $this->request->onlyAllow('post', 'delete');
         if ($this->Group->delete()) {
-            return $this->flash(__('The group has been deleted.'), array('action' => 'index'));
+            $this->Session->setFlash('Xóa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
         } else {
-            return $this->flash(__('The group could not be deleted. Please, try again.'), array('action' => 'index'));
+            $this->Session->setFlash('Xóa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
         }
+        return $this->redirect($this->referer());
     }
 
 }

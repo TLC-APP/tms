@@ -23,12 +23,9 @@ class DepartmentsController extends AppController {
      *
      * @return void
      */
-    public function index() {
+    public function manager_index() {
         $this->Department->recursive = 0;
         $this->set('departments', $this->Paginator->paginate());
-        $data = $this->Department->generateTreeList();
-        debug($data);
-        die;
     }
 
     /**
@@ -38,7 +35,7 @@ class DepartmentsController extends AppController {
      * @param string $id
      * @return void
      */
-    public function view($id = null) {
+    public function manager_view($id = null) {
         if (!$this->Department->exists($id)) {
             throw new NotFoundException(__('Invalid department'));
         }
@@ -51,18 +48,18 @@ class DepartmentsController extends AppController {
      *
      * @return void
      */
-    public function add() {
+    public function manager_add() {
         if ($this->request->is('post')) {
             $this->Department->create();
             if ($this->Department->save($this->request->data)) {
-                $this->Session->setFlash(__('The department has been saved.'));
+                $this->Session->setFlash('Thêm thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
                 return $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('The department could not be saved. Please, try again.'));
+                $this->Session->setFlash('Thêm không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             }
         }
-        $parentDepartments = $this->Department->ParentDepartment->find('list');
-        $this->set(compact('parentDepartments'));
+        $parents = $this->Department->ParentDepartment->find('list');
+        $this->set(compact('parents'));
     }
 
     /**
@@ -72,23 +69,24 @@ class DepartmentsController extends AppController {
      * @param string $id
      * @return void
      */
-    public function edit($id = null) {
+    public function manager_edit($id = null) {
         if (!$this->Department->exists($id)) {
             throw new NotFoundException(__('Invalid department'));
         }
         if ($this->request->is(array('post', 'put'))) {
             if ($this->Department->save($this->request->data)) {
-                $this->Session->setFlash(__('The department has been saved.'));
+                $this->Session->setFlash('Sửa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+
                 return $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('The department could not be saved. Please, try again.'));
+                $this->Session->setFlash('Sửa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             }
         } else {
             $options = array('conditions' => array('Department.' . $this->Department->primaryKey => $id));
             $this->request->data = $this->Department->find('first', $options);
         }
-        $parentDepartments = $this->Department->ParentDepartment->find('list');
-        $this->set(compact('parentDepartments'));
+        $parents = $this->Department->ParentDepartment->find('list');
+        $this->set(compact('parents'));
     }
 
     /**
@@ -98,16 +96,16 @@ class DepartmentsController extends AppController {
      * @param string $id
      * @return void
      */
-    public function delete($id = null) {
+    public function manager_delete($id = null) {
         $this->Department->id = $id;
         if (!$this->Department->exists()) {
             throw new NotFoundException(__('Invalid department'));
         }
         $this->request->onlyAllow('post', 'delete');
         if ($this->Department->delete()) {
-            $this->Session->setFlash(__('The department has been deleted.'));
+            $this->Session->setFlash('Xóa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
         } else {
-            $this->Session->setFlash(__('The department could not be deleted. Please, try again.'));
+            $this->Session->setFlash('xóa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
         }
         return $this->redirect(array('action' => 'index'));
     }

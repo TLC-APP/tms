@@ -24,10 +24,6 @@ class AppController extends Controller {
     );
     public $uses = array('Course', 'CoursesRoom');
 
-    public function beforeRender() {
-        parent::beforeRender();
-    }
-
     function beforeFilter() {
 
         if (!empty($this->params['prefix'])) {
@@ -76,8 +72,8 @@ class AppController extends Controller {
         $uncomplete_courses = $this->Course->getCoursesUnCompleted();
         if (!empty($uncomplete_courses)) {
             $khoa_con_buoi = $this->CoursesRoom->layKhoaConBuoi();
-
             $id_giong = array_intersect($uncomplete_courses, $khoa_con_buoi);
+            
             $khoa_hoan_thanh = Set::diff($uncomplete_courses, $id_giong);
             if (!empty($khoa_hoan_thanh)) {
                 $this->Course->updateAll(array('Course.status' => COURSE_COMPLETED), array('Course.id' => $khoa_hoan_thanh));

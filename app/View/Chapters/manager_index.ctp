@@ -1,5 +1,5 @@
+<?php /*Chapter*/ ?>
 <div class="container">
-    
     <div class="box box-primary">
         <div class="box-header">
             <h3 class="box-title">Danh mục chuyên đề</h3>
@@ -26,7 +26,7 @@
             $data = $this->Js->get('#ChapterSearchForm')->serializeForm(array('isForm' => true, 'inline' => true));
             $this->Js->get('#ChapterSearchForm')->event(
                     'submit', $this->Js->request(
-                            array('fields_manager'=>false,'action' => 'search'), array(
+                            array('manager'=>false,'action' => 'search'), array(
                         'update' => '#results',
                         'data' => $data,
                         'async' => true,
@@ -47,6 +47,7 @@
                         <th>STT</th>
                         <th><?php echo $this->Paginator->sort('name', 'Tên'); ?></th>
                         <th><?php echo $this->Paginator->sort('field_id', 'Lĩnh vực'); ?></th>
+                        <th><?php echo $this->Paginator->sort('created_user_id', 'Người tạo'); ?></th>
                         <th><?php echo $this->Paginator->sort('created', 'Ngày tạo'); ?></th>
                         <th class="actions">Thao tác</th>
                     </tr>
@@ -54,9 +55,12 @@
                     <?php foreach ($chapters as $chapter): ?>
                         <tr>
                             <th><?php echo $stt++; ?></th>
-                            <td><?php echo $this->Html->link($chapter['Chapter']['name'], array('fields_manager'=>true,'action' => 'view', $chapter['Chapter']['id'])); ?></td>
+                            <td><?php echo $this->Html->link($chapter['Chapter']['name'], array('manager'=>true,'action' => 'view', $chapter['Chapter']['id'])); ?></td>
                             <td>
                                 <?php echo $chapter['Field']['name']; ?>
+                            </td>
+                            <td>
+                                <?php echo $chapter['User']['name']; ?>
                             </td>
                             <td><?php echo h($chapter['Chapter']['created']); ?>&nbsp;</td>
                             <td class="actions">

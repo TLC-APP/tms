@@ -17,12 +17,13 @@ class Course extends AppModel {
      */
     public $displayField = 'name';
     public $virtualFields = array(
-        'register_student_number' =>
-        "SELECT count(id) as Course__register_student_number 
-         FROM  students_courses as StudentsCourse 
-         where 
-            StudentsCourse.course_id=Course.id 
-            ");
+        'register_student_number' =>"SELECT count(id) as Course__register_student_number 
+        FROM  students_courses as StudentsCourse 
+         where StudentsCourse.course_id=Course.id",
+        'pass_number'=>'SELECT count(id) as Course__pass_number
+        FROM  students_courses as StudentsCourse 
+         where StudentsCourse.course_id=Course.id and StudentsCourse.is_passed'
+        );
     public $actsAs = array('Containable', 'Upload.Upload' => array(
             'image' => array(
                 'fields' => array(

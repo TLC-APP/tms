@@ -1,48 +1,4 @@
-<div class="container">
-    <div class="box box-primary">
-        <div class="box-header">
-            <h3 class="box-title">DANH SÁCH TẬP HUẤN VIÊN</h3>
-            <div id="commentStatus"></div>
-            <?php
-            echo $this->Form->create('User', array('default' => false, 'id' => 'UserSearchForm'));
-            ?>
-            <div class="box-tools">
-                <div class="input-group">
-                    <input type="text" 
-                           placeholder="Nhập tên tập huấn viên cần tìm" 
-                           style="width: 300px;" 
-                           class="form-control input-sm pull-right" 
-                           name="name">
-                    <div class="input-group-btn">
-
-                        <button class="btn btn-sm btn-default" type="submit"><i class="fa fa-search"></i></button>
-
-                    </div>
-                    <?php echo $this->Form->end(); ?>
-                </div>
-            </div>
-
-
-            <?php
-            $data = $this->Js->get('#UserSearchForm')->serializeForm(array('isForm' => true, 'inline' => true));
-            $this->Js->get('#UserSearchForm')->event(
-                    'submit', $this->Js->request(
-                            array('action' => 'search_teacher','fields_manager'=>false), array(
-                        'update' => '#results',
-                        'data' => $data,
-                        'async' => true,
-                        'dataExpression' => true,
-                        'method' => 'POST'
-                            )
-                    )
-            );
-            echo $this->Js->writeBuffer();
-            ?>
-        </div>
-        <div class="box-body" id="results">
-            <div class="table-responsive">
-
-                <table class="table table-hover">
+<table class="table table-hover">
                     <tr>
                         <th>STT</th>
                         <th><?php echo $this->Paginator->sort('name', 'Tên'); ?></th>
@@ -70,7 +26,7 @@
                                 <?php echo $this->Html->link('<button type="button" class="btn btn-info">
                         <span class="glyphicon glyphicon-edit"></span></button>', array('fields_manager'=>true,'action' => 'edit', $user['User']['id']), array('escape' => false)); ?>
                                 <?php echo $this->Form->postLink('<button type="button" class="btn btn-warning">
-                        <span class="glyphicon glyphicon-trash"></span></button>', array('fields_manager'=>false,'action' => 'delete', $user['User']['id']), array('escape' => false), __('Bạn có chắc xóa %s?', $user['User']['name'])); ?>
+                        <span class="glyphicon glyphicon-trash"></span></button>', array('action' => 'delete', $user['User']['id']), array('escape' => false), __('Bạn có chắc xóa %s?', $user['User']['name'])); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -88,10 +44,3 @@
                 'ul' => 'pagination'
             ));
             ?>
-        </div>
-        <div class="box-footer" style="text-align: right;">
-            <?php echo $this->Html->link('Thêm mới', array('action' => 'add'), array('class' => 'btn btn-success')); ?>
-
-        </div>
-    </div>
-</div>
