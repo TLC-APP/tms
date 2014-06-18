@@ -342,12 +342,77 @@ class CoursesController extends AppController {
             'Teacher' => array('fields' => array('id', 'name')),
             'Chapter' => array('fields' => array('id', 'name')),
             'StudentsCourse' => array('Student' => array('fields' => array('id', 'name', 'email', 'phone_number'))),
-            'CoursesRoom'=>array('fields'=>array('CoursesRoom.id'))
+            'CoursesRoom' => array('fields' => array('CoursesRoom.id'))
         );
         $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain,
-            'fields'=>array('Course.id','Course.name','Course.status','Course.max_enroll_number','enrolling_expiry_date','is_published','pass_number'));
+            'fields' => array('Course.id', 'Course.name', 'Course.status', 'Course.max_enroll_number', 'enrolling_expiry_date', 'is_published', 'pass_number'));
         $course = $this->Course->find('first', $options);
         $this->set(compact('course'));
+    }
+
+    public function manager_update_score($course_id) {
+        if (!$this->Course->exists($course_id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $this->Course->id = $course_id;
+        $chapter_id = $this->Course->field('Course.chapter_id');
+        $field_id = $this->Course->Chapter->field('Chapter.field_id', array('Chapter.id' => $chapter_id));
+        $this->Course->Chapter->Field->id = $field_id;
+        
+        if (!empty($this->request->data['pass_students'])) {
+            $pass_students = $this->request->data['pass_students'];
+            $certificated_start_number = $this->Course->Chapter->Field->field('current_certificate_number');
+            
+            if (empty($certificated_start_number)) {
+                $this->Session->setFlash('Vui lòng liên hệ admin để cập nhật số chứng chỉ nhé!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('manager' => true, 'action' => 'score', $course_id));
+            }
+            $certificated_number_suffix = $this->Course->Chapter->Field->field('Field.certificated_number_suffix');
+            if ($certificated_start_number < 10) {
+                $certificated_number = '0' . ($certificated_start_number+1);
+            }
+            $certificated_number = "'" . $certificated_number . $certificated_number_suffix . "'";
+
+            if ($this->Course->StudentsCourse->updateAll(
+                            array(
+                        'StudentsCourse.is_passed' => 1,
+                        'StudentsCourse.certificated_number' => $certificated_number,
+                        'StudentsCourse.certificated_date' => '"' . date('Y-m-d H:i:s', strtotime('now')) . '"'
+                            ), array('StudentsCourse.student_id' => $pass_students, 'StudentsCourse.course_id' => $course_id))) {
+                $this->Course->Chapter->Field->saveField('current_certificate_number', $certificated_start_number+$this->Course->Chapter->Field->getAffectedRows());
+                $this->Session->setFlash('Đã cập nhật kết quả thành công bảng điểm!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+            } else {
+                $this->Session->setFlash('Cập nhật kết quả không thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            }
+        }
+        if (!empty($this->request->data['fail_students'])) {
+            $fail_students = $this->request->data['fail_students'];
+            if ($this->Course->StudentsCourse->updateAll(array('StudentsCourse.is_passed' => 0), array('StudentsCourse.student_id' => $fail_students, 'StudentsCourse.course_id' => $course_id))) {
+                $this->Session->setFlash('Đã cập nhật kết quả thành công bảng điểm!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+            } else {
+                $this->Session->setFlash('Cập nhật kết quả không thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            }
+        }
+        $this->redirect(array('manager' => true, 'action' => 'score', $course_id));
+    }
+
+    public function manager_xuat_so_chung_nhan($course_id = null) {
+        Configure::write('debug',0);
+        if (!$this->Course->exists($course_id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $contain = array(
+            'Chapter' => array('fields' => array('id', 'name')),
+            'StudentsCourse' => array(
+                'Student' => array(
+                    'fields' => array('id', 'name', 'phone_number', 'email', 'birthday', 'birthplace'),
+                    'Department' => array('fields' => array('id', 'name')))
+            ),
+            'CoursesRoom' => array('fields' => array('id', 'title', 'start', 'end', 'priority'), 'order' => array('CoursesRoom.priority' => 'ASC'))
+        );
+        $fields = array('Course.id', 'Course.name');
+        $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $course_id), 'contain' => $contain, 'fields' => $fields);
+        $this->set('course', $this->Course->find('first', $options));
     }
 
     /* end manager */
