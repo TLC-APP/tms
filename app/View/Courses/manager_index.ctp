@@ -34,6 +34,8 @@ if (isset($status)) {
                     <th><?php echo $this->Paginator->sort('chapter_id', 'Chuyên đề'); ?></th>
                     <th><?php echo $this->Paginator->sort('teacher_id', 'Tập huấn bởi'); ?></th>
                     <th><?php echo $this->Paginator->sort('max_enroll_number', 'Đăng ký tối đa'); ?></th>
+                    <th><?php echo $this->Paginator->sort('register_student_number', 'Đã đăng ký'); ?></th>
+
                     <th><?php echo $this->Paginator->sort('is_published', 'Xuất bản'); ?></th>
                     <th><?php echo $this->Paginator->sort('enrolling_expiry_date', 'Hết hạn đăng ký'); ?></th>
                     <th><?php echo $this->Paginator->sort('created', 'Ngày tạo'); ?></th>
@@ -50,7 +52,7 @@ if (isset($status)) {
 
                         <td>
                             <?php
-                            echo $this->Html->link($course['Course']['name'], array('fields_manager' => true, 'controller' => 'courses', 'action' => 'view', $course['Course']['id']));
+                            echo $this->Html->link($course['Course']['name'], array('manager' => true, 'controller' => 'courses', 'action' => 'view', $course['Course']['id']));
                             $register_student_number = $course['Course']['register_student_number'];
                             if ($course['Course']['max_enroll_number'] > 0) {
                                 $percent = round(($register_student_number * 100) / $course['Course']['max_enroll_number']);
@@ -74,6 +76,7 @@ if (isset($status)) {
                             <?php echo $this->Html->link($course['Teacher']['name'], array('controller' => 'users', 'action' => 'view', $course['Teacher']['id'])); ?>
                         </td>
                         <td><?php echo h($course['Course']['max_enroll_number']); ?>&nbsp;</td>
+                        <td><?php echo h($course['Course']['register_student_number']); ?>&nbsp;</td>
                         <td><?php echo h($course['Course']['is_published']); ?>&nbsp;</td>
                         <td><?php echo h($course['Course']['enrolling_expiry_date']); ?>&nbsp;</td>
                         <td><?php echo h($course['Course']['created']); ?>&nbsp;</td>
@@ -86,8 +89,7 @@ if (isset($status)) {
                             ?>
                             <?php
                             if (isset($status) && $status == COURSE_COMPLETED) {
-                                echo $this->Html->link('<span> <i class="glyphicon glyphicon-tower"></i>    </span>', 
-                                        array('manager'=>true,'action' => 'score', $course['Course']['id']), array('escape' => false));
+                                echo $this->Html->link('<span> <i class="glyphicon glyphicon-tower"></i>    </span>', array('manager' => true, 'action' => 'score', $course['Course']['id']), array('escape' => false));
                             }
                             ?>
                             <?php
@@ -101,7 +103,7 @@ if (isset($status)) {
                             if (isset($status) && $status != COURSE_CANCELLED) {
                                 echo $this->Form->postLink('
                                 
-  <span class="fa fa-ban"></span>', array('fields_manager' => false, 'action' => 'huy', $course['Course']['id']), array('escape' => false), __('Bạn có chắc hủy khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
+  <span class="fa fa-ban"></span>', array('manager' => false, 'action' => 'huy', $course['Course']['id']), array('escape' => false), __('Bạn có chắc hủy khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
                             }
                             ?>
 
@@ -109,7 +111,7 @@ if (isset($status)) {
                             if (isset($status) && $status == COURSE_CANCELLED) {
                                 echo $this->Form->postLink('
                                 
-  <span class="fa fa-refresh"></span>', array('fields_manager' => false, 'action' => 'uncancel', $course['Course']['id']), array('escape' => false), __('Bạn có chắc phục hồi khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
+  <span class="fa fa-refresh"></span>', array('manager' => false, 'action' => 'uncancel', $course['Course']['id']), array('escape' => false), __('Bạn có chắc phục hồi khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
                             }
                             ?>
 
@@ -127,7 +129,7 @@ if (isset($status)) {
                     'format' => __('Trang {:page} của {:pages} trang, hiển thị {:current} của {:count} tất cả, bắt đầu từ {:start}, đến {:end}')
                 ));
                 ?>	</p>
-            <?php
+                <?php
             echo $this->Paginator->pagination(array(
                 'ul' => 'pagination'
             ));

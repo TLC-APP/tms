@@ -17,13 +17,16 @@ class Course extends AppModel {
      */
     public $displayField = 'name';
     public $virtualFields = array(
-        'register_student_number' =>"SELECT count(id) as Course__register_student_number 
+        'register_student_number' => "SELECT count(id) as Course__register_student_number 
         FROM  students_courses as StudentsCourse 
          where StudentsCourse.course_id=Course.id",
-        'pass_number'=>'SELECT count(id) as Course__pass_number
+        'pass_number' => 'SELECT count(id) as Course__pass_number
         FROM  students_courses as StudentsCourse 
-         where StudentsCourse.course_id=Course.id and StudentsCourse.is_passed'
-        );
+         where StudentsCourse.course_id=Course.id and StudentsCourse.is_passed',
+        'so_buoi' => 'SELECT count(id) as Course__so_buoi
+        FROM  courses_rooms as CoursesRoom 
+         where CoursesRoom.course_id=Course.id'
+    );
     public $actsAs = array('Containable', 'Upload.Upload' => array(
             'image' => array(
                 'fields' => array(
@@ -235,6 +238,15 @@ class Course extends AppModel {
         return $coursescompleted_id_array;
     }
 
+    public function getCoursesExpired() {
+        $now = new DateTime();
+        $conditions = array('Course.status' => COURSE_REGISTERING,'Course.enrolling_expiry_date <'=>$now->format('Y-m-d H:i:s'));
+        $coursescompleted = $this->find('all', array('conditions' => $conditions, 'recursive' => -1));
+        $coursescompleted_id_array = Set::classicExtract($coursescompleted, '{n}.Course.id');
+        // debug($coursescompleted_id_array);die;
+        return $coursescompleted_id_array;
+    }
+
     public function getCoursesUnCompleted() {
         $conditions = array('Course.status' => COURSE_UNCOMPLETED);
         $coursescompleted = $this->find('all', array('conditions' => $conditions, 'recursive' => -1));
@@ -250,9 +262,10 @@ class Course extends AppModel {
         return $courses_id_array;
     }
 
-    public function getTeachingCourse($teacher_id){
-        $conditions=array('Course.teacher_id'=>$teacher_id);
-        $courses=  $this->find('all',array('conditions'=>$conditions,'recursive'=>-1,'fields'=>array('Course.id')));
+    public function getTeachingCourse($teacher_id) {
+        $conditions = array('Course.teacher_id' => $teacher_id);
+        $courses = $this->find('all', array('conditions' => $conditions, 'recursive' => -1, 'fields' => array('Course.id')));
         return Set::classicExtract($courses, '{n}.Course.id');
     }
+
 }

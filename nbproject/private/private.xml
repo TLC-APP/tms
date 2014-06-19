@@ -3,22 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Users/manager_add.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/manager_index.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/manager/header.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Chapters/fields_manager_index.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/manager_score.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/ConfigsController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Users/manager_edit.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/Config.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Layouts/fields_manager.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Common/header_tag.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/webroot/js/AdminLTE/app.js</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/manager/left_menu.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Layouts/default.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/fields_manager/course/view/course_completed_students.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/fieldsManager/header.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Users/manager_index.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/AppController.php</file>
             <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/Course.php</file>
             <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/CoursesController.php</file>
         </group>
