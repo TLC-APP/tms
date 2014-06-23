@@ -38,7 +38,6 @@
                 </div>
                 <div class="box-body">
                     Username: <strong><?php echo $user['User']['username']; ?></strong><br>
-
                     Lần đăng nhập cuối: <?php echo $user['User']['last_login']; ?><br>
                     Tình trạng: <?php echo $user['User']['activated']; ?><br>
                     <b>Số lớp đã hoàn thành:</b> <?php echo $user['User']['completedCourse']; ?><br>
@@ -55,7 +54,7 @@
     <!-- this row will not appear when printing -->
     <div class="row no-print">
         <div class="col-xs-12">
-            <a href="/manager/users/edit/<?php echo $user['User']['id']?>"><button class="btn btn-info pull-right"><i class="fa fa-edit"></i> Sửa</button></a>
+            <a href="/thgv/manager/users/edit/<?php echo $user['User']['id']?>"><button class="btn btn-info pull-right"><i class="fa fa-edit"></i> Sửa</button></a>
         </div>
     </div>
 </section>

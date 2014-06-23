@@ -297,10 +297,10 @@ class CoursesController extends AppController {
         }
         if ($this->request->is(array('post', 'put'))) {
             if ($this->Course->save($this->request->data)) {
-                $this->Session->setFlash('Đã thêm khóa học thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                $this->Session->setFlash('Cập nhật khóa học thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
                 return $this->redirect($this->referer());
             } else {
-                $this->Session->setFlash('Thêm khóa học không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                $this->Session->setFlash('Cập nhật khóa học không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
             }
         } else {
             $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => array(
@@ -373,12 +373,21 @@ class CoursesController extends AppController {
             }
             $certificated_number = "'" . $certificated_number . $certificated_number_suffix . "'";
 
+            $chung_chi_co_so = $this->Course->field('Course.chung_chi_co_so');
+
+            $data = array(
+                'StudentsCourse.is_passed' => 1,
+                'StudentsCourse.certificated_number' => $certificated_number,
+                'StudentsCourse.certificated_date' => '"' . date('Y-m-d H:i:s', strtotime('now')) . '"'
+            );
+            if (!$chung_chi_co_so) {
+                $data = array(
+                    'StudentsCourse.is_passed' => 1,
+                    'StudentsCourse.certificated_date' => '"' . date('Y-m-d H:i:s', strtotime('now')) . '"'
+                );
+            }
             if ($this->Course->StudentsCourse->updateAll(
-                            array(
-                        'StudentsCourse.is_passed' => 1,
-                        'StudentsCourse.certificated_number' => $certificated_number,
-                        'StudentsCourse.certificated_date' => '"' . date('Y-m-d H:i:s', strtotime('now')) . '"'
-                            ), array('StudentsCourse.student_id' => $pass_students, 'StudentsCourse.course_id' => $course_id))) {
+                            $data, array('StudentsCourse.student_id' => $pass_students, 'StudentsCourse.course_id' => $course_id))) {
                 $this->Course->Chapter->Field->saveField('current_certificate_number', $certificated_start_number + $this->Course->Chapter->Field->getAffectedRows());
                 $this->Session->setFlash('Đã cập nhật kết quả thành công bảng điểm!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
             } else {
@@ -465,7 +474,7 @@ class CoursesController extends AppController {
 
     public function manager_expired_courses() {
         $expired_courses = $this->Course->getCoursesExpired();
-        $conditions = array('Course.id'=>$expired_courses);
+        $conditions = array('Course.id' => $expired_courses);
         $contain = array(
             'User' => array('fields' => array('id', 'name')),
             'Teacher' => array('fields' => array('id', 'name'),

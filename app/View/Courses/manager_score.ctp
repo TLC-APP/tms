@@ -9,8 +9,9 @@
                 </ul>
                 <div class="tab-content ">
                     <div id="tab_hoc_vien" class="tab-pane active">
-                        <form id="dat_form" action="/manager/courses/update_score/<?php echo $course['Course']['id']?>" method="POST">
-
+                        
+                            <?php echo $this->Form->create(null,
+                                    array('url'=>array('controller'=>'courses','action'=>'update_score',$course['Course']['id'])));?>
                             <table class="table table-hover">
                                 <thead>
                                 <th>#</th>

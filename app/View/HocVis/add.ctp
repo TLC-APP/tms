@@ -27,7 +27,7 @@ echo $this->Form->create('HocVi', array(
         $('#addHocViForm').on('submit', function(e) {
             e.preventDefault(); // prevent native submit
             $(this).ajaxSubmit({
-                url: '/hocvis/add.json',
+                url: '/thgv/hoc_vis/add.json',
                 success: addHocViResponse
             });
             return false;

@@ -13,7 +13,7 @@
                 <div class="tab-content">
                     <div id="tab_1-1" class="tab-pane active">
                         <div class="noi_dung" >
-                            <img alt="" class="pull-left"  style="padding-right: 10px; width: 500px;"src="/files/course/image/<?php echo $course['Course']['image_path'] . '/' . $course['Course']['image']; ?>">
+                            <img alt="" class="pull-left"  style="padding-right: 10px; width: 500px;"src="/thgv/files/course/image/<?php echo $course['Course']['image_path'] . '/' . $course['Course']['image']; ?>">
 
                             <p><?php echo $course['Course']['decription']; ?></p>
                         </div>

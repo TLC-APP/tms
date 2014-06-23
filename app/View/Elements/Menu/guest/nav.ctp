@@ -10,10 +10,14 @@
         </div><!--//navbar-header-->            
         <div class="navbar-collapse collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="nav-item"><a href="/guest" >Trang chủ</a></li>
-                <li class="nav-item"><a href="/dashboards/help" >Khóa học đã hoàn thành</a></li>
-                <li class="nav-item"><a href="/dashboards/help" >Hướng dẫn sử dụng</a></li>
-                <li class="nav-item"><a href="/dashboards/contact" >Liên hệ</a></li>
+                <li class="nav-item"><?php echo $this->Html->link('Trang chủ', array('controller' => 'dashboards', 'action' => 'home', 'guest' => true)); ?></li>
+                <li class="nav-item">
+                    <?php echo $this->Html->link('Khóa học đã hoàn thành', array('controller' => 'dashboards', 'action' => 'help', 'guest' => true)); ?>
+                <li class="nav-item">
+                    <?php echo $this->Html->link('Hướng dẫn sử dụng', array('controller' => 'dashboards', 'action' => 'tutorial', 'guest' => true)); ?>
+                <li class="nav-item">
+                    <?php echo $this->Html->link('Liên hệ', array('controller' => 'dashboards', 'action' => 'contact', 'guest' => true)); ?>
+                </li>
             </ul><!--//nav-->
         </div><!--//navabr-collapse-->
     </div><!--//container-->

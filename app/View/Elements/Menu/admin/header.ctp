@@ -165,8 +165,8 @@
                                 <li class="user-header bg-light-blue">
                                     <img src="img/avatar3.png" class="img-circle" alt="User Image" />
                                     <p>
-                                        Toàn Nguyễn - Web Developer
-                                        <small>Member since Nov. 2012</small>
+                                        <?php echo AuthComponent::user('name') ?>
+                                        <small><?php echo AuthComponent::user('email') ?></small>
                                     </p>
                                 </li>
                                 <!-- Menu Body -->

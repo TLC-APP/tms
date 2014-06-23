@@ -6,7 +6,9 @@
 
         <ul>
             <?php foreach ($users['Group'] as $group): ?>
-                <li><a href="/<?php echo $group['alias'] ?>"><?php echo $group['name'] ?></a></li>
+                <li>
+                    <?php echo $this->Html->link($group['name'],array('controller'=>'dashboards','action'=>'home',$group['alias']=>true));?>                
+                </li>
             <?php endforeach; ?>
 
         </ul>

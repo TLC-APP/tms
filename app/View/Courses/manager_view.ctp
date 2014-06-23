@@ -181,8 +181,8 @@
                 </div><!-- /.tab-content -->
             </div>
             <div class="btn-toolbar pull-right">
-                <?php echo $this->Html->link('IN DS học viên', '/courses/print_student/' . $course['Course']['id'], array('class' => 'btn btn-info')); ?>
-                <?php echo $this->Html->link('SỬA', '/fields_manager/courses/edit/' . $course['Course']['id'], array('class' => 'btn btn-info')); ?>
+                <?php echo $this->Html->link('IN DS học viên', array('manager'=>false,'controller'=>'courses','action'=>'print_student',$course['Course']['id']), array('class' => 'btn btn-info')); ?>
+                <?php echo $this->Html->link('SỬA', array('manager'=>true,'controller'=>'courses','action'=>'edit',$course['Course']['id']),array('class' => 'btn btn-info')); ?>
                 <?php echo $this->Html->link('HỦY', '#', array('class' => 'btn btn-warning')); ?>
             </div>
         </div>

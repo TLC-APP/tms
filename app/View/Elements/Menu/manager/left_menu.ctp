@@ -15,9 +15,9 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li>
-                <a href="/manager">
-                    <i class="fa fa-dashboard"></i> <span>Bàn làm việc</span>
-                </a>
+                <?php echo $this->Html->link('<i class="fa fa-dashboard"></i> <span>Bàn làm việc</span>',
+                        array('manager'=>true,'controller'=>'dashboards','action'=>'home'),array('escape'=>false));?>
+                
             </li>
             <li class="treeview">
                 <a href="#">
@@ -26,7 +26,11 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li ><a href="/manager/courses/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
+                    <li>
+                        <?php
+                        echo $this->Html->link('<i class="fa fa-angle-double-right"></i> Thêm mới', array('manager' => true, 'controller' => 'courses', 'action' => 'add'), array('escape' => false));
+                        ?>
+                    </li>
                     <li>                    
                         <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> Đang đăng ký', array('manager' => true, 'controller' => 'courses', 'action' => 'index', COURSE_REGISTERING), array('escape' => false)); ?>
                     </li>
@@ -36,7 +40,7 @@
                     <li>                    
                         <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Đã hoàn thành', array('manager' => true, 'controller' => 'courses', 'action' => 'index', COURSE_COMPLETED), array('escape' => false)); ?>
                     </li>
-                     <li>                    
+                    <li>                    
                         <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Đã hủy', array('manager' => true, 'controller' => 'courses', 'action' => 'index', COURSE_CANCELLED), array('escape' => false)); ?>
                     </li>
 
@@ -49,8 +53,12 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/manager/fields"><i class="fa fa-angle-double-right"></i> Danh sách lĩnh vực</a></li>
-                    <li><a href="/manager/fields/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'fields'), array('escape' => false)); ?>
+                    </li>
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('manager' => true, 'controller' => 'fields', 'action' => 'add'), array('escape' => false)); ?>
+                    </li>
                 </ul>
             </li>
             <li class="treeview">
@@ -60,8 +68,12 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/manager/chapters"><i class="fa fa-angle-double-right"></i> Danh sách chuyên đề</a></li>
-                    <li><a href="/manager/chapters/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'chapters'), array('escape' => false)); ?>
+                    </li>
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('manager' => true, 'controller' => 'chapters', 'action' => 'add'), array('escape' => false)); ?>
+                    </li>
                 </ul>
             </li>
             <li class="treeview">
@@ -70,8 +82,12 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/manager/departments/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
-                    <li><a href="/manager/departments"><i class="fa fa-angle-double-right"></i> Danh sách</a></li>
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'departments'), array('escape' => false)); ?>
+                    </li>
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('manager' => true, 'controller' => 'departments', 'action' => 'add'), array('escape' => false)); ?>
+                    </li>
 
                 </ul>
             </li>
@@ -82,23 +98,15 @@
                     <i class="fa fa-user"></i> <span>Người dùng</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="treeview-menu">
-                    <li><a href="/manager/users/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
-                    <li><a href="/manager/users"><i class="fa fa-angle-double-right"></i> Danh sách user</a></li>
-                    
+                <ul class="treeview-menu">                    
+                     <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'users'), array('escape' => false)); ?>
+                    </li>
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('manager' => true, 'controller' => 'users', 'action' => 'add'), array('escape' => false)); ?>
+                    </li>
 
-                </ul>
-            </li>
 
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-sign-in"></i> <span>Chứng nhận</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Quản lý sổ chứng nhận</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> In theo học viên</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> In theo lớp</a></li>
                 </ul>
             </li>
 
@@ -113,15 +121,6 @@
                     <li><a href="#"><i class="fa fa-angle-double-right"></i> Theo chuyên đề</a></li>
                     <li><a href="#"><i class="fa fa-angle-double-right"></i> Tập huấn viên</a></li>
                     <li><a href="#"><i class="fa fa-angle-double-right"></i> Khoảng thời gian</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-cog"></i> <span>Cấu hình</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Phương thức đăng nhập</a></li>
                 </ul>
             </li>
         </ul>
