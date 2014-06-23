@@ -11,7 +11,6 @@
                 </thead>
                 <tbody>
                     <?php
-                   
                     $stt = ($this->Paginator->param('page') - 1) * $this->Paginator->param('limit') + 1; ?>
                     <?php foreach ($courses_register as $course_register): ?>
                         <tr>

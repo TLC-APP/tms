@@ -55,17 +55,17 @@
                             ?></td>
                         <td><?php
                             if ($course_attended['StudentsCourse']['is_passed'])
-                                echo '<small class="label label-primary"> đạt </small>';
+                                echo '<small class="label label-primary"> Đạt </small>';
                             else
-                                echo '<small class="label label-warning"> không đạt </small>';
+                                echo '<small class="label label-warning"> Không đạt </small>';
                             ?></td>
                         <td>
                             <?php
                             if ($course_attended['StudentsCourse']['is_passed']) {
                                 if ($course_attended['StudentsCourse']['is_recieved'] == 1)
-                                    echo '<small class="label label-primary"> đã nhận </small>';
+                                    echo '<small class="label label-primary"> Đã nhận </small>';
                                 else
-                                    echo '<small class="label label-warning"> chưa nhận </small>';
+                                    echo '<small class="label label-warning"> Chưa nhận </small>';
                             }
                             ?></td>
 

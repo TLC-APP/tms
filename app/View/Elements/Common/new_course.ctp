@@ -19,7 +19,8 @@
                 </thead>
                 <tbody>
                     <?php $stt = ($this->Paginator->param('page') - 1) * $this->Paginator->param('limit') + 1; ?>
-                    <?php foreach ($courses as $course): ?>
+                    <?php
+                    foreach ($courses as $course): ?>
                         <tr>
                             <td><?php echo $stt++; ?></td>
                             <td>
@@ -33,9 +34,8 @@
                                 ?></td>
                             <td><?php
                                 $start = new DateTime($course['Course']['enrolling_expiry_date']);
-                                echo " Giờ: ";
                                 echo $start->format('H:i');
-                                echo", Ngày: ";
+                                echo", ngày: ";
                                 echo $start->format('d/m/Y');
                                 ?></td>
 

@@ -1,10 +1,8 @@
 <?php
 class ldap
 {
-
     private $ldap = null;
     private $ldapServer = '172.16.2.3';
-  //private $ldapServer = 'mail.tvu.edu.vn';
     private $ldapPort = '389';
     public $suffix = '';
     public $baseDN = 'ou=people,dc=tvu,dc=edu,dc=vn';
@@ -14,8 +12,6 @@ class ldap
     public function  __construct()
     {
         $this->ldap = ldap_connect($this->ldapServer, $this->ldapPort);
-
-        //these next two lines are required for windows server 03
         ldap_set_option($this->ldap, LDAP_OPT_REFERRALS, 0);
         ldap_set_option($this->ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
     }

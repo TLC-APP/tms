@@ -6,15 +6,21 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-            </button><!--//nav-toggle-->
-        </div><!--//navbar-header-->            
+            </button>
+        </div>          
         <div class="navbar-collapse collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="nav-item"><a href="/guest" >Trang chủ</a></li>
-                <li class="nav-item"><a href="/dashboards/help" >Khóa học đã hoàn thành</a></li>
-                <li class="nav-item"><a href="/dashboards/help" >Hướng dẫn sử dụng</a></li>
-                <li class="nav-item"><a href="/dashboards/contact" >Liên hệ</a></li>
-            </ul><!--//nav-->
-        </div><!--//navabr-collapse-->
-    </div><!--//container-->
+                <li class=" nav-item">
+                    <?php echo $this->Html->link('Trang chủ',array('controller' => 'dashboards', 'action' => 'home')); ?>
+                </li>
+                <li class=" nav-item">
+                    <?php echo $this->Html->link('Khóa học đã hoàn thành', array('controller' => 'dashboards', 'action' => 'courses_completed')); ?>
+                </li>
+                <li class=" nav-item">
+                    <?php echo $this->Html->link('Hướng dẫn sử dụng', array('controller' => 'dashboards', 'action' => 'help')); ?>
+                <li class=" nav-item">
+                    <?php echo $this->Html->link('Liên hệ', array('controller' => 'dashboards', 'action' => 'contact')); ?>
+            </ul>
+        </div>
+    </div>
 </nav>

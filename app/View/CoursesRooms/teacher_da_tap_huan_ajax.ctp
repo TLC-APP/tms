@@ -4,7 +4,6 @@
                         <th>#</th>
                         <th>Tên khóa học</th>
                         <th>Chuyên đề</th>
-                        <th>Số buổi</th>
                         <th>Sĩ số</th>
                      </tr>
                 </thead>
@@ -15,10 +14,9 @@
                     <?php foreach ($teacher_courses_completed as $teacher_course_completed): ?>
                         <tr>
                             <td><?php echo $stt++; ?></td>
-                            <td><?php echo $this->Html->link($teacher_course_completed['Course']['name'], array('student' => true, 'controller' => 'courses', 'action' => 'view', $teacher_course_completed['Course']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'))
+                            <td><?php echo $this->Html->link($teacher_course_completed['Course']['name'], array('teacher' => true, 'controller' => 'courses', 'action' => 'view', $teacher_course_completed['Course']['id']), array('escape' => false, 'class' => false))
                         ?></td>
                             <td><?php echo $teacher_course_completed['Course']['Chapter']['name']; ?></td>
-                            <td><?php echo $teacher_course_completed['Course']['session_number']; ?></td>
                             <td><?php echo $teacher_course_completed['Course']['register_student_number']; ?></td>
                         </tr>
                     <?php endforeach; ?>

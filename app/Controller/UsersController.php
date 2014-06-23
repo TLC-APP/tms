@@ -114,6 +114,30 @@ class UsersController extends AppController {
         $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => array('Department'));
         $this->set('user', $this->User->find('first', $options));
     }
+    
+    public function teacher_profile($id = null) {
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => array('Department'));
+        $this->set('user', $this->User->find('first', $options));
+    }
+    
+    public function fields_manager_profile($id = null) {
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => array('Department'));
+        $this->set('user', $this->User->find('first', $options));
+    }
+    
+    public function guest_profile($id = null) {
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => array('Department'));
+        $this->set('user', $this->User->find('first', $options));
+    }
 
     public function student_edit_profile($id) {
         if (!$this->User->exists($id)) {
@@ -134,6 +158,65 @@ class UsersController extends AppController {
             $this->request->data = $this->User->find('first', $options);
         }
     }
+    
+    public function guest_edit_profile($id) {
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            //debug($this->request->data);die;
+            if ($this->User->save($this->request->data)) {
+                $this->Session->setFlash('Đã cập nhật thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'profile', $id, 'guest' => true));
+            } else {
+                $this->Session->setFlash('Lỗi cập nhật hồ sơ!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            }
+        } else {
+            $departments = $this->User->Department->find('list');
+            $this->set('departments', $departments);
+            $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+            $this->request->data = $this->User->find('first', $options);
+        }
+    }
+    
+     public function teacher_edit_profile($id) {
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            //debug($this->request->data);die;
+            if ($this->User->save($this->request->data)) {
+                $this->Session->setFlash('Đã cập nhật thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'profile', $id, 'teacher' => true));
+            } else {
+                $this->Session->setFlash('Lỗi cập nhật hồ sơ!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            }
+        } else {
+            $departments = $this->User->Department->find('list');
+            $this->set('departments', $departments);
+            $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+            $this->request->data = $this->User->find('first', $options);
+        }
+    }
+    public function fields_manager_edit_profile($id) {
+         if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            //debug($this->request->data);die;
+            if ($this->User->save($this->request->data)) {
+                $this->Session->setFlash('Đã cập nhật thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'profile', $id, 'fields_manager' => true));
+            } else {
+                $this->Session->setFlash('Lỗi cập nhật hồ sơ!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            }
+        } else {
+            $departments = $this->User->Department->find('list');
+            $this->set('departments', $departments);
+            $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+            $this->request->data = $this->User->find('first', $options);
+        }
+	}
 
     /**
      * add method
@@ -185,7 +268,6 @@ class UsersController extends AppController {
             $this->request->data['User']['created_user_id'] = $this->Auth->user('id');
            
             $this->User->create();
-            debug($this->request->data);die;
             if ($this->User->save($this->request->data)) {
                 $userId = $this->User->getLastInsertID();
                 $user = $this->User->findById($userId);
@@ -294,6 +376,20 @@ class UsersController extends AppController {
     }
 
     public function student_view_teacher($id = null) {
+
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $contain = array(
+            'HocHam' => array('fields' => array('id', 'name')),
+            'HocVi' => array('fields' => array('id', 'name')),
+        );
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => $contain);
+        $teacher = $this->User->find('first', $options);
+        $this->set(compact('teacher'));
+    }
+    
+    public function guest_view_teacher($id = null) {
 
         if (!$this->User->exists($id)) {
             throw new NotFoundException(__('Invalid course'));

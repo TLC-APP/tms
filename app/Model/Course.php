@@ -233,12 +233,10 @@ class Course extends AppModel {
         // debug($coursescompleted_id_array);die;
         return $coursescompleted_id_array;
     }
-
     public function getCoursesUnCompleted() {
         $conditions = array('Course.status' => COURSE_UNCOMPLETED);
         $coursescompleted = $this->find('all', array('conditions' => $conditions, 'recursive' => -1));
         $coursescompleted_id_array = Set::classicExtract($coursescompleted, '{n}.Course.id');
-        // debug($coursescompleted_id_array);die;
         return $coursescompleted_id_array;
     }
 
