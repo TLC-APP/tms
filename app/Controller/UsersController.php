@@ -332,10 +332,8 @@ class UsersController extends AppController {
             $this->request->data['User']['created_user_id'] = $this->Auth->user('id');
 
             $this->User->create();
-<<<<<<< HEAD
-=======
+
             //debug($this->request->data);die;
->>>>>>> Toan
             if ($this->User->save($this->request->data)) {
                 $userId = $this->User->getLastInsertID();
                 $user = $this->User->findById($userId);

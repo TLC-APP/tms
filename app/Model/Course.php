@@ -237,8 +237,7 @@ class Course extends AppModel {
         // debug($coursescompleted_id_array);die;
         return $coursescompleted_id_array;
     }
-<<<<<<< HEAD
-=======
+
 
     public function getCoursesExpired() {
         $now = new DateTime();
@@ -249,7 +248,7 @@ class Course extends AppModel {
         return $coursescompleted_id_array;
     }
 
->>>>>>> Toan
+
     public function getCoursesUnCompleted() {
         $conditions = array('Course.status' => COURSE_UNCOMPLETED);
         $coursescompleted = $this->find('all', array('conditions' => $conditions, 'recursive' => -1));

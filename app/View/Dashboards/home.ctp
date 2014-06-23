@@ -4,12 +4,11 @@
     <?php echo $this->element('Widgets/guest/registering_courses', array('courses' => $courses)); ?>
 
     <!-- WIDGET Thời khóa biểu hôm nay-->
-<<<<<<< HEAD
     <?php $courses_today = $this->requestAction(array('guest' => true, 'controller' => 'coursesrooms', 'action' => 'guest_lich_homnay')) ?>
     <?php echo $this->element('Widgets/guest/today_schedule',array('courses_today' => $courses_today)); ?>
-=======
+
     <?php echo $this->element('Widgets/guest/today_schedule'); ?>
->>>>>>> Toan
+
 </div>
 <div class="col-md-4">
     <!--WIDGET TIN TỨC - THÔNG BÁO-->
