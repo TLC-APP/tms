@@ -3,24 +3,35 @@
     <li class="dropdown user user-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="glyphicon glyphicon-user"></i>
-            <span><?php echo AuthComponent::user('name')?> <i class="caret"></i></span>
+            <span><?php echo AuthComponent::user('name') ?> <i class="caret"></i></span>
         </a>
         <ul class="dropdown-menu">
             <!-- User image -->
             <li class="user-header bg-light-blue">
                <img src="/files/user/avatar/<?php echo AuthComponent::user('avatar_path').'/'.AuthComponent::user('avatar')?>" class="img-circle" alt="" />
                 <p>
+<<<<<<< HEAD
                     <?php echo AuthComponent::user('name')?> - <?php echo AuthComponent::user('email')?>
+=======
+                    <?php echo AuthComponent::user('name') ?> - <?php echo AuthComponent::user('email') ?>
+                    <small>Member since Nov. 2012</small>
+>>>>>>> Toan
                 </p>
             </li>
-            
             <!-- Menu Footer-->
             <li class="user-footer">
                 <div class="pull-left">
+<<<<<<< HEAD
                     <a class="btn btn-info" href="/fields_manager/users/profile/<?php echo AuthComponent::user('id')?>" >Hồ sơ</a>
                 </div>
                 <div class="pull-right">
                     <a href="/users/logout" class="btn btn-info">Thoát</a>
+=======
+                    <?php echo $this->Html->link('Hồ sơ', array('fields_manager'=>false,'controller' => 'users', 'action' => 'profile'), array('class' => 'btn btn-default btn-flat')); ?>
+                </div>
+                <div class="pull-right">                    
+                    <?php echo $this->Html->link('Thoát', array('fields_manager'=>false,'controller' => 'users', 'action' => 'logout'), array('class' => 'btn btn-default btn-flat')); ?>
+>>>>>>> Toan
                 </div>
             </li>
         </ul>

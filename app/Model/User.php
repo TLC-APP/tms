@@ -253,20 +253,20 @@ class User extends AppModel {
      *
      * @var array
      */
-        public $hasAndBelongsToMany = array(
-            'Group' => array(
-                'className' => 'Group',
-                'joinTable' => 'users_groups',
-                'foreignKey' => 'user_id',
-                'associationForeignKey' => 'group_id',
-                'unique' => 'keepExisting',
-                'conditions' => '',
-                'fields' => '',
-                'order' => '',
-                'limit' => '',
-                'offset' => '',
-                'finderQuery' => '',
-            )
+    public $hasAndBelongsToMany = array(
+        'Group' => array(
+            'className' => 'Group',
+            'joinTable' => 'users_groups',
+            'foreignKey' => 'user_id',
+            'associationForeignKey' => 'group_id',
+            'unique' => 'keepExisting',
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'finderQuery' => '',
+        )
     );
 
     public function isAdmin() {

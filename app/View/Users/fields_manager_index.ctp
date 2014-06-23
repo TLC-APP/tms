@@ -70,7 +70,7 @@
                                 <?php echo $this->Html->link('<button type="button" class="btn btn-info">
                         <span class="glyphicon glyphicon-edit"></span></button>', array('fields_manager'=>true,'action' => 'edit', $user['User']['id']), array('escape' => false)); ?>
                                 <?php echo $this->Form->postLink('<button type="button" class="btn btn-warning">
-                        <span class="glyphicon glyphicon-trash"></span></button>', array('action' => 'delete', $user['User']['id']), array('escape' => false), __('Bạn có chắc xóa %s?', $user['User']['name'])); ?>
+                        <span class="glyphicon glyphicon-trash"></span></button>', array('fields_manager'=>false,'action' => 'delete', $user['User']['id']), array('escape' => false), __('Bạn có chắc xóa %s?', $user['User']['name'])); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

@@ -17,10 +17,8 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-            <li  >
-                <a href="/fields_manager">
-                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                </a>
+            <li>
+                <?php echo $this->Html->link('<i class="fa fa-dashboard"></i> <span>Dashboard</span>', array('controller' => 'dashboards', 'action' => 'home', 'fields_manager' => true), array('escape' => false)); ?>
             </li>
             <li class="treeview">
                 <a href="#">
@@ -29,14 +27,12 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/fields_manager/courses/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
-                    <li><a href="/fields_manager/courses/index/1"><i class="fa fa-angle-double-right"></i> Đang đăng ký</a></li>
-                    <li><a href="/fields_manager/courses/index/2"><i class="fa fa-angle-double-right"></i> Đủ điều kiện mở lớp</a></li>
-                    <li><a href="/fields_manager/courses/index/3"><i class="fa fa-angle-double-right"></i> Chưa hoàn thành</a></li>
-                    <li><a href="/fields_manager/courses/index/4"><i class="fa fa-angle-double-right"></i> Đã hoàn thành</a></li>
-                    <li><a href="/fields_manager/courses/index/5"><i class="fa fa-angle-double-right"></i> Đã hủy</a></li>
-
-
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm mới</span>', array('controller' => 'courses', 'action' => 'add', 'fields_manager' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đang đăng ký</span>', array('controller' => 'courses', 'action' => 'index', 'fields_manager' => true, COURSE_REGISTERING), array('escape' => false)); ?></li>
+                    <li> <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đủ điều kiện mở lớp</span>', array('controller' => 'courses', 'action' => 'index', 'fields_manager' => true, COURSE_OPENABLE), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Chưa hoàn thành</span>', array('controller' => 'courses', 'action' => 'index', 'fields_manager' => true, COURSE_UNCOMPLETED), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đã hoàn thành</span>', array('controller' => 'courses', 'action' => 'index', 'fields_manager' => true, COURSE_COMPLETED), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đã hủy</span>', array('controller' => 'courses', 'action' => 'index', 'fields_manager' => true, COURSE_CANCELLED), array('escape' => false)); ?></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -46,9 +42,8 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/fields_manager/chapters/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
-                    <li><a href="/fields_manager/chapters"><i class="fa fa-angle-double-right"></i> Danh sách chuyên đề</a></li>
-
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm mới</span>', array('controller' => 'chapters', 'action' => 'add', 'fields_manager' => true), array('escape' => false)); ?></li>
+                    <li> <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Danh sách</span>', array('controller' => 'chapters', 'action' => 'index', 'fields_manager' => true), array('escape' => false)); ?></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -58,34 +53,11 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/fields_manager/users/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
-                    <li><a href="/fields_manager/users/index"><i class="fa fa-angle-double-right"></i> Danh sách tập huấn viên</a></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm mới</span>', array('controller' => 'users', 'action' => 'add', 'fields_manager' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Danh sách</span>', array('controller' => 'users', 'action' => 'index', 'fields_manager' => true), array('escape' => false)); ?></li>
+                </ul>
+            </li>
 
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-sign-in"></i> <span>Thống kê</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="pages/examples/invoice.html"><i class="fa fa-angle-double-right"></i> Theo đơn vị</a></li>
-                    <li><a href="pages/examples/404.html"><i class="fa fa-angle-double-right"></i> Theo chuyên đề</a></li>
-                    <li><a href="pages/examples/register.html"><i class="fa fa-angle-double-right"></i> Tập huấn viên</a></li>
-                    <li><a href="pages/examples/lockscreen.html"><i class="fa fa-angle-double-right"></i> Khoảng thời gian</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-sign-in"></i> <span>Chứng nhận</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="pages/examples/login.html"><i class="fa fa-angle-double-right"></i> Quản lý sổ chứng nhận</a></li>
-                    <li><a href="pages/examples/invoice.html"><i class="fa fa-angle-double-right"></i> In theo học viên</a></li>
-                    <li><a href="pages/examples/login.html"><i class="fa fa-angle-double-right"></i> In theo lớp</a></li>
-                </ul>
-            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

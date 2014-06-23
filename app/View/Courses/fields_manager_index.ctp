@@ -37,6 +37,8 @@ if (isset($status)) {
                     <th><?php echo $this->Paginator->sort('chapter_id', 'Chuyên đề'); ?></th>
                     <th><?php echo $this->Paginator->sort('teacher_id', 'Tập huấn bởi'); ?></th>
                     <th><?php echo $this->Paginator->sort('max_enroll_number', 'Đăng ký tối đa'); ?></th>
+                    <th><?php echo $this->Paginator->sort('register_student_number', 'Đã đăng ký'); ?></th>
+
                     <th><?php echo $this->Paginator->sort('is_published', 'Xuất bản'); ?></th>
                     <th><?php echo $this->Paginator->sort('enrolling_expiry_date', 'Hết hạn đăng ký'); ?></th>
                     <th><?php echo $this->Paginator->sort('created', 'Ngày tạo'); ?></th>
@@ -67,6 +69,8 @@ if (isset($status)) {
 
                                 </div>
                             </div>
+                        </td>
+                        <td><?php echo h($course['Course']['register_student_number']); ?>&nbsp;</td>
 
                         <td>
                             <?php echo $this->Html->link($course['Chapter']['name'], array('controller' => 'chapters', 'action' => 'view', $course['Chapter']['id'])); ?>
@@ -94,9 +98,7 @@ if (isset($status)) {
 
                             <?php
                             if (isset($status) && $status != COURSE_CANCELLED) {
-                                echo $this->Form->postLink('
-                                
-  <span class="fa fa-ban"></span>', array('fields_manager' => false, 'action' => 'huy', $course['Course']['id']), array('escape' => false), __('Bạn có chắc hủy khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
+                                echo $this->Form->postLink('<span class="fa fa-ban"></span>', array('fields_manager' => false, 'action' => 'huy', $course['Course']['id']), array('escape' => false), __('Bạn có chắc hủy khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
                             }
                             ?>
 
@@ -121,12 +123,9 @@ if (isset($status)) {
                 echo $this->Paginator->counter(array(
                     'format' => __('Trang {:page} của {:pages} trang, hiển thị {:current} của {:count} tất cả, bắt đầu từ {:start}, đến {:end}')
                 ));
-                ?>	</p>
-                <?php
-            echo $this->Paginator->pagination(array(
-                'ul' => 'pagination'
-            ));
-            ?>
+                ?>	
+            </p>
+            <?php echo $this->Paginator->pagination(array('ul' => 'pagination')); ?>
         </div>
         <div class="box-footer" style="text-align: right;">
             <?php echo $this->Html->link('Thêm mới', array('action' => 'add'), array('class' => 'btn btn-success')); ?>

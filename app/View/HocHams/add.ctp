@@ -28,7 +28,7 @@ echo $this->Form->create('HocHam', array(
         $('#addHocHamForm').on('submit', function(e) {
             e.preventDefault(); // prevent native submit
             $(this).ajaxSubmit({
-                url: '/hochams/add.json',
+                url: '<?php echo Router::url('/',true)?>/thgv/hoc_hams/add.json',
                 success: addHocHamResponse
             });
             return false;

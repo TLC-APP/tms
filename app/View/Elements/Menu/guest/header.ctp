@@ -1,5 +1,6 @@
 <?php if(AuthComponent::user('name')){ ?>
 <header class="header">  
+<<<<<<< HEAD
 
     <div class="header-main container">
         <h1 class="logo col-md-4 col-sm-4">
@@ -28,3 +29,15 @@
     </div><!--//header-main-->
 </header>
 <?php } ?>
+=======
+    <div class="header-main container">
+        <h1 class="logo col-md-4 col-sm-4">
+            <?php
+            echo $this->Html->image('/user/images/logo.png', array(
+                "alt" => "Hệ thống Quản lý THGV", 'id' => 'logo',
+                'url' => array('controller' => 'dashboards', 'action' => 'home')));
+            ?>
+        </h1><!--//logo-->           
+    </div><!--//header-main-->
+</header>
+>>>>>>> Toan

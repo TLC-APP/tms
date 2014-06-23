@@ -36,12 +36,12 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/admin/courses/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
-                    <li><a href="/admin/courses/index/1"><i class="fa fa-angle-double-right"></i> Đang đăng ký</a></li>
-                    <li><a href="/admin/courses/index/2"><i class="fa fa-angle-double-right"></i> Đủ điều kiện mở lớp</a></li>
-                    <li><a href="/admin/courses/index/3"><i class="fa fa-angle-double-right"></i> Chưa hoàn thành</a></li>
-                    <li><a href="/admin/courses/index/4"><i class="fa fa-angle-double-right"></i> Đã hoàn thành</a></li>
-                    <li><a href="/admin/courses/index/5"><i class="fa fa-angle-double-right"></i> Đã hủy</a></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm mới</span>', array('controller' => 'courses', 'action' => 'add', 'admin' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đang đăng ký</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_REGISTERING), array('escape' => false)); ?></li>
+                    <li> <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đủ điều kiện mở lớp</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_OPENABLE), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Chưa hoàn thành</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_UNCOMPLETED), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đã hoàn thành</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_COMPLETED), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đã hủy</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_CANCELLED), array('escape' => false)); ?></li>
 
                 </ul>
             </li>
@@ -84,10 +84,9 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/admin/users/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
                     <li><a href="/admin/groups"><i class="fa fa-angle-double-right"></i> Danh sách nhóm</a></li>
                     <li><a href="/admin/groups/add"><i class="fa fa-angle-double-right"></i> Thêm nhóm</a></li>
-                    <li><a href="/acl_manager/acl"><i class="fa fa-angle-double-right"></i> Phân quyền</a></li>
+                    <li><a href="/admin/acl_manager/acl"><i class="fa fa-angle-double-right"></i> Phân quyền</a></li>
 
                 </ul>
             </li>

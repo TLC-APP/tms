@@ -16,7 +16,7 @@ class Field extends AppModel {
      * @var string
      */
     public $displayField = 'name';
-
+    public $actsAs=array('Containable');
     /**
      * Validation rules
      *
@@ -60,7 +60,7 @@ class Field extends AppModel {
 
     /* belongsTo */
     public $belongsTo = array(
-        'CreatedUser' => array(
+        'User' => array(
             'className' => 'User',
             'foreignKey' => 'created_user_id',
             'conditions' => '',

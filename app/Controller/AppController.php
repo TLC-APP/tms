@@ -1,4 +1,5 @@
 <?php
+
 //tét
 App::uses('Controller', 'Controller');
 
@@ -22,18 +23,14 @@ class AppController extends Controller {
         'Form' => array('className' => 'BoostCake.BoostCakeForm'),
         'Paginator' => array('className' => 'BoostCake.BoostCakePaginator')
     );
-    public $uses = array('Course', 'CoursesRoom');
-
-    public function beforeRender() {
-        parent::beforeRender();
-    }
+    public $uses = array('Course', 'CoursesRoom','User');
 
     function beforeFilter() {
 
         if (!empty($this->params['prefix'])) {
             $this->layout = $this->params['prefix'];
         }
-        if (in_array($this->action, array('home', 'login', 'new_courses','getLastMessage','xem_thong_bao'))||$this->params['prefix']=='guest') {
+        if (in_array($this->action, array('home', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao')) || $this->params['prefix'] == 'guest') {
             $this->Auth->allow($this->action);
         }
 
@@ -58,6 +55,13 @@ class AppController extends Controller {
         $this->__checkCompleteCourse();
     }
 
+    public function beforeRender() {
+        parent::beforeRender();
+        if ($this->Auth->loggedIn() && ($this->User->isAdmin() || $this->User->isManager())) {
+            $this->check_expire_course();
+        }
+    }
+
     public function isAuthorized($user) {
 
         return $this->Auth->loggedIn();
@@ -76,12 +80,19 @@ class AppController extends Controller {
         $uncomplete_courses = $this->Course->getCoursesUnCompleted();
         if (!empty($uncomplete_courses)) {
             $khoa_con_buoi = $this->CoursesRoom->layKhoaConBuoi();
-
             $id_giong = array_intersect($uncomplete_courses, $khoa_con_buoi);
+
             $khoa_hoan_thanh = Set::diff($uncomplete_courses, $id_giong);
             if (!empty($khoa_hoan_thanh)) {
                 $this->Course->updateAll(array('Course.status' => COURSE_COMPLETED), array('Course.id' => $khoa_hoan_thanh));
             }
+        }
+    }
+    public function check_expire_course() {
+        $expired_courses = $this->Course->getCoursesExpired();
+        $prefix='manager';
+        if (!empty($expired_courses)) {
+            $this->Session->setFlash('Có khóa học đã hết hạn đăng ký <a href="' .Router::url('/',true). $prefix . '/courses/expired_courses"> chi tiết</a>', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning', 'escape' => false));
         }
     }
 

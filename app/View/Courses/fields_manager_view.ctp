@@ -1,4 +1,5 @@
 <?php echo $this->Html->script('jquery.shorten.1.0'); ?>
+
 <div class="col-lg-12 content-right">
 
     <div class="row">
@@ -151,7 +152,7 @@
                                                             <tr id='attachment_<?php echo $tailieu['id'] ?>'>
                                                                 <td><?php echo ++$stt ?></td>
                                                                 <td><?php echo $this->Html->link($tailieu['attachment'], array('fields_manager' => false, 'action' => 'download', $tailieu['id']));
-                                                        ?></td>
+                                                            ?></td>
                                                                 <td>
                                                                     <?php
                                                                     //echo $this->Form->postLink('<button class="btn btn-mini btn-warning" type="button">xóa</button>', array('fields_manager' => false, 'controller' => 'attachments', 'action' => 'delete', $tailieu['Attachment']['id']), array('escape' => false), __('bạn chắc xóa file %s?', $tailieu['Attachment']['attachment']));

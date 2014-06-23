@@ -1,5 +1,5 @@
-<?php /*Chapter*/ ?>
 <div class="container">
+    
     <div class="box box-primary">
         <div class="box-header">
             <h3 class="box-title">Danh mục chuyên đề</h3>
