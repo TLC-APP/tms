@@ -6,22 +6,21 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-            </button><!--//nav-toggle-->
-        </div><!--//navbar-header-->            
+            </button>
+        </div>         
         <div class="navbar-collapse collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="nav-item"><a href="/student" >Trang chủ</a></li>
                 <li class="nav-item">
-                    <a href="/student/students_courses/courses_studying">Khóa học đang tham dự</a>
-
+                    <?php echo $this->Html->link('Trang chủ', array('controller' => 'dashboards', 'action' => 'student_home')); ?>
+                   </li>
+                <li class="nav-item">
+                    <?php echo $this->Html->link('Khóa học đang tham dự', array('controller' => 'students_courses', 'action' => 'courses_studying')); ?>
                 </li>
                 <li class="nav-item">
-                    <a href="/student/students_courses/attended">Khóa học đã tham dự</a>
-
+                     <?php echo $this->Html->link('Khóa học đã tham dự', array('controller' => 'students_courses', 'action' => 'attended')); ?>
+                  
                 </li>
-
-
-            </ul><!--//nav-->
-        </div><!--//navabr-collapse-->
-    </div><!--//container-->
+            </ul>
+        </div>
+    </div>
 </nav>

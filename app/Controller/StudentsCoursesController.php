@@ -160,7 +160,7 @@ class StudentsCoursesController extends AppController {
             'Course' => array('fields' => array('id', 'name'))
         );
         $khoa_da_dang_ky = $this->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
-        $conditions = array('Course.id' => $khoa_da_dang_ky);
+        $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.status' => COURSE_COMPLETED);
         $courses_notification = $this->StudentsCourse->find('all', array('conditions' => $conditions, 'contain' => $contain));
         $this->set(compact('$courses_notification'));
         return $courses_notification;
@@ -196,33 +196,45 @@ class StudentsCoursesController extends AppController {
     }
 
     public function student_courses_studying() {
-        $contain = array('Course' => array('fields' => array('id', 'name', 'status','session_number'), 'Teacher' => array('id', 'name'), 'Chapter' => array('id', 'name')));
         $loggin_id = $this->Auth->user('id');
         $khoa_da_dang_ky = $this->StudentsCourse->getEnrolledCourses($loggin_id);
-        $course_uncompleted = $this->StudentsCourse->Course->getCoursesUnCompleted();
-        $course = array();
-        if (!empty($khoa_da_dang_ky) && !empty($course_uncompleted)) {
-            $course = array_intersect($khoa_da_dang_ky, $course_uncompleted);
-        }
-
-        $conditions = array('StudentsCourse.course_id' => $course);
         $fields = $this->StudentsCourse->Course->Chapter->Field->find('list');
-        if ($this->request->is('ajax')) {
-            $field_id = $this->request->data['field_name'];
-            if (!empty($field_id)) {
-                $chapter_id = $this->StudentsCourse->Course->Chapter->getChapterByField_id($field_id);
-                $course_id = $this->StudentsCourse->Course->getCoursesByChapter_id($chapter_id);
-                $course = array_intersect($khoa_da_dang_ky, $course_uncompleted, $course_id);
-                $conditions = array('StudentsCourse.course_id' => $course);
+        $course = array();
+        $conditions = array();
+        $contain = array('Course' => array('fields' => array('id', 'name', 'status', 'session_number'), 'Teacher' => array('id', 'name'), 'Chapter' => array('id', 'name')));
+        $courses_studying = array();
+        if (!empty($khoa_da_dang_ky)) {
+            $course_uncompleted = $this->StudentsCourse->Course->getCoursesUnCompleted();
+            if (!empty($khoa_da_dang_ky) && !empty($course_uncompleted)) {
+                $course = array_intersect($khoa_da_dang_ky, $course_uncompleted);
+            }
+            $conditions = array('StudentsCourse.course_id' => $course,'StudentsCourse.student_id'=>$loggin_id );
+            if (!empty($this->request->data)) {
+                $field_id = $this->request->data['field_name'];
+                if (!empty($field_id)) {
+                    $chapter_id = $this->StudentsCourse->Course->Chapter->getChapterByField_id($field_id);
+                    $course_id = $this->StudentsCourse->Course->getCoursesByChapter_id($chapter_id);
+                    $course = array_intersect($khoa_da_dang_ky, $course_uncompleted, $course_id);
+                    $conditions = array('StudentsCourse.course_id' => $course,'StudentsCourse.student_id'=>$loggin_id);
+                }
             }
             $this->set(compact('fields'));
-            $courses_attended=$this->StudentsCourse->find('all',array('conditions' => $conditions, 'contain' => $contain)) ;
-            $this->set('courses_attended',$courses_attended);
-            $this->render('student_courses_studying_ajax');
+            $courses_studying = $this->StudentsCourse->find('all', array('conditions' => $conditions, 'contain' => $contain));
+            $this->set('courses_studying', $courses_studying);
+            if ($this->request->is('ajax')) {
+                $this->render('student_courses_studying_ajax');
+            }
+            $this->set(compact('fields'));
+            $courses_studying = $this->StudentsCourse->find('all', array('conditions' => $conditions, 'contain' => $contain));
+            $this->set('courses_studying', $courses_studying);
+        } else {
+            $this->set(compact('fields'));
+            $this->set('courses_studying', $courses_studying);
         }
-        $courses_attended=$this->StudentsCourse->find('all',array('conditions' => $conditions, 'contain' => $contain)) ;
+        if ($this->request->is('ajax'))
+            $this->render('student_courses_studying_ajax');
         $this->set(compact('fields'));
-        $this->set('courses_attended',$courses_attended);
+        $this->set('courses_studying', $courses_studying);
     }
 
     public function student_attended() {
@@ -238,35 +250,31 @@ class StudentsCoursesController extends AppController {
             if (!empty($khoa_da_dang_ky) && !empty($course_completed)) {
                 $course = array_intersect($khoa_da_dang_ky, $course_completed);
             }
-            $conditions = array('StudentsCourse.course_id' => $course);
-
+            $conditions = array('StudentsCourse.course_id' => $course,'StudentsCourse.student_id'=>$loggin_id);
             if (!empty($this->request->data)) {
                 $field_id = $this->request->data['field_name'];
                 if (!empty($field_id)) {
                     $chapter_id = $this->StudentsCourse->Course->Chapter->getChapterByField_id($field_id);
                     $course_id = $this->StudentsCourse->Course->getCoursesByChapter_id($chapter_id);
                     $course = array_intersect($khoa_da_dang_ky, $course_completed, $course_id);
-                    $conditions = array('StudentsCourse.course_id' => $course);
+                    $conditions = array('StudentsCourse.course_id' => $course,'StudentsCourse.student_id'=>$loggin_id);
                 }
             }
             $this->set(compact('fields'));
-            $this->Paginator->settings = array('conditions' => $conditions, 'contain' => $contain);
-            $courses_attended = $this->Paginator->paginate();
+            $courses_attended = $this->StudentsCourse->find('all', array('conditions' => $conditions, 'contain' => $contain));
             $this->set('courses_attended', $courses_attended);
             if ($this->request->is('ajax')) {
                 $this->render('student_attended_ajax');
             }
-
             $this->set(compact('fields'));
-            $this->Paginator->settings = array('conditions' => $conditions, 'contain' => $contain);
-            $courses_attended = $this->Paginator->paginate();
+            $courses_attended = $this->StudentsCourse->find('all', array('conditions' => $conditions, 'contain' => $contain));
             $this->set('courses_attended', $courses_attended);
-            if ($this->request->is('ajax'))
-                $this->render('student_attended_ajax');
         } else {
             $this->set(compact('fields'));
             $this->set('courses_attended', $courses_attended);
         }
+        if ($this->request->is('ajax'))
+            $this->render('student_attended_ajax');
         $this->set(compact('fields'));
         $this->set('courses_attended', $courses_attended);
     }

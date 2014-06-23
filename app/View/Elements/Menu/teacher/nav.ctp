@@ -10,9 +10,16 @@
         </div><!--//navbar-header-->            
         <div class="navbar-collapse collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class=" nav-item"><a href="/teacher" >Trang chủ</a></li>
-                <li class=" nav-item"><a href="/teacher/coursesrooms/sap_to_chuc" >Sắp tổ chức</a></li>
-                <li class=" nav-item"><a href="/teacher/coursesrooms/da_tap_huan" >Đã tập huấn</a></li>
+                <li class=" nav-item">
+                    <?php echo $this->Html->link('Trang chủ', array('controller' => 'dashboards', 'action' => 'teacher_home')); ?>
+                </li>
+                <li class=" nav-item">
+                    <?php echo $this->Html->link('Khóa học sắp tổ chức', array('controller' => 'coursesrooms', 'action' => 'sap_to_chuc')); ?>
+                </li>
+
+                <li class=" nav-item">
+                    <?php echo $this->Html->link('Khóa học đã tập huấn', array('controller' => 'coursesrooms', 'action' => 'da_tap_huan')); ?>
+                </li>
 
             </ul><!--//nav-->
         </div><!--//navabr-collapse-->

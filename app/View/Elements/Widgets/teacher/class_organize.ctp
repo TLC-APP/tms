@@ -10,7 +10,8 @@
                         <th>#</th>
                         <th>Tên khóa học</th>
                         <th>Chuyên đề</th>
-                        <th>Số buổi</th>
+                        <th>Đã đăng kí</th>
+                        <th>Ngày hết hạn</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,10 +21,16 @@
                     <?php foreach ($courses_organize as $course_organize): ?>
                         <tr>
                             <td><?php echo $stt++; ?></td>
-                            <td><?php echo $this->Html->link($course_organize['Course']['name'], array('student' => true, 'controller' => 'courses', 'action' => 'view', $course_organize['Course']['id']), array('escape' => false))
+                            <td><?php echo $this->Html->link($course_organize['Course']['name'], array('teacher' =>true, 'controller' => 'courses', 'action' => 'view1', $course_organize['Course']['id']), array('escape' => false, 'class' =>false))
                         ?></td>
                             <td><?php echo $course_organize['Chapter']['name']; ?></td>
-                            <td><?php echo count($course_organize['CoursesRoom']); ?></td>
+                            <td><?php echo $course_organize['Course']['register_student_number'];  ?></td>
+                            <td><?php 
+                            $start = new DateTime($course_organize['Course']['enrolling_expiry_date']);
+                                echo $start->format('H:i');
+                                echo", ngày: ";
+                                echo $start->format('d/m/Y');
+                            ?></td>
 
                         </tr>
                     <?php endforeach; ?>

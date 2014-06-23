@@ -18,7 +18,7 @@
 		<td><?php echo h($message['Message']['content']); ?>&nbsp;</td>
 		<td><?php echo h($message['Message']['published']); ?>&nbsp;</td>
 		<td>
-			<?php echo $this->Html->link($message['CreatedUser']['name'], array('controller' => 'users', 'action' => 'view', $message['CreatedUser']['id'])); ?>
+			<?php echo $this->Html->link($message['User']['name'], array('controller' => 'users', 'action' => 'view', $message['User']['id'])); ?>
 		</td>
 		<td><?php echo h($message['Message']['created']); ?>&nbsp;</td>
 		<td><?php echo h($message['Message']['modified']); ?>&nbsp;</td>

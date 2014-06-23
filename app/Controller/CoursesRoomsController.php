@@ -291,9 +291,9 @@ class CoursesRoomsController extends AppController {
         $teacher_courses_today = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain));
         $this->set(compact('teacher_courses_today'));
         return $teacher_courses_today;
+        
     }
 
-    
     public function teacher_sap_to_chuc() {
         $fields = $this->CoursesRoom->Course->Chapter->Field->find('list');
         $course_start = $this->CoursesRoom->course_near_attend();
@@ -319,7 +319,6 @@ class CoursesRoomsController extends AppController {
                     'Course.id' => $course_id,
                 );
                 $teacher_courses = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain, 'group' => array('CoursesRoom.course_id')));
-                
             }
             $this->set('teacher_courses', $teacher_courses);
             $this->render('teacher_sap_to_chuc_ajax');
@@ -360,20 +359,18 @@ class CoursesRoomsController extends AppController {
             $this->set('teacher_courses_completed', $teacher_courses_completed);
         }
         $this->set(compact('fields'));
-
-        /* $course_end = $this->CoursesRoom->course_attend();
-          $contain = array(
-          'Course' => array('Chapter' => array('id', 'name'), 'Teacher' => array('id', 'name')),
-          'Room' => array('id', 'name')
-          );
-          $teacher_id = $this->Auth->user('id');
-          $conditions = array('Course.teacher_id' => $teacher_id,
-          'Course.status' => COURSE_COMPLETED,
-          'NOT' => array('Course.id' => $course_end),
-          );
-          $teacher_courses_completed = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain, 'group' => array('CoursesRoom.course_id'),));
-          $this->set(compact('teacher_courses_completed'));
-          return $teacher_courses_completed; */
     }
-
+    
+     public function guest_lich_homnay() {
+        $contain = array(
+            'Course' => array('Chapter' => array('id', 'name'), 'Teacher' => array('id', 'name')),
+            'Room' => array('id', 'name')
+        );
+        $today = new DateTime();
+        $batdau = CakeTime::daysAsSql($today, $today, 'CoursesRoom.start');
+        $conditions = array('Course.status' => COURSE_UNCOMPLETED, $batdau);
+        $teacher_courses_today = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain));
+        $this->set(compact('teacher_courses_today'));
+        return $teacher_courses_today;
+    }
 }

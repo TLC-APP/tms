@@ -11,15 +11,13 @@ class DashboardsController extends AppController {
     public $uses = array('User', 'Group', 'Course', 'Chapter', 'StudentsCourse', 'CoursesRoom', 'Room');
 
     public function home() {
-        if ($this->Auth->loggedIn()) {            
+        if ($this->Auth->loggedIn()) {
             $user = $this->User->find('first', array('contain' => array('Group'), 'conditions' => array('User.id' => $this->Auth->user('id'))));
-            if (count($user['Group']) == 1) {
-                
+           /* if (count($user['Group']) == 1) {
                 $this->redirect("/{$user['Group'][0]['alias']}/dashboards/home");
-            }
+            }*/
             $this->set('users', $user);
         }
-        
     }
 
     public function student_home() {
@@ -27,7 +25,7 @@ class DashboardsController extends AppController {
             'User' => array('fields' => array('id', 'name')), //create user
             'Teacher' => array('fields' => array('id', 'name')), //Teacher
             'CoursesRoom' => array('Room' => array('id', 'name')),
-            'StudentsCourse' ,//Khoa hoc
+            'StudentsCourse', //Khoa hoc
             'Chapter' => array('fields' => array('id', 'name'))//Chuyen de
         );
         $loginId = $this->Auth->user('id');
@@ -35,7 +33,6 @@ class DashboardsController extends AppController {
         $khoa_toi_day = $this->Course->getTeachingCourse($loginId);
         $today = new DateTime();
         $not_in_course = Set::merge($khoa_da_dang_ky, $khoa_toi_day);
-        
         $conditions = array(
             'NOT' => array('Course.id' => $not_in_course),
             'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'),
@@ -101,6 +98,41 @@ class DashboardsController extends AppController {
 
     public function contact() {
         
+    }
+
+    public function help() {
+        
+    }
+
+    public function courses_completed() {
+        $fields = $this->CoursesRoom->Course->Chapter->Field->find('list');
+        $course_end = $this->CoursesRoom->course_attend();
+        $contain = array('Course' => array('Chapter' => array('id', 'name'), 'Teacher' => array('id', 'name')), 'Room' => array('id', 'name'));
+        $conditions = array(
+            'Course.status' => COURSE_COMPLETED,
+            'NOT' => array('Course.id' => $course_end),
+        );
+        if ($this->request->is('ajax')) {
+            $field_id = $this->request->data['field_name'];
+            if ($field_id == '') {
+                $courses_completed = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain, 'group' => array('CoursesRoom.course_id'),));
+            } else {
+                $chapter_id = $this->CoursesRoom->Course->Chapter->getChapterByField_id($field_id);
+                $course_id = $this->CoursesRoom->Course->getCoursesByChapter_id($chapter_id);
+                $conditions = array(
+                    'Course.status' => COURSE_COMPLETED,
+                    'NOT' => array('Course.id' => $course_end),
+                    'Course.id' => $course_id,
+                );
+                $courses_completed = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain, 'group' => array('CoursesRoom.course_id'),));
+            }
+            $this->set('courses_completed', $courses_completed);
+            $this->render('courses_completed_ajax');
+        } else {
+            $courses_completed = $this->CoursesRoom->find('all', array('conditions' => $conditions, 'contain' => $contain, 'group' => array('CoursesRoom.course_id'),));
+            $this->set('courses_completed', $courses_completed);
+        }
+        $this->set(compact('fields'));
     }
 
 }
