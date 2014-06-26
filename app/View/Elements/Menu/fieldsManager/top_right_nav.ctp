@@ -8,30 +8,19 @@
         <ul class="dropdown-menu">
             <!-- User image -->
             <li class="user-header bg-light-blue">
-               <img src="/files/user/avatar/<?php echo AuthComponent::user('avatar_path').'/'.AuthComponent::user('avatar')?>" class="img-circle" alt="" />
+                <img src="/files/user/avatar/<?php echo AuthComponent::user('avatar_path') . '/' . AuthComponent::user('avatar') ?>" class="img-circle" alt="" />
                 <p>
-<<<<<<< HEAD
-                    <?php echo AuthComponent::user('name')?> - <?php echo AuthComponent::user('email')?>
-=======
                     <?php echo AuthComponent::user('name') ?> - <?php echo AuthComponent::user('email') ?>
-                    <small>Member since Nov. 2012</small>
->>>>>>> Toan
                 </p>
             </li>
             <!-- Menu Footer-->
             <li class="user-footer">
                 <div class="pull-left">
-<<<<<<< HEAD
-                    <a class="btn btn-info" href="/fields_manager/users/profile/<?php echo AuthComponent::user('id')?>" >Hồ sơ</a>
+                    <?php echo $this->Html->link('Hồ sơ', array('fields_manager' => true, 'controller' => 'users', 'action' => 'profile', AuthComponent::user('id')), array('class' => 'btn btn-default btn-flat')); ?>
+
                 </div>
                 <div class="pull-right">
-                    <a href="/users/logout" class="btn btn-info">Thoát</a>
-=======
-                    <?php echo $this->Html->link('Hồ sơ', array('fields_manager'=>false,'controller' => 'users', 'action' => 'profile'), array('class' => 'btn btn-default btn-flat')); ?>
-                </div>
-                <div class="pull-right">                    
-                    <?php echo $this->Html->link('Thoát', array('fields_manager'=>false,'controller' => 'users', 'action' => 'logout'), array('class' => 'btn btn-default btn-flat')); ?>
->>>>>>> Toan
+                    <?php echo $this->Html->link('Thoát', array('fields_manager' => false, 'controller' => 'users', 'action' => 'logout'), array('class' => 'btn btn-default btn-flat')); ?>
                 </div>
             </li>
         </ul>

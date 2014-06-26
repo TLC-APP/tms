@@ -10,7 +10,6 @@
         </div>          
         <div class="navbar-collapse collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
-<<<<<<< HEAD
                 <li class=" nav-item">
                     <?php echo $this->Html->link('Trang chủ',array('controller' => 'dashboards', 'action' => 'home')); ?>
                 </li>
@@ -24,17 +23,4 @@
             </ul>
         </div>
     </div>
-=======
-                <li class="nav-item"><?php echo $this->Html->link('Trang chủ', array('controller' => 'dashboards', 'action' => 'home', 'guest' => true)); ?></li>
-                <li class="nav-item">
-                    <?php echo $this->Html->link('Khóa học đã hoàn thành', array('controller' => 'dashboards', 'action' => 'help', 'guest' => true)); ?>
-                <li class="nav-item">
-                    <?php echo $this->Html->link('Hướng dẫn sử dụng', array('controller' => 'dashboards', 'action' => 'tutorial', 'guest' => true)); ?>
-                <li class="nav-item">
-                    <?php echo $this->Html->link('Liên hệ', array('controller' => 'dashboards', 'action' => 'contact', 'guest' => true)); ?>
-                </li>
-            </ul><!--//nav-->
-        </div><!--//navabr-collapse-->
-    </div><!--//container-->
->>>>>>> Toan
 </nav>
