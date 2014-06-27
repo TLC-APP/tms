@@ -1,6 +1,6 @@
 <div class="col-lg-12 content-right">
     <div class="row">
-        <h3 class="page-header">Khóa học: <?php echo $course['Course']['name'] ?> </h3>
+        <h3 class="page-header" style=" font-family: arial">Khóa học: <?php echo $course['Course']['name'] ?> </h3>
         <div class="col-md-12">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
@@ -35,7 +35,7 @@
                                             <?php echo $course['Teacher']['HocVi']['name'] . ' '; ?>
 
                                         <?php endif; ?>
-                                        <?php echo $this->Html->link($course['Teacher']['name'], array('fields_manager' => true, 'controller' => 'users', 'action' => 'view', $course['Teacher']['id'])) ?>
+                                        <strong><?php echo $course['Teacher']['name'] ?></strong>
 
                                     </td>
                                 </tr>
@@ -50,7 +50,12 @@
                                 <tr>
                                     <td>Hạn đăng ký</td> 
                                     <td>
-                                        <span class="text-red"><?php echo $course['Course']['enrolling_expiry_date']; ?></span>
+                                        <span class="text-red"><?php 
+                                        $start = new DateTime($course['Course']['enrolling_expiry_date']);
+                                                                    echo $start->format('H:i');
+                                                                    echo", Ngày: ";
+                                                                    echo $start->format('d/m/Y');
+                                        ?></span>
                                     </td>
                                 </tr>
 
@@ -58,7 +63,7 @@
                                 <tr>
                                     <td>Chuyên đề</td>
                                     <td>                 
-                                        <?php echo $this->Html->link($course['Chapter']['name'], array('controller' => 'chapters', 'action' => 'view', $course['Chapter']['id'])); ?>
+                                        <strong><?php echo $course['Chapter']['name']; ?></strong>
                                     </td>
                                 </tr>
 
@@ -93,7 +98,9 @@
                                                                 <td><?php echo $buoi['title']; ?></td>
                                                                 <td><?php
                                                                     $start = new DateTime($buoi['start']);
-                                                                    echo $start->format('H:i, d - m - Y');
+                                                                    echo $start->format('H:i');
+                                                                    echo", Ngày: ";
+                                                                    echo $start->format('d/m/Y');
                                                                     ?></td>
                                                                 <td><?php echo $buoi['room']; ?></td>
                                                             </tr>
@@ -129,7 +136,7 @@
                                                                     ?>
                                                                     <tr id='attachment_<?php echo $tailieu['id'] ?>'>
                                                                         <td><?php echo ++$stt ?></td>
-                                                                        <td><?php echo $this->Html->link($tailieu['attachment'], array('fields_manager' => false, 'controller' => 'chapters', 'action' => 'download', $tailieu['id'])); ?></td>
+                                                                        <td><?php echo $this->Html->link($tailieu['attachment'], array('fields_manager' => false,'controller' => 'chapters', 'action' => 'download', $tailieu['id'] )); ?></td>
                                                                     </tr>
                                                                 <?php endforeach; ?>
                                                                 <?php
@@ -140,12 +147,6 @@
                                                                         <td><?php echo ++$stt ?></td>
                                                                         <td><?php echo $this->Html->link($tailieu['attachment'], array('fields_manager' => false, 'action' => 'download', $tailieu['id']));
                                                                     ?></td>
-                                                                        <td>
-                                                                            <?php
-                                                                            //echo $this->Form->postLink('<button class="btn btn-mini btn-warning" type="button">xóa</button>', array('fields_manager' => false, 'controller' => 'attachments', 'action' => 'delete', $tailieu['Attachment']['id']), array('escape' => false), __('bạn chắc xóa file %s?', $tailieu['Attachment']['attachment']));
-                                                                            echo $this->Html->link('<button class="btn btn-mini btn-warning" type="button">xóa</button>', '/attachments/delete/' . $tailieu['id'], array('escape' => false, 'class' => 'delete-attachment-button'));
-                                                                            ?>
-                                                                        </td>
                                                                     </tr>
                                                                 <?php endforeach; ?>
                                                             </tbody>

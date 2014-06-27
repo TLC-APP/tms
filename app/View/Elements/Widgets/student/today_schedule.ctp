@@ -20,16 +20,17 @@
                     //debug($courses_today);die;
                     $stt = ($this->Paginator->param('page') - 1) * $this->Paginator->param('limit') + 1;
                     ?>
-<?php foreach ($courses_today as $course_today): ?>
+<?php 
+                  
+foreach ($courses_today as $course_today): ?>
                         <tr>
                             <td><?php echo $stt++; ?></td>
                             <td><?php echo $this->Html->link($course_today['Course']['name'], array('student' => true, 'controller' => 'courses', 'action' => 'view', $course_today['Course']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'))
     ?></td>
                             <td><?php echo $course_today['Course']['Chapter']['name']; ?></td>
                             <td><?php $start = new DateTime($course_today['CoursesRoom']['start']);
-                                        echo " Giờ: ";
                                         echo $start->format('H:i');
-                                        echo", Ngày: ";
+                                        echo", ngày: ";
                                         echo $start->format('d/m/Y'); ?></td>
                             <td><?php echo $course_today['Room']['name']; ?></td>
                             <td><?php

@@ -5,7 +5,7 @@
         <div class="small-box bg-aqua">
             <div class="inner">
                 <h3>
-                    15<sup style="font-size: 20px"> lớp </sup>
+                    15<sup style="font-size: 20px">lớp</sup>
                 </h3>
                 <p>
                     đang đăng ký

@@ -26,6 +26,7 @@ class DepartmentsController extends AppController {
     public function manager_index() {
         $this->Department->recursive = 0;
         $this->set('departments', $this->Paginator->paginate());
+        $data = $this->Department->generateTreeList();
     }
 
     /**

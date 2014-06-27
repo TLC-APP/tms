@@ -6,8 +6,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-            </button><!--//nav-toggle-->
-        </div><!--//navbar-header-->            
+            </button>
+        </div>          
         <div class="navbar-collapse collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="nav-item"><?php echo $this->Html->link('Trang chủ', array('controller' => 'dashboards', 'action' => 'home', 'guest' => true)); ?></li>

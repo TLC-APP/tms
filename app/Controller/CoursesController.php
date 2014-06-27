@@ -1,8 +1,6 @@
 <?php
-
 App::uses('AppController', 'Controller');
 App::uses('CakeEmail', 'Network/Email');
-
 /**
  * Courses Controller
  *
@@ -10,7 +8,6 @@ App::uses('CakeEmail', 'Network/Email');
  * @property PaginatorComponent $Paginator
  */
 class CoursesController extends AppController {
-
     /**
      * Components
      *
@@ -23,7 +20,6 @@ class CoursesController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
     }
-
     public function __sendMail($to, $subject, $message) {
         $email = new CakeEmail();
         $email->config('gmail');
@@ -31,7 +27,6 @@ class CoursesController extends AppController {
         $email->subject($subject);
         $email->send($message);
     }
-
     /**
      * index method
      *
@@ -76,7 +71,6 @@ class CoursesController extends AppController {
         $today = new DateTime();
         $khoa_da_dang_ky = $this->Course->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
         $conditions = array('Course.id' => $khoa_da_dang_ky, 'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'), 'Course.status' => COURSE_REGISTERING);
-
         $courses_register = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain));
         return $courses_register;
     }
@@ -100,11 +94,27 @@ class CoursesController extends AppController {
             'Attachment'
         );
         $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
-//$rooms = $this->Course->CoursesRoom->Room->find('list');
         $course = $this->Course->find('first', $options);
         $this->set(compact('course'));
     }
-
+    
+     public function guest_view1($id = null) {
+        if (!$this->Course->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $contain = array(
+            'User' => array('fields' => array('id', 'name')),
+            'CoursesRoom' => array('conditions' => array('CoursesRoom.start is not null'), 'order' => array('CoursesRoom.priority' => 'ASC')),
+            'Teacher' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'HocHam', 'HocVi'),
+            'Chapter' => array('Attachment'),
+            'Attachment',
+            'StudentsCourse' => array('Student' => array('fields' => array('id', 'name', 'email', 'phone_number')))
+        );
+        $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
+        $course = $this->Course->find('first', $options);
+        $this->set(compact('course'));
+    }
+    
     /**
      * add method
      *
@@ -145,6 +155,40 @@ class CoursesController extends AppController {
         $course = $this->Course->find('first', $options);
         $this->set(compact('course'));
     }
+    public function teacher_view($id = null){
+        if (!$this->Course->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $contain = array(
+            'User' => array('fields' => array('id', 'name')),
+            'CoursesRoom' => array('conditions' => array('CoursesRoom.start is not null'), 'order' => array('CoursesRoom.priority' => 'ASC')),
+            'Teacher' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'HocHam', 'HocVi'),
+            'Chapter' => array('Attachment'),
+            'Attachment',
+            'StudentsCourse' => array('Student' => array('fields' => array('id', 'name', 'email', 'phone_number')))
+        );
+        $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
+        $course = $this->Course->find('first', $options);
+        $this->set(compact('course'));
+    }
+     public function teacher_view1($id = null){
+        if (!$this->Course->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $contain = array(
+            'User' => array('fields' => array('id', 'name')),
+            'CoursesRoom' => array('conditions' => array('CoursesRoom.start is not null'), 'order' => array('CoursesRoom.priority' => 'ASC')),
+            'Teacher' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'HocHam', 'HocVi'),
+            'Chapter' => array('Attachment'),
+            'Attachment',
+            'StudentsCourse' => array('Student' => array('fields' => array('id', 'name', 'email', 'phone_number')))
+        );
+        $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
+        $course = $this->Course->find('first', $options);
+        $this->set(compact('course'));
+    }
+    
+     
 
     /* ket thuc vung sinh vien */
 
@@ -696,8 +740,8 @@ class CoursesController extends AppController {
         $this->set('course', $this->Course->find('first', $options));
     }
 
-    public function guest_khoamoidangki() {
-        $contain = array(
+    public function guest_cothedangki() {
+         $contain = array(
             'User' => array('fields' => array('id', 'name')), //create user
             'Teacher' => array('fields' => array('id', 'name')), //Teacher
             'CoursesRoom' => array('Room' => array('id', 'name')),
@@ -705,17 +749,19 @@ class CoursesController extends AppController {
             'Chapter' => array('fields' => array('id', 'name'))//Chuyen de
         );
         $today = new DateTime();
-
-        $conditions = array('Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'), 'Course.status' => COURSE_REGISTERING);
-        if ($this->Auth->loggedIn()) {
-            $loginId = $this->Auth->user('id');
-            $khoa_da_dang_ky = $this->Course->StudentsCourse->getEnrolledCourses($loginId);
-            $khoa_toi_day = $this->Course->getTeachingCourse($loginId);
-            $not_show = Set::merge($khoa_da_dang_ky, $khoa_toi_day);
-            $conditions = Set::merge($conditions, array('NOT' => array('Course.id' => $not_show)));
-        }
-        $courses_register = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain));
+        $conditions = array(
+            'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'),
+            'Course.is_published' => 1,
+            'Course.max_enroll_number > (SELECT count(id) as Course__register_student_number 
+         FROM  students_courses as StudentsCourse 
+         where StudentsCourse.course_id=Course.id)'
+        );
+        $course_fields = array('id', 'name', 'chapter_id', 'max_enroll_number', 'enrolling_expiry_date', 'register_student_number', 'session_number');
+        $courses_register = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain, 'fields' => $course_fields,));
         return $courses_register;
+       //$fields = $this->Course->Chapter->Field->find('list');
+        //$chapters = $this->Course->Chapter->find('list');
+        //$this->set(compact('fields', 'chapters'));
     }
 
 //Trả về danh sách các lớp của login là teacher
@@ -728,14 +774,35 @@ class CoursesController extends AppController {
             'Chapter' => array('fields' => array('id', 'name'))//Chuyen de
         );
         $today = new DateTime();
-        $fields = array('id', 'name');
+        $fields = array('id', 'name','enrolling_expiry_date','register_student_number');
         $teacher_id = $this->Auth->user('id');
         $conditions = array('Course.teacher_id' => $teacher_id,
             'Course.status' => COURSE_REGISTERING,
-            'Course.enrolling_expiry_date >' => $today->format('Y-m-d H:i:s')
+            'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s')
         );
         $khoa_dang_dk = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain, 'fields' => $fields));
         return $khoa_dang_dk;
+    }
+    
+    public function teacher_edit($id=null){
+        if (!$this->Course->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            if ($this->Course->save($this->request->data)) {
+                $this->Session->setFlash('Lưu thành công','alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'view1',$id));
+            } else {
+                $this->Session->setFlash('Lưu không thành công. Vui lòng thử lại','alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            }
+        } else {
+            $this->Course->recursive=-1;
+            $options = array('conditions' => array(
+                    'Course.' . $this->Course->primaryKey => $id),
+                );
+            $this->request->data = $this->Course->find('first', $options);
+            $this->set('courses_edit',$this->request->data);
+        }
     }
 
 }

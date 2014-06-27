@@ -1,14 +1,12 @@
 <div class="col-lg-12 content-right">
     <div class="row">
-        <h3 class="page-header">Khóa học: <?php echo $course['Course']['name'] ?> </h3>
+        <h3 class="page-header" style="font-family: arial">Khóa học: <?php echo $course['Course']['name'] ?> </h3>
         <div class="col-md-12">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-
                     <li ><a data-toggle="tab" href="#tab_2-4">Lịch học</a></li>
                     <li class=""><a data-toggle="tab" href="#tab_2-2">Thông tin</a></li>
                     <li class="active"><a data-toggle="tab" href="#tab_1-1">Nội dung</a></li>
-
                 </ul>
                 <div class="tab-content">
                     <div id="tab_1-1" class="tab-pane active">
@@ -20,7 +18,6 @@
                     </div><!-- /.tab-pane -->
                     <div id="tab_2-2" class="tab-pane">
                         <table class="table table-condensed">
-
                             <tbody style="font-size: 15px;">
                                 <tr>
                                     <td>Tập huấn bởi</td>
@@ -34,8 +31,6 @@
 
                                         <?php endif; ?>
                                         <strong><?php echo $course['Teacher']['name']; ?></strong>
-
-
                                     </td>
                                 </tr>
                                 <tr>
@@ -49,18 +44,18 @@
                                 <tr>
                                     <td>Hạn đăng ký</td> 
                                     <td>
-                                        <span class="text-red"><?php echo $course['Course']['enrolling_expiry_date']; ?></span>
+                                        <span class="text-red"><?php 
+                                         $start = new DateTime($course['Course']['enrolling_expiry_date']);
+                                                                    echo $start->format('H:i');
+                                                                    echo", Ngày: ";
+                                                                    echo $start->format('d/m/Y');
+                                        ?></span>
                                     </td>
                                 </tr>
-
-
                                 <tr>
                                     <td>Chuyên đề</td>
                                     <td><strong><?php echo $course['Chapter']['name']; ?></strong></td>
                                 </tr>
-
-
-
                             </tbody>
                         </table>
                     </div><!-- /.tab-pane -->
@@ -72,7 +67,6 @@
                                 <div class="well">
                                     <div class="row">
                                         <div class="col-sm-12">
-
                                             <div class="table-responsive">
                                                 <table class="table table-hover table-condensed">
                                                     <thead>
@@ -90,7 +84,9 @@
                                                                 <td><?php echo $buoi['title']; ?></td>
                                                                 <td><?php
                                                                     $start = new DateTime($buoi['start']);
-                                                                    echo $start->format('H:i, d - m - Y');
+                                                                    echo $start->format('H:i');
+                                                                    echo", Ngày: ";
+                                                                    echo $start->format('d/m/Y');
                                                                     ?></td>
                                                                 <td><?php echo $buoi['room']; ?></td>
                                                             </tr>

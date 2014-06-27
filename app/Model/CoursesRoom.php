@@ -141,13 +141,4 @@ class CoursesRoom extends AppModel {
         //debug($courses_id_array);die;
         return $courses_id_array;
     }
-    
-    //Đếm số buổi
-     public function count_session($course_id) {
-        $conditions = array('CoursesRoom.course_id' => $course_id);
-        $students_courses = $this->find('all', array('conditions' => $conditions));
-        $sobuoi=count($students_courses);
-        return $sobuoi;
-    }
-
 }

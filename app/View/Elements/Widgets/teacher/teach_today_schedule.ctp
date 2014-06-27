@@ -8,7 +8,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Tên khóa học</th>
+                        <th style="width: 20%">Tên khóa học</th>
                         <th>Chuyên đề</th>
                         <th>Bắt đầu</th>
                         <th>Địa điểm</th>
@@ -21,16 +21,17 @@
                     //debug($courses_today);die;
                     $stt = ($this->Paginator->param('page') - 1) * $this->Paginator->param('limit') + 1;
                     ?>
-<?php foreach ($teacher_courses_today as $teacher_course_today): ?>
+                    <?php foreach ($teacher_courses_today as $teacher_course_today): ?>
                         <tr>
                             <td><?php echo $stt++; ?></td>
-                            <td><?php echo $this->Html->link($teacher_course_today['Course']['name'], array('student' => true, 'controller' => 'courses', 'action' => 'view', $teacher_course_today['Course']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'))
-    ?></td>                            <td><?php echo $teacher_course_today['Course']['Chapter']['name']; ?></td>
-                            <td><?php $start = new DateTime($teacher_course_today['CoursesRoom']['start']);
-    echo " Giờ: ";
-    echo $start->format('H:i');
-    echo", Ngày: ";
-    echo $start->format('d/m/Y'); ?></td>
+                            <td><?php echo $this->Html->link($teacher_course_today['Course']['name'], array('teacher' => true, 'controller' => 'courses', 'action' => 'view', $teacher_course_today['Course']['id']), array('escape' => false, 'class' => false))
+                        ?></td>                            <td><?php echo $teacher_course_today['Course']['Chapter']['name']; ?></td>
+                            <td><?php
+                                $start = new DateTime($teacher_course_today['CoursesRoom']['start']);
+                                echo $start->format('H:i');
+                                echo", ngày: ";
+                                echo $start->format('d/m/Y');
+                                ?></td>
                             <td><?php echo $teacher_course_today['Room']['name']; ?></td>
                             <td><?php echo $teacher_course_today['Course']['register_student_number']; ?></td>
                         </tr>

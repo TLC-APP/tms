@@ -41,21 +41,19 @@
 
                 <?php
                 $stt = 1;
-                foreach ($courses_attended as $course_attended):
+                foreach ($courses_studying as $course_studying):
                     ?>
                     <tr>
                         <td><?php echo $stt++; ?></td>
-                        <td><?php echo $this->Html->link($course_attended['Course']['name'], array('student' => true, 'controller' => 'courses', 'action' => 'view', $course_attended['Course']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'));
+                        <td><?php echo $this->Html->link($course_studying['Course']['name'], array('student' => true, 'controller' => 'courses', 'action' => 'view', $course_studying['Course']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'));
                     ?>&nbsp;
 
                         </td>
-                        <td><?php echo $course_attended['Course']['Chapter']['name']; ?>&nbsp;</td>
-                        <td><?php echo $course_attended['Course']['session_number']; ?>&nbsp;</td>
+                        <td><?php echo $course_studying['Course']['Chapter']['name']; ?>&nbsp;</td>
+                        <td><?php echo $course_studying['Course']['session_number']; ?>&nbsp;</td>
                         <td><?php
-                            echo $this->Html->link($course_attended['Course']['Teacher']['name'], array('student' => true, 'controller' => 'users', 'action' => 'view_teacher', $course_attended['Course']['Teacher']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'))
+                            echo $this->Html->link($course_studying['Course']['Teacher']['name'], array('student' => true, 'controller' => 'users', 'action' => 'view_teacher', $course_studying['Course']['Teacher']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'))
                             ?></td>
-
-                       
                     </tr>
                 <?php endforeach; ?>
             </table>

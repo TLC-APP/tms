@@ -65,20 +65,15 @@
                                 </tr>
                                 <tr><td>Đã xuất bản</td><td><?php echo $course['Course']['is_published']; ?></td></tr>
                                 <tr><td> Tình trạng</td><td><?php echo $course['Course']['status']; ?></td></tr>
-
                                 <tr>
                                     <td>Chuyên đề</td>
                                     <td>                 
                                         <?php echo $this->Html->link($course['Chapter']['name'], array('controller' => 'chapters', 'action' => 'view', $course['Chapter']['id'])); ?>
                                     </td>
                                 </tr>
-
-
-
                             </tbody>
                         </table>
                     </div><!-- /.tab-pane -->
-
                     <div id="tab_2-4" class="tab-pane active">
                         <div class="row">
                             <div class="col-md-12">
@@ -142,13 +137,11 @@
                                                             . '<span><i class="fa fa-plus"></i> Đính kèm</span></button>', '/courses/upload/' . $course['Course']['id'], array('escape' => false,
                                                         'class' => 'add-button fancybox.ajax'));
                                                     ?>
-
                                                 </div>
                                             </div>
                                         </div><!-- /.box-header -->
                                         <div class="box-body">
                                             <div class="table-responsive" id="attachments_list">
-
                                                 <table class="table table-condensed">
                                                     <thead><tr><th>#</th><th>Tên file</th><th></th></tr></thead>
                                                     <tbody>

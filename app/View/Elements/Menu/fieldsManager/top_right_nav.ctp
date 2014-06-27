@@ -8,10 +8,12 @@
         <ul class="dropdown-menu">
             <!-- User image -->
             <li class="user-header bg-light-blue">
-                <img src="#" class="img-circle" alt="User Image" />
+               <img src="/files/user/avatar/<?php echo AuthComponent::user('avatar_path').'/'.AuthComponent::user('avatar')?>" class="img-circle" alt="" />
                 <p>
+
                     <?php echo AuthComponent::user('name') ?> - <?php echo AuthComponent::user('email') ?>
                     <small>Member since Nov. 2012</small>
+                    <?php echo AuthComponent::user('name')?> - <?php echo AuthComponent::user('email')?>
                 </p>
             </li>
             <!-- Menu Footer-->
@@ -21,6 +23,10 @@
                 </div>
                 <div class="pull-right">                    
                     <?php echo $this->Html->link('Thoát', array('fields_manager'=>false,'controller' => 'users', 'action' => 'logout'), array('class' => 'btn btn-default btn-flat')); ?>
+                    <a class="btn btn-info" href="/fields_manager/users/profile/<?php echo AuthComponent::user('id')?>" >Hồ sơ</a>
+                </div>
+                <div class="pull-right">
+                    <a href="/users/logout" class="btn btn-info">Thoát</a>
                 </div>
             </li>
         </ul>
