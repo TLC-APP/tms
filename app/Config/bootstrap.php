@@ -6,10 +6,9 @@ Cache::config('default', array('engine' => 'File'));
 CakePlugin::load('BoostCake');
 CakePlugin::load('Authorize');
 CakePlugin::load('AclManager', array('bootstrap' => true));
-CakePlugin::load('DebugKit');
 CakePlugin::load('Upload');
 CakePlugin::load('TinymceElfinder');
-CakePlugin::load('Dropbox');
+
 Configure::write('Dispatcher.filters', array(
     'AssetDispatcher',
     'CacheDispatcher'

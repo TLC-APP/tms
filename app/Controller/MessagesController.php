@@ -22,7 +22,7 @@ class MessagesController extends AppController {
      *
      * @return void
      */
-    public function index() {
+    public function manager_index() {
         $contain = array('User' => array('fields' => array('id', 'name')));
         $this->Paginator->settings = array('contain' => $contain);
         $this->set('messages', $this->Paginator->paginate());
@@ -63,7 +63,7 @@ class MessagesController extends AppController {
      *
      * @return void
      */
-    public function add() {
+    public function manager_add() {
         if ($this->request->is('post')) {
             $this->Message->create();
             if ($this->Message->save($this->request->data)) {
@@ -81,7 +81,7 @@ class MessagesController extends AppController {
      * @param string $id
      * @return void
      */
-    public function edit($id = null) {
+    public function manager_edit($id = null) {
         if (!$this->Message->exists($id)) {
             throw new NotFoundException(__('Invalid message'));
         }

@@ -84,9 +84,9 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/admin/groups"><i class="fa fa-angle-double-right"></i> Danh sách nhóm</a></li>
-                    <li><a href="/admin/groups/add"><i class="fa fa-angle-double-right"></i> Thêm nhóm</a></li>
-                    <li><a href="/admin/acl_manager/acl"><i class="fa fa-angle-double-right"></i> Phân quyền</a></li>
+                    <li><a href="/groups"><i class="fa fa-angle-double-right"></i> Danh sách nhóm</a></li>
+                    <li><a href="/groups/add"><i class="fa fa-angle-double-right"></i> Thêm nhóm</a></li>
+                    <li><a href="/acl_manager/acl"><i class="fa fa-angle-double-right"></i> Phân quyền</a></li>
 
                 </ul>
             </li>
@@ -96,27 +96,10 @@
                     <i class="fa fa-calendar"></i> <span>Đơn vị</span>
                 </a>
             </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-sign-in"></i> <span>Thống kê</span>
-                    <i class="fa fa-angle-left pull-right"></i>
+            <li>
+                <a href="/admin/courses/thong_ke">
+                    <i class="fa fa-calendar"></i> <span>Thống kê</span>
                 </a>
-                <ul class="treeview-menu">
-                    <li><a href="pages/examples/invoice.html"><i class="fa fa-angle-double-right"></i> Theo đơn vị</a></li>
-                    <li><a href="pages/examples/login.html"><i class="fa fa-angle-double-right"></i> Theo lĩnh vực</a></li>
-                    <li><a href="pages/examples/404.html"><i class="fa fa-angle-double-right"></i> Theo chuyên đề</a></li>
-                    <li><a href="pages/examples/register.html"><i class="fa fa-angle-double-right"></i> Tập huấn viên</a></li>
-                    <li><a href="pages/examples/lockscreen.html"><i class="fa fa-angle-double-right"></i> Khoảng thời gian</a></li>
-                </ul>
-            </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-cog"></i> <span>Cấu hình</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="pages/examples/invoice.html"><i class="fa fa-angle-double-right"></i> Phương thức đăng nhập</a></li>
-                </ul>
             </li>
         </ul>
     </section>

@@ -15,9 +15,9 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li>
-                <?php echo $this->Html->link('<i class="fa fa-dashboard"></i> <span>Bàn làm việc</span>',
-                        array('manager'=>true,'controller'=>'dashboards','action'=>'home'),array('escape'=>false));?>
-                
+                <?php echo $this->Html->link('<i class="fa fa-dashboard"></i> <span>Bàn làm việc</span>', array('manager' => true, 'controller' => 'dashboards', 'action' => 'home'), array('escape' => false));
+                ?>
+
             </li>
             <li class="treeview">
                 <a href="#">
@@ -99,7 +99,7 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">                    
-                     <li>                    
+                    <li>                    
                         <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'users'), array('escape' => false)); ?>
                     </li>
                     <li>                    
@@ -109,7 +109,21 @@
 
                 </ul>
             </li>
-
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-bar-chart-o"></i>
+                    <span>Thông báo</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'messages'), array('escape' => false)); ?>
+                    </li>
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('manager' => true, 'controller' => 'messages', 'action' => 'add'), array('escape' => false)); ?>
+                    </li>
+                </ul>
+            </li>
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-sign-in"></i> <span>Thống kê</span>

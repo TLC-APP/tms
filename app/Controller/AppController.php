@@ -7,7 +7,7 @@ class AppController extends Controller {
 
     public $components = array(
         'Session', 'RequestHandler',
-        'DebugKit.Toolbar',
+        //'DebugKit.Toolbar',
         'Paginator',
         'Acl',
         'Auth' => array(
@@ -23,7 +23,8 @@ class AppController extends Controller {
         'Form' => array('className' => 'BoostCake.BoostCakeForm'),
         'Paginator' => array('className' => 'BoostCake.BoostCakePaginator')
     );
-    public $uses = array('Course', 'CoursesRoom','User');
+    public $uses = array('Course', 'CoursesRoom', 'User');
+
 
     function beforeFilter() {
 
@@ -88,11 +89,12 @@ class AppController extends Controller {
             }
         }
     }
+
     public function check_expire_course() {
         $expired_courses = $this->Course->getCoursesExpired();
-        $prefix='manager';
+        $prefix = 'manager';
         if (!empty($expired_courses)) {
-            $this->Session->setFlash('Có khóa học đã hết hạn đăng ký <a href="' .Router::url('/',true). $prefix . '/courses/expired_courses"> chi tiết</a>', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning', 'escape' => false));
+            $this->Session->setFlash('Có khóa học đã hết hạn đăng ký <a href="' . Router::url('/', true) . $prefix . '/courses/expired_courses"> chi tiết</a>', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning', 'escape' => false));
         }
     }
 

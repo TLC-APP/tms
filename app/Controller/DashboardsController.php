@@ -72,6 +72,7 @@ class DashboardsController extends AppController {
         $this->Session->write('layout', 'admin');
         $this->layout = 'admin';
     }
+    
 
     public function loggedInMenu() {
 

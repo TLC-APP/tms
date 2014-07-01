@@ -1,5 +1,5 @@
 <header class="header">
-    <?php echo $this->Html->link('TLC.tms', array('controller' => 'dashboards', 'action' => 'home'), array('class' => 'logo')); ?>
+    <?php echo $this->Html->link('TMS', array('controller' => 'dashboards', 'action' => 'home','manager'=>false), array('class' => 'logo')); ?>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" role="navigation">
         <!-- Sidebar toggle button-->
@@ -24,8 +24,8 @@
                         <li class="user-header bg-light-blue">
                             <img src="#" class="img-circle" alt="User Image" />
                             <p>
-                                Toàn Nguyễn - Web Developer
-                                <small>Member since Nov. 2012</small>
+                                <?php echo AuthComponent::user('name');?>
+                                <small><?php echo AuthComponent::user('email');?></small>
                             </p>
                         </li>
                         <!-- Menu Body -->

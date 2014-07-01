@@ -6,10 +6,8 @@
     <body class="skin-black fixed">
         <!-- header logo: style can be found in header.less -->
         <header class="header">
-            <a href="/" class="logo">
-                <!-- Add the class icon to your logo image or logo icon to add the margining -->
-                TLC.tms
-            </a>
+            <?php echo $this->Html->link('TMS', array('controller' => 'dashboards', 'action' => 'home', 'fields_manager' => false), array('class' => 'logo')); ?>
+
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
