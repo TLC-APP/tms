@@ -1,6 +1,6 @@
 <div class="panel panel-theme">
     <div class="panel-heading">
-        <h3 class="panel-title"><i class=" glyphicon glyphicon-bullhorn"></i> Thông báo từ hệ thống</h3>
+        <h3 class="panel-title"><i class=" glyphicon glyphicon-bullhorn"></i> Thông báo chứng nhận</h3>
     </div>
     <div class="panel-body">
         <table>

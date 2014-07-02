@@ -3,23 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/DashboardsController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Layouts/default_1.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Layouts/default.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/AppController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/DashboardsController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/index.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/teacher/nav.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/guest/nav.ctp</file>
-=======
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/manager_add.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/manager_index.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/manager_view.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/manager_edit.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/manager_score.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/CoursesController.php</file>
->>>>>>> Toan
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/ChaptersController.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/Chapter.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/print_student.ctp</file>
         </group>
     </open-files>
 </project-private>

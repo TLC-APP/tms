@@ -1,7 +1,5 @@
 <?php
-
-$this->PhpExcel->loadWorksheet(WWW_ROOT . 'report/template/student_list.xlsx');
-//$this->PhpExcel->createWorksheet();
+$this->PhpExcel->loadWorksheet(WWW_ROOT .'report/template/student_list.xlsx');
 $this->PhpExcel->setDefaultFont('Times New Roman', 11);
 if (!empty($course['CoursesRoom'])) {
     $start = new DateTime($course['CoursesRoom']['0']['start']);
@@ -9,8 +7,6 @@ if (!empty($course['CoursesRoom'])) {
     $this->PhpExcel->writeDataToCell(6, 'E', $start->format('H:i, d-m-Y'));
     $this->PhpExcel->writeDataToCell(6, 'G', $end->format('H:i, d-m-Y'));
 }
-
-
 $this->PhpExcel->writeDataToCell(5, 'C', $course['Chapter']['name']);
 $this->PhpExcel->writeDataToCell(6, 'C', $course['Course']['name']);
 $colunms = array(
@@ -21,11 +17,10 @@ $colunms = array(
     array('label' => 'Nơi sinh', 'width' => 'auto', 'filter' => false),
 );
 foreach ($course['CoursesRoom'] as $buoi) {
-    //debug($buoi);
     $colunms = am($colunms, array(array('label' => $buoi['title'], 'width' => 'auto', 'filter' => false)));
+   
 }
 $colunms = am($colunms, array(array('label' => 'Ghi chú', 'width' => 'auto', 'filter' => false)));
-
 $styleArray = array(
        'borders' => array(
              'outline' => array(
@@ -34,10 +29,7 @@ $styleArray = array(
              ),
        ),
 );
-
-
 $this->PhpExcel->setRow(8);
-//debug($colunms);die;
 $this->PhpExcel->addTableHeader($colunms, array('font' => 'Times New Roman', 'bold' => true));
 // data 
 $stt = 1;

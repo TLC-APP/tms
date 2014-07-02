@@ -63,11 +63,11 @@ class ChaptersController extends AppController {
         if ($this->request->is('post')) {
             $this->Chapter->create();
             $this->request->data['Chapter']['created_user_id'] = $loginId;
-
             try {
-                $this->Chapter->createWithAttachments($this->request->data);
-                $this->Session->setFlash('Thêm chuyên đề thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
-                return $this->redirect(array('action' => 'index'));
+                if ($this->Chapter->createWithAttachments($this->request->data)) {
+                    $this->Session->setFlash('Thêm chuyên đề thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                    return $this->redirect(array('action' => 'index'));
+                }
             } catch (Exception $exc) {
                 echo $exc->getTraceAsString();
             }
@@ -121,16 +121,16 @@ class ChaptersController extends AppController {
         if ($this->request->is('post')) {
             $this->Chapter->create();
             $this->request->data['Chapter']['created_user_id'] = $loginId;
-
             try {
-                $this->Chapter->createWithAttachments($this->request->data);
-                $this->Session->setFlash('Thêm chuyên đề thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
-                return $this->redirect(array('action' => 'index'));
+                if ($this->Chapter->createWithAttachments($this->request->data)) {
+                    $this->Session->setFlash('Thêm chuyên đề thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                    return $this->redirect(array('action' => 'index'));
+                }
             } catch (Exception $exc) {
                 echo $exc->getTraceAsString();
             }
         }
-        
+
         $fields = $this->Chapter->Field->find('list');
         $this->set(compact('fields'));
     }
@@ -145,6 +145,7 @@ class ChaptersController extends AppController {
                 return $this->redirect(array('action' => 'index'));
             }
         } else {
+
             $options = array('conditions' => array('Chapter.' . $this->Chapter->primaryKey => $id));
             $this->request->data = $this->Chapter->find('first', $options);
         }
@@ -229,14 +230,12 @@ class ChaptersController extends AppController {
      * @param string $id
      * @return void
      */
-    public function delete($id = null) {
+    public function fields_manager_delete($id = null) {
 
         $this->Chapter->id = $id;
         if (!$this->Chapter->exists()) {
             throw new NotFoundException(__('Invalid chapter'));
         }
-
-
         $this->request->onlyAllow('post', 'delete');
         if (!$this->Chapter->isOwnedBy($id, $this->Auth->user('id')) && (!$this->Chapter->User->isAdmin() || !$this->Chapter->User->isManager())) {
             $this->Session->setFlash('Bạn không có quyền xóa chuyên đề người khác tạo', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
@@ -297,8 +296,6 @@ class ChaptersController extends AppController {
         $this->response->file(
                 $path, array('download' => true, 'name' => $this->Chapter->Attachment->getFileName($attachment_id))
         );
-        // Return response object to prevent controller from trying to render
-        // a view
         return $this->response;
     }
 

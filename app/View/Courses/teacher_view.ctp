@@ -16,8 +16,11 @@
                         <?php if ($course['Course']['status'] == COURSE_COMPLETED) echo $this->element('teacher/course/view/course_completed_students', array('students' => $course['StudentsCourse'])); ?>
 
                         <?php if ($course['Course']['status'] == COURSE_REGISTERING) echo $this->element('teacher/course/view/course_registering_students', array('students' => $course['StudentsCourse'])); ?>
-                        
+
                         <?php if ($course['Course']['status'] == COURSE_UNCOMPLETED) echo $this->element('teacher/course/view/course_uncompleted_students', array('students' => $course['StudentsCourse'])); ?>
+                        <div class="btn-toolbar pull-right">
+                            <?php echo $this->Html->link('IN DS học viên', array('teacher' => false, 'controller' => 'courses', 'action' => 'print_student', $course['Course']['id']), array('class' => 'btn btn-info')); ?>
+                        </div>
                     </div>
                     <div id="tab_1-1" class="tab-pane active">
                         <div class="noi_dung" >
@@ -39,12 +42,12 @@
                                 <tr>
                                     <td>Hạn đăng ký</td> 
                                     <td>
-                                        <span class="text-red"><?php 
-                                         $start = new DateTime($course['Course']['enrolling_expiry_date']);
-                                                                    echo $start->format('H:i');
-                                                                    echo", ngày: ";
-                                                                    echo $start->format('d/m/Y');
-                                        ?></span>
+                                        <span class="text-red"><?php
+                                            $start = new DateTime($course['Course']['enrolling_expiry_date']);
+                                            echo $start->format('H:i');
+                                            echo", ngày: ";
+                                            echo $start->format('d/m/Y');
+                                            ?></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -102,55 +105,54 @@
                     <div id="tai_lieu" class="tab-pane">
                         <div class="row">
                             <div class="col-md-12">
-                                    <div class="box box-solid">
-                                        <div class="box-header">
-                                            <h3 class="box-title">Tài liêu của khóa</h3>
-                                            <div class="box-tools pull-right">
-                                                <div data-toggle="btn-toggle" class="btn-group">
+                                <div class="box box-solid">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Tài liêu của khóa</h3>
+                                        <div class="box-tools pull-right">
+                                            <div data-toggle="btn-toggle" class="btn-group">
+                                                <?php
+                                                echo $this->Html->link(
+                                                        '<button class="btn btn-success btn-xs active" type="button">'
+                                                        . '<span><i class="fa fa-plus"></i> Đính kèm</span></button>', '/courses/upload/' . $course['Course']['id'], array('escape' => false,
+                                                    'class' => 'add-button fancybox.ajax'));
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="table-responsive" id="attachments_list">
+
+                                            <table class="table table-condensed">
+                                                <thead><tr><th>#</th><th>Tên file</th><th></th></tr></thead>
+                                                <tbody>
                                                     <?php
-                                                    echo $this->Html->link(
-                                                            '<button class="btn btn-success btn-xs active" type="button">'
-                                                            . '<span><i class="fa fa-plus"></i> Đính kèm</span></button>', '/courses/upload/' . $course['Course']['id'], array('escape' => false,
-                                                        'class' => 'add-button fancybox.ajax'));
-                                                    ?>
-                                                </div>
-                                            </div>
-                                        </div><!-- /.box-header -->
-                                        <div class="box-body">
-                                            <div class="table-responsive" id="attachments_list">
-
-                                                <table class="table table-condensed">
-                                                    <thead><tr><th>#</th><th>Tên file</th><th></th></tr></thead>
-                                                    <tbody>
-                                                        <?php
-                                                        $stt = 0;
-                                                        foreach ($course['Attachment'] as $tailieu):
-                                                            ?>
-                                                            <tr id='attachment_<?php echo $tailieu['id'] ?>'>
-                                                                <td><?php echo ++$stt ?></td>
-                                                                <td><?php echo $this->Html->link($tailieu['attachment'], array('fields_manager' => false, 'action' => 'download', $tailieu['id']));
+                                                    $stt = 0;
+                                                    foreach ($course['Attachment'] as $tailieu):
+                                                        ?>
+                                                        <tr id='attachment_<?php echo $tailieu['id'] ?>'>
+                                                            <td><?php echo ++$stt ?></td>
+                                                            <td><?php echo $this->Html->link($tailieu['attachment'], array('fields_manager' => false, 'action' => 'download', $tailieu['id']));
                                                         ?></td>
-                                                                <td>
-                                                                    <?php
-                                                                    //echo $this->Form->postLink('<button class="btn btn-mini btn-warning" type="button">xóa</button>', array('fields_manager' => false, 'controller' => 'attachments', 'action' => 'delete', $tailieu['Attachment']['id']), array('escape' => false), __('bạn chắc xóa file %s?', $tailieu['Attachment']['attachment']));
-                                                                    echo $this->Html->link('<button class="btn btn-mini btn-warning" type="button">xóa</button>', '/attachments/delete/' . $tailieu['id'], array('escape' => false, 'class' => 'delete-attachment-button'));
-                                                                    ?>
-                                                                </td>
-                                                            </tr>
-                                                        <?php endforeach; ?>
+                                                            <td>
+                                                                <?php
+                                                                //echo $this->Form->postLink('<button class="btn btn-mini btn-warning" type="button">xóa</button>', array('fields_manager' => false, 'controller' => 'attachments', 'action' => 'delete', $tailieu['Attachment']['id']), array('escape' => false), __('bạn chắc xóa file %s?', $tailieu['Attachment']['attachment']));
+                                                                echo $this->Html->link('<button class="btn btn-mini btn-warning" type="button">xóa</button>', '/attachments/delete/' . $tailieu['id'], array('escape' => false, 'class' => 'delete-attachment-button'));
+                                                                ?>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
 
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div><!-- /.box-body -->
-                                    </div>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div><!-- /.box-body -->
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div><!-- /.tab-content -->
-
-
             </div>
+
         </div>
 
     </div>

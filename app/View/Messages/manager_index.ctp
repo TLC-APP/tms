@@ -1,19 +1,18 @@
-<?php /*Chapter*/ ?>
 <div class="container">
     <div class="box box-primary">
         <div class="box-header">
-            <h3 class="box-title">Danh mục chuyên đề</h3>
+            <h3 class="box-title">Danh mục thông báo</h3>
             <div id="commentStatus"></div>
             <?php
-            echo $this->Form->create('Chapter', array('default' => false, 'id' => 'ChapterSearchForm'));
+            echo $this->Form->create('Message', array('default' => false, 'id' => 'MessageSearchForm'));
             ?>
             <div class="box-tools">
                 <div class="input-group">
                     <input type="text" 
-                           placeholder="Nhập tên chuyên đề cần tìm" 
+                           placeholder="Nhập tiêu đề" 
                            style="width: 300px;" 
                            class="form-control input-sm pull-right" 
-                           name="chapter_name">
+                           name="title">
                     <div class="input-group-btn">
 
                         <button class="btn btn-sm btn-default" type="submit"><i class="fa fa-search"></i></button>
@@ -23,8 +22,8 @@
                 </div>
             </div>
             <?php
-            $data = $this->Js->get('#ChapterSearchForm')->serializeForm(array('isForm' => true, 'inline' => true));
-            $this->Js->get('#ChapterSearchForm')->event(
+            $data = $this->Js->get('#MessageSearchForm')->serializeForm(array('isForm' => true, 'inline' => true));
+            $this->Js->get('#MessageSearchForm')->event(
                     'submit', $this->Js->request(
                             array('manager'=>false,'action' => 'search'), array(
                         'update' => '#results',
@@ -45,33 +44,44 @@
                 <table class="table table-hover" >
                     <tr>
                         <th>STT</th>
-                        <th><?php echo $this->Paginator->sort('name', 'Tên'); ?></th>
-                        <th><?php echo $this->Paginator->sort('field_id', 'Lĩnh vực'); ?></th>
+                        <th><?php echo $this->Paginator->sort('title', 'Tiêu đề'); ?></th>
+                        <th><?php echo $this->Paginator->sort('published', 'Trạng thái'); ?></th>
                         <th><?php echo $this->Paginator->sort('created_user_id', 'Người tạo'); ?></th>
                         <th><?php echo $this->Paginator->sort('created', 'Ngày tạo'); ?></th>
-                        <th class="actions">Thao tác</th>
+                        <th><?php echo $this->Paginator->sort('category_id', 'Nhóm người dùng'); ?></th>
+                        <th><?php echo $this->Paginator->sort('modified', 'Ngày cập nhật'); ?></th>
+                        <th class="actions"><?php echo 'Thao tác'; ?></th>
                     </tr>
-                    <?php $stt = ($this->Paginator->param('page') - 1) * $this->Paginator->param('limit') + 1; ?>
-                    <?php foreach ($chapters as $chapter): ?>
+                    <?php $i = 1;
+                    foreach ($messages as $message):
+                        ?>
                         <tr>
-                            <th><?php echo $stt++; ?></th>
-                            <td><?php echo $this->Html->link($chapter['Chapter']['name'], array('manager'=>true,'action' => 'view', $chapter['Chapter']['id'])); ?></td>
+                            <td><?php echo $i++; ?></td>
+                            <td><?php echo $this->Html->link($message['Message']['title'], array('manager' => true, 'action' => 'view', $message['Message']['id'])); ?></td>
+                            <td><?php echo $message['Message']['published']; ?></td>
                             <td>
-                                <?php echo $chapter['Field']['name']; ?>
+    <?php echo $this->Html->link($message['User']['name'], array('controller' => 'users', 'action' => 'view', $message['User']['id'])); ?>
                             </td>
-                            <td>
-                                <?php echo $chapter['User']['name']; ?>
-                            </td>
-                            <td><?php echo h($chapter['Chapter']['created']); ?>&nbsp;</td>
-                            <td class="actions">
+                            <td><?php echo h($message['Message']['created']); ?></td>
 
+                            <td><?php
+                                if ($message['Message']['category_id'] == 1)
+                                    echo 'Tập huấn viên';
+                                if ($message['Message']['category_id'] == 2)
+                                    echo 'Học viên';
+                                if ($message['Message']['category_id'] == 3)
+                                    echo 'Tất cả';
+                                ?>&nbsp;</td>
+
+                            <td><?php echo h($message['Message']['modified']); ?>&nbsp;</td>
+                            <td class="actions">
                                 <?php echo $this->Html->link('<button type="button" class="btn btn-info">
-  <span class="glyphicon glyphicon-edit"></span></button>', array('action' => 'edit', $chapter['Chapter']['id']), array('escape' => false)); ?>
+  <span class="glyphicon glyphicon-edit"></span></button>', array('action' => 'edit', $message['Message']['id']), array('escape' => false)); ?>
                                 <?php echo $this->Form->postLink('<button type="button" class="btn btn-warning">
-  <span class="glyphicon glyphicon-trash"></span></button>', array('action' => 'delete', $chapter['Chapter']['id']), array('escape' => false), __('Bạn có chắc xóa chuyên đề # %s?', $chapter['Chapter']['name'])); ?>
+  <span class="glyphicon glyphicon-trash"></span></button>', array('action' => 'delete', $message['Message']['id']), array('escape' => false), __('Bạn có chắc xóa thông báo?', $message['Message']['title'])); ?>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
+<?php endforeach; ?>
                 </table>
             </div>
             <p>

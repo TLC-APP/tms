@@ -46,6 +46,8 @@ class Chapter extends AppModel {
             //'last' => false, // Stop validation after this rule
             //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
+            'isUnique'=>array('rule'=>array('isUnique'),
+                'message' => 'Tên chuyên đề đã tồn tại')
         ),
         'field_id' => array(
             'numeric' => array(
@@ -58,7 +60,12 @@ class Chapter extends AppModel {
             ),
         ),
     );
-
+    /* public $validate = array(
+      'name' => array(
+      'rule'    => 'isUnique',
+      'message' => 'This username has already been taken.'
+      )
+      ); */
     //The Associations below have been created with all possible keys, those that are not needed can be removed
 
     /**
@@ -133,7 +140,7 @@ class Chapter extends AppModel {
         if (empty($data[$this->name]['id'])) {
             $this->create();
         }
-        if ($this->saveAll($data)) {
+        if ($this->saveAll($data,array('validate'=>'first','deep'=>true))) {
             return true;
         }
         return false;
@@ -149,4 +156,5 @@ class Chapter extends AppModel {
         $courses_id_array = Set::classicExtract($chapters, '{n}.Chapter.id');
         return $courses_id_array;
     }
+
 }

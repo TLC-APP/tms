@@ -70,15 +70,14 @@ if (isset($status)) {
                                 </div>
                             </div>
                         </td>
-                        <td><?php echo h($course['Course']['register_student_number']); ?>&nbsp;</td>
-
                         <td>
                             <?php echo $this->Html->link($course['Chapter']['name'], array('controller' => 'chapters', 'action' => 'view', $course['Chapter']['id'])); ?>
                         </td>
                         <td>
                             <?php echo $this->Html->link($course['Teacher']['name'], array('controller' => 'users', 'action' => 'view', $course['Teacher']['id'])); ?>
                         </td>
-                        <td><?php echo h($course['Course']['max_enroll_number']); ?>&nbsp;</td>
+                         <td><?php echo h($course['Course']['max_enroll_number']); ?>&nbsp;</td>
+                        <td><?php echo h($course['Course']['register_student_number']); ?>&nbsp;</td>
                         <td><?php echo h($course['Course']['is_published']); ?>&nbsp;</td>
                         <td><?php echo h($course['Course']['enrolling_expiry_date']); ?>&nbsp;</td>
                         <td><?php echo h($course['Course']['created']); ?>&nbsp;</td>

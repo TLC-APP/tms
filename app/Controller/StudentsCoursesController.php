@@ -43,11 +43,6 @@ class StudentsCoursesController extends AppController {
         $this->set('studentsCourse', $this->StudentsCourse->find('first', $options));
     }
 
-    /**
-     * add method
-     *
-     * @return void
-     */
     public function add() {
         if ($this->request->is('post')) {
             $this->StudentsCourse->create();

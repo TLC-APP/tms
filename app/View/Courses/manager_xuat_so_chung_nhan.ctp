@@ -1,5 +1,4 @@
 <?php
-
 $this->PhpExcel->loadWorksheet(WWW_ROOT . 'report/template/so_chung_nhan.xlsx');
 $this->PhpExcel->setDefaultFont('Times New Roman', 11);
 if (!empty($course['CoursesRoom'])) {

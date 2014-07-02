@@ -722,7 +722,7 @@ class CoursesController extends AppController {
         return $this->response;
     }
 
-    public function print_student($course_id) {
+    public function print_student($course_id=null) {
         if (!$this->Course->exists($course_id)) {
             throw new NotFoundException(__('Invalid course'));
         }
