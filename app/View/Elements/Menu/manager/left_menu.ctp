@@ -54,15 +54,15 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>                    
-                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'fields','action' => 'index'), array('escape' => false)); ?>
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'fields', 'action' => 'index'), array('escape' => false)); ?>
                     </li>
                     <li>                    
                         <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('manager' => true, 'controller' => 'fields', 'action' => 'add'), array('escape' => false)); ?>
                     </li>
                 </ul>
             </li>
-            
-           
+
+
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-laptop"></i>
@@ -71,7 +71,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>                    
-                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'chapters','action'=>'index'), array('escape' => false)); ?>
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'chapters', 'action' => 'index'), array('escape' => false)); ?>
                     </li>
                     <li>                    
                         <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('manager' => true, 'controller' => 'chapters', 'action' => 'add'), array('escape' => false)); ?>
@@ -85,7 +85,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>                    
-                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'departments','action' => 'index'), array('escape' => false)); ?>
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'departments', 'action' => 'index'), array('escape' => false)); ?>
                     </li>
                     <li>                    
                         <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('manager' => true, 'controller' => 'departments', 'action' => 'add'), array('escape' => false)); ?>
@@ -111,15 +111,18 @@
 
                 </ul>
             </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-bar-chart-o"></i>
                     <span>Thông báo</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li>                    
-            
-              <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-laptop"></i>
+               
+
+                    <li>
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'messages', 'action' => 'index'), array('escape' => false)); ?>
+
                     </li>
                     <li>                    
                         <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('manager' => true, 'controller' => 'messages', 'action' => 'add'), array('escape' => false)); ?>
@@ -143,4 +146,4 @@
     </section>
     <!-- /.sidebar -->
 </aside>
-                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'messages','action' => 'index'), array('escape' => false)); ?>
+<?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'messages', 'action' => 'index'), array('escape' => false)); ?>

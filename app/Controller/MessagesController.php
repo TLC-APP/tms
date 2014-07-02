@@ -81,7 +81,6 @@ class MessagesController extends AppController {
     public function manager_add() {
         if ($this->request->is('post')) {
             $this->Message->create();
-            $this->request->data['Message']['created_user_id'] = $this->Auth->user('id');
             if ($this->Message->save($this->request->data)) {
                 $this->Session->setFlash('Đã thêm thông báo thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
                 return $this->redirect(array('action' => 'index'));
