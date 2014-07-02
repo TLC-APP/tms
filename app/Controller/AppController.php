@@ -10,12 +10,7 @@ class AppController extends Controller {
         'DebugKit.Toolbar',
         'Paginator',
         'Acl',
-        'Auth' => array(
-            'authorize' => array(
-                'Controller',
-                'Actions' => array('actionPath' => 'controllers'),
-                'Authorize.Acl' => array('actionPath' => 'Models/')
-            ))
+        'Auth'
     );
     public $helpers = array('Session',
         'Js',
@@ -23,17 +18,26 @@ class AppController extends Controller {
         'Form' => array('className' => 'BoostCake.BoostCakeForm'),
         'Paginator' => array('className' => 'BoostCake.BoostCakePaginator')
     );
-    public $uses = array('Course', 'CoursesRoom','User');
+    public $uses = array('Course', 'CoursesRoom', 'User');
 
     function beforeFilter() {
-
-        if (!empty($this->params['prefix'])) {
-            $this->layout = $this->params['prefix'];
-        }
-        if (in_array($this->action, array('home', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao')) || $this->params['prefix'] == 'guest') {
+        parent::beforeFilter();
+        if (in_array($this->action, array('home', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao'))) {
             $this->Auth->allow($this->action);
         }
-
+        /*
+          if ($this->Auth->loggedIn()&&$this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))), $this->controller, $this->action)) {
+          $this->Acl->allow(array('User' => array('id' => $this->Auth->user('id'))), $this->controller, $this->action);
+          }
+         * *
+         */
+        $this->Auth->authorize = array(
+            'Controller',
+            'Actions' => array('actionPath' => 'controllers')
+        );
+        if (!$this->Auth->loggedIn()) {
+            $this->Auth->authError = false;
+        }
         $this->Auth->loginAction = array(
             'controller' => 'users',
             'action' => 'login',
@@ -57,14 +61,23 @@ class AppController extends Controller {
 
     public function beforeRender() {
         parent::beforeRender();
+        if (!empty($this->params['prefix']) && !$this->request->is('ajax')) {
+            $this->layout = $this->params['prefix'];
+        }
         if ($this->Auth->loggedIn() && ($this->User->isAdmin() || $this->User->isManager())) {
             $this->check_expire_course();
         }
     }
 
     public function isAuthorized($user) {
-
-        return $this->Auth->loggedIn();
+        if (in_array($this->action, array('home', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao'))) {
+            //$this->Auth->allow($this->action);
+            return true;
+        }
+        if ($this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))), $this->controller, $this->action)) {
+            return true;
+        }
+        //return false;
     }
 
     public function elfinder() {
@@ -88,11 +101,12 @@ class AppController extends Controller {
             }
         }
     }
+
     public function check_expire_course() {
         $expired_courses = $this->Course->getCoursesExpired();
-        $prefix='manager';
+        $prefix = 'manager';
         if (!empty($expired_courses)) {
-            $this->Session->setFlash('Có khóa học đã hết hạn đăng ký <a href="' .Router::url('/',true). $prefix . '/courses/expired_courses"> chi tiết</a>', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning', 'escape' => false));
+            $this->Session->setFlash('Có khóa học đã hết hạn đăng ký <a href="' . Router::url('/', true) . $prefix . '/courses/expired_courses"> chi tiết</a>', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning', 'escape' => false));
         }
     }
 
