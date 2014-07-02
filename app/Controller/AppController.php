@@ -34,6 +34,18 @@ class AppController extends Controller {
             $this->Auth->allow($this->action);
         }
 
+        if ($this->Auth->loggedIn()) {
+            $this->User->id = $this->Auth->user('id');
+            $department_id = ($this->User->field('User.department_id'));
+            $birthday = (($this->User->field('birthday')));
+            $birthplace = (($this->User->field('birthplace')));
+            $action = (in_array($this->request->action, array( 'logout', 'student_edit_profile')));
+            $show = ((!$department_id || empty($birthday) || empty($birthplace)) && !$action);
+            if ($show) {
+                $this->Session->setFlash('Vui lòng cập nhật đầy đủ thông tin cá nhân', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                $this->redirect(array('student' => true, 'controller' => 'users', 'action' => 'edit_profile', $this->Auth->user('id')));
+            }
+        }
         $this->Auth->loginAction = array(
             'controller' => 'users',
             'action' => 'login',
