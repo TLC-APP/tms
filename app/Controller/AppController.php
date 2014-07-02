@@ -32,10 +32,6 @@ class AppController extends Controller {
         if (in_array($this->action, array('home', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao')) || $this->params['prefix'] == 'guest') {
             $this->Auth->allow($this->action);
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> Toan
         if ($this->Auth->loggedIn()) {
             $this->User->id = $this->Auth->user('id');
             $department_id = ($this->User->field('User.department_id'));
