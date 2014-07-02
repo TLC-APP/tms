@@ -65,9 +65,10 @@ class ChaptersController extends AppController {
             $this->request->data['Chapter']['created_user_id'] = $loginId;
 
             try {
-                $this->Chapter->createWithAttachments($this->request->data);
-                $this->Session->setFlash('Thêm chuyên đề thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
-                return $this->redirect(array('action' => 'index'));
+                if ($this->Chapter->createWithAttachments($this->request->data)) {
+                    $this->Session->setFlash('Thêm chuyên đề thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                    return $this->redirect(array('action' => 'index'));
+                }
             } catch (Exception $exc) {
                 echo $exc->getTraceAsString();
             }
@@ -123,14 +124,15 @@ class ChaptersController extends AppController {
             $this->request->data['Chapter']['created_user_id'] = $loginId;
 
             try {
-                $this->Chapter->createWithAttachments($this->request->data);
-                $this->Session->setFlash('Thêm chuyên đề thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
-                return $this->redirect(array('action' => 'index'));
+                if ($this->Chapter->createWithAttachments($this->request->data)) {
+                    $this->Session->setFlash('Thêm chuyên đề thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                    return $this->redirect(array('action' => 'index'));
+                }
             } catch (Exception $exc) {
                 echo $exc->getTraceAsString();
             }
         }
-        
+
         $fields = $this->Chapter->Field->find('list');
         $this->set(compact('fields'));
     }
@@ -240,19 +242,19 @@ class ChaptersController extends AppController {
         $this->request->onlyAllow('post', 'delete');
         if (!$this->Chapter->isOwnedBy($id, $this->Auth->user('id')) && (!$this->Chapter->User->isAdmin() || !$this->Chapter->User->isManager())) {
             $this->Session->setFlash('Bạn không có quyền xóa chuyên đề người khác tạo', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
-            return $this->redirect(array('action' => 'index'));
+            return $this->redirect($this->render());
         } else {
             $course_number = $this->Chapter->field('course_number');
             if ($course_number > 0) {
                 $this->Session->setFlash('Có ' . $course_number . ' khóa học thuộc chuyên đề này, bạn cần xóa chúng trước đã.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect($this->render());
             } else {
                 if ($this->Chapter->delete()) {
                     $this->Session->setFlash('Xóa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
-                    return $this->redirect(array('action' => 'index'));
+                    return $this->redirect($this->render());
                 } else {
                     $this->Session->setFlash('Xóa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
-                    return $this->redirect(array('action' => 'index'));
+                    return $this->redirect($this->render());
                 }
             }
         }

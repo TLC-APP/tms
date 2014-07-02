@@ -22,7 +22,7 @@ class MessagesController extends AppController {
      *
      * @return void
      */
-    public function manager_index() {
+    public function manager_Nguyêindex() {
         $contain = array('User' => array('fields' => array('id', 'name')));
         $this->Paginator->settings = array('contain' => $contain);
         $this->set('messages', $this->Paginator->paginate());

@@ -40,32 +40,14 @@ class Chapter extends AppModel {
         'name' => array(
             'notEmpty' => array(
                 'rule' => array('notEmpty'),
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
+                'message' => 'Cần nhập tên chuyên đề',
             ),
-        ),
-        'field_id' => array(
-            'numeric' => array(
-                'rule' => array('numeric'),
-            //'message' => 'Your custom message here',
-            //'allowEmpty' => false,
-            //'required' => false,
-            //'last' => false, // Stop validation after this rule
-            //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
+            'mustUnique' => array(
+                'rule' => 'isUnique',
+                'message' => 'Tên chuyên đề đã tồn tại',
+                'last' => true),
         ),
     );
-
-    //The Associations below have been created with all possible keys, those that are not needed can be removed
-
-    /**
-     * belongsTo associations
-     *
-     * @var array
-     */
     public $belongsTo = array(
         'Field' => array(
             'className' => 'Field',
@@ -133,10 +115,7 @@ class Chapter extends AppModel {
         if (empty($data[$this->name]['id'])) {
             $this->create();
         }
-        if ($this->saveAll($data)) {
-            return true;
-        }
-        return false;
+        return $this->saveAll($data, array('validate' => 'first', 'deep' => true));
     }
 
     public function isOwnedBy($chapter, $user) {

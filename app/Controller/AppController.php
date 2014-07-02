@@ -7,7 +7,7 @@ class AppController extends Controller {
 
     public $components = array(
         'Session', 'RequestHandler',
-        //'DebugKit.Toolbar',
+        'DebugKit.Toolbar',
         'Paginator',
         'Acl',
         'Auth' => array(
@@ -25,16 +25,25 @@ class AppController extends Controller {
     );
     public $uses = array('Course', 'CoursesRoom', 'User');
 
-
     function beforeFilter() {
-
         if (!empty($this->params['prefix'])) {
             $this->layout = $this->params['prefix'];
         }
         if (in_array($this->action, array('home', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao')) || $this->params['prefix'] == 'guest') {
             $this->Auth->allow($this->action);
         }
-
+        if ($this->Auth->loggedIn()) {
+            $this->User->id = $this->Auth->user('id');
+            $department_id = ($this->User->field('User.department_id'));
+            $birthday = (($this->User->field('birthday')));
+            $birthplace = (($this->User->field('birthplace')));
+            $action = (in_array($this->request->action, array( 'logout', 'student_edit_profile')));
+            $show = ((!$department_id || empty($birthday) || empty($birthplace)) && !$action);
+            if ($show) {
+                $this->Session->setFlash('Vui lòng cập nhật đầy đủ thông tin cá nhân', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                $this->redirect(array('student' => true, 'controller' => 'users', 'action' => 'edit_profile', $this->Auth->user('id')));
+            }
+        }
         $this->Auth->loginAction = array(
             'controller' => 'users',
             'action' => 'login',
@@ -53,11 +62,13 @@ class AppController extends Controller {
             'admin' => false,
             'plugin' => false
         );
+
         $this->__checkCompleteCourse();
     }
 
     public function beforeRender() {
         parent::beforeRender();
+
         if ($this->Auth->loggedIn() && ($this->User->isAdmin() || $this->User->isManager())) {
             $this->check_expire_course();
         }

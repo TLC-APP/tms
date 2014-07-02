@@ -14,7 +14,10 @@
         <legend>Cập nhật thông tin cá nhân</legend>
         <?php
         echo $this->Form->input('name', array('label' => 'Họ tên'));
-        echo $this->Form->input('department_id', array('label' => 'Đơn vị','empty'=>'-- chọn đơn vị --'));
+        echo $this->Form->input('department_id', array('label' => 'Đơn vị', 'empty' => '-- chọn đơn vị --','required'=>true));
+        echo $this->Form->input('sex',array('label'=>'Giới tính','type'=>'select','options'=>array('0'=>'Nữ','1'=>'Nam')));
+        echo $this->Form->input('hoc_ham_id',array('label'=>'Học hàm','empty'=>'-- chọn học hàm --', 'required'=>false));
+        echo $this->Form->input('hoc_vi_id',array('label'=>'Học vị','empty'=>'-- chọn học vị --', 'required'=>false));
         echo $this->Form->input('email');
         echo $this->Form->input('birthday', array('label' => 'Ngày sinh', 'class' => 'input datetime', 'dateFormat' => 'DMY', 'monthNames' => false, 'minYear' => 1950));
         echo $this->Form->input('birthplace', array('label' => 'Nơi sinh'));
@@ -25,6 +28,6 @@
         echo $this->Form->input('id');
         ?>
     </fieldset>
-    <?php echo $this->Form->button('Lưu',array('type' => 'submit', 'class' => 'btn btn-info')) ?>
+    <?php echo $this->Form->button('Lưu', array('type' => 'submit', 'class' => 'btn btn-info')) ?>
     <?php echo $this->Form->end(); ?>
 </div>

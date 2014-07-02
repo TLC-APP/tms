@@ -69,7 +69,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>                    
-                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'chapters'), array('escape' => false)); ?>
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'chapters','action'=>'index'), array('escape' => false)); ?>
                     </li>
                     <li>                    
                         <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('manager' => true, 'controller' => 'chapters', 'action' => 'add'), array('escape' => false)); ?>

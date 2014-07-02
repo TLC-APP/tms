@@ -1,4 +1,4 @@
-<?php /*Chapter*/ ?>
+<?php /* Chapter */ ?>
 <div class="container">
     <div class="box box-primary">
         <div class="box-header">
@@ -26,7 +26,7 @@
             $data = $this->Js->get('#ChapterSearchForm')->serializeForm(array('isForm' => true, 'inline' => true));
             $this->Js->get('#ChapterSearchForm')->event(
                     'submit', $this->Js->request(
-                            array('manager'=>false,'action' => 'search'), array(
+                            array('manager' => false, 'action' => 'search'), array(
                         'update' => '#results',
                         'data' => $data,
                         'async' => true,
@@ -55,7 +55,7 @@
                     <?php foreach ($chapters as $chapter): ?>
                         <tr>
                             <th><?php echo $stt++; ?></th>
-                            <td><?php echo $this->Html->link($chapter['Chapter']['name'], array('manager'=>true,'action' => 'view', $chapter['Chapter']['id'])); ?></td>
+                            <td><?php echo $this->Html->link($chapter['Chapter']['name'], array('manager' => true, 'action' => 'view', $chapter['Chapter']['id'])); ?></td>
                             <td>
                                 <?php echo $chapter['Field']['name']; ?>
                             </td>
@@ -68,7 +68,7 @@
                                 <?php echo $this->Html->link('<button type="button" class="btn btn-info">
   <span class="glyphicon glyphicon-edit"></span></button>', array('action' => 'edit', $chapter['Chapter']['id']), array('escape' => false)); ?>
                                 <?php echo $this->Form->postLink('<button type="button" class="btn btn-warning">
-  <span class="glyphicon glyphicon-trash"></span></button>', array('action' => 'delete', $chapter['Chapter']['id']), array('escape' => false), __('Bạn có chắc xóa chuyên đề # %s?', $chapter['Chapter']['name'])); ?>
+  <span class="glyphicon glyphicon-trash"></span></button>', array('manager' => false, 'action' => 'delete', $chapter['Chapter']['id']), array('escape' => false), __('Bạn có chắc xóa chuyên đề # %s?', $chapter['Chapter']['name'])); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
