@@ -10,12 +10,7 @@ class AppController extends Controller {
         'DebugKit.Toolbar',
         'Paginator',
         'Acl',
-        'Auth' => array(
-            'authorize' => array(
-                'Controller',
-                'Actions' => array('actionPath' => 'controllers'),
-                'Authorize.Acl' => array('actionPath' => 'Models/')
-            ))
+        'Auth'
     );
     public $helpers = array('Session',
         'Js',
@@ -68,15 +63,23 @@ class AppController extends Controller {
 
     public function beforeRender() {
         parent::beforeRender();
-
+        if (!empty($this->params['prefix']) && !$this->request->is('ajax')) {
+            $this->layout = $this->params['prefix'];
+        }
         if ($this->Auth->loggedIn() && ($this->User->isAdmin() || $this->User->isManager())) {
             $this->check_expire_course();
         }
     }
 
     public function isAuthorized($user) {
-
-        return $this->Auth->loggedIn();
+        if (in_array($this->action, array('home', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao'))) {
+            //$this->Auth->allow($this->action);
+            return true;
+        }
+        if ($this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))), $this->controller, $this->action)) {
+            return true;
+        }
+        //return false;
     }
 
     public function elfinder() {

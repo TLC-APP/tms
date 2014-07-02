@@ -1,4 +1,4 @@
-<title><?php echo Configure::read('System.name') ?></title>
+   <title><?php echo Configure::read('System.name') ?></title>
 <!-- Meta -->
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">

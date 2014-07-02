@@ -4,7 +4,6 @@
     </div>
     <div class="panel-body">
         <ul>
-
             <?php foreach ($users['Group'] as $group): ?>
                 <li>
                     <?php echo $this->Html->link($group['name'],array('controller'=>'dashboards','action'=>'home',$group['alias']=>true));?>                

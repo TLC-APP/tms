@@ -21,6 +21,7 @@
                         <?php if ($course['Course']['status'] == COURSE_COMPLETED) echo $this->element('fields_manager/course/view/course_completed_students', array('students' => $course['StudentsCourse'])); ?>
 
                         <?php if ($course['Course']['status'] == COURSE_REGISTERING) echo $this->element('fields_manager/course/view/course_registering_students', array('students' => $course['StudentsCourse'])); ?>
+                        <?php if ($course['Course']['status'] == COURSE_UNCOMPLETED) echo $this->element('fields_manager/course/view/course_uncompleted_students', array('students' => $course['StudentsCourse'])); ?>
                     </div><!-- /.tab-pane -->
 
                     <div id="tab_1-1" class="tab-pane">

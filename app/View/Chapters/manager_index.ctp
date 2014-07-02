@@ -74,7 +74,6 @@
                     <?php endforeach; ?>
                 </table>
             </div>
-
             <p>
                 <?php
                 echo $this->Paginator->counter(array(

@@ -7,7 +7,7 @@
 
         <ul>       
             <?php foreach ($messages as $message): ?>
-            <?php if($message['Message']['published']==1&&$message['Message']['category_id']==1){ ?>
+            <?php if($message['Message']['published']==1&&$message['Message']['category_id']==2){ ?>
                 <li><a href="/messages/xem_thong_bao/<?php echo $message['Message']['id'] ?>" class="add-button fancybox.ajax"><?php echo $message['Message']['title'] ?>
                         <span class="badge"><?php
                             $date = new DateTime($message['Message']['created']);

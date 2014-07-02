@@ -581,7 +581,201 @@ class CoursesController extends AppController {
         $this->set('courses', $this->Paginator->paginate());
     }
 
-    public function print_student($course_id) {
+    /* end manager */
+
+    /**
+     * edit method
+     *
+     * @throws NotFoundException
+     * @param string $id
+     * @return void
+     */
+    public function edit($id = null) {
+        if (!$this->Course->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            if ($this->Course->save($this->request->data)) {
+                $this->Session->setFlash(__('The course has been saved.'));
+                return $this->redirect(array('action' => 'index'));
+            } else {
+                $this->Session->setFlash(__('The course could not be saved. Please, try again.'));
+            }
+        } else {
+            $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id));
+            $this->request->data = $this->Course->find('first', $options);
+        }
+        $chapters = $this->Course->Chapter->find('list');
+        $teachers = $this->Course->Teacher->find('list');
+        $this->set(compact('chapters', 'teachers'));
+    }
+
+    /**
+     * delete method
+     *
+     * @throws NotFoundException
+     * @param string $id
+     * @return void
+     */
+    public function delete($id = null) {
+        $this->Course->id = $id;
+        if (!$this->Course->exists()) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $this->request->onlyAllow('post', 'delete');
+        if ($this->Course->field('status') != COURSE_CANCELLED) {
+            $this->Session->setFlash('Khóa học này chưa hủy bạn không thể xóa được', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            return $this->redirect(array('action' => 'index'));
+        }
+        if ($this->Course->delete()) {
+            $this->Session->setFlash(__('The course has been deleted.'));
+        } else {
+            $this->Session->setFlash(__('The course could not be deleted. Please, try again.'));
+        }
+        return $this->redirect(array('action' => 'index'));
+    }
+
+    public function fields_manager_open($id) {
+        $this->Course->id = $id;
+        if (!$this->Course->exists()) {
+            throw new NotFoundException('Không tìm thấy khóa học này');
+        }
+
+        $this->request->onlyAllow('post');
+        if ($this->Course->field('status') == COURSE_UNCOMPLETED) {
+            $this->Session->setFlash('Khóa học đã mở rồi!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            return $this->redirect($this->referer());
+        }
+
+        $enrolling_expiry_date = new DateTime($this->Course->field('enrolling_expiry_date'));
+        $today = new DateTime();
+        if ($today < $enrolling_expiry_date) {
+            $this->Session->setFlash('Khóa học chưa hết hạn đăng ký!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            return $this->redirect($this->referer());
+        }
+        //
+        if ($this->Course->field('so_buoi') < 1) {
+            $this->Session->setFlash('Vui lòng thêm buổi học cho khóa.!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            return $this->redirect($this->referer());
+        }
+        if ($this->Course->field('register_student_number') < 1) {
+            $this->Session->setFlash('Chưa có ai đăng ký khóa học này!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            return $this->redirect($this->referer());
+        }
+        if ($this->Course->saveField('status', COURSE_UNCOMPLETED)) {
+            $this->Session->setFlash('Đã mở khóa học thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+            /* Gửi mail thông báo */
+            $gui = Configure::read('SEND_MAIL_WHEN_CANCEL_COURSE');
+            if ($gui) {
+                $ten_khoa_hoc = $this->Course->field('name');
+                $subject = 'Thông báo khóa học ' . $ten_khoa_hoc . ' đã được mở';
+                $message = "Khóa học {$ten_khoa_hoc} đã  được mở. Quý học viên vui lòng tham dự đầy đủ. Xin cảm ơn.";
+                $ds_sinh_vien = $this->Course->StudentsCourse->find('all', array('conditions' => array('StudentsCourse.course_id' => $id), 'contain' => array('Student' => array('id', 'name', 'email'))));
+                foreach ($ds_sinh_vien as $sinh_vien) {
+                    $to = $sinh_vien['Student']['email'];
+                    $this->__sendMail($to, $subject, $message);
+                }
+            }
+        } else {
+            $this->Session->setFlash('Mở khóa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+        }
+        return $this->redirect($this->referer());
+    }
+
+    public function huy($id) {
+        $this->Course->id = $id;
+        if (!$this->Course->exists()) {
+            throw new NotFoundException('Không tìm thấy khóa học này');
+        }
+
+        $this->request->onlyAllow('post');
+        if ($this->Course->saveField('status', COURSE_CANCELLED)) {
+            $this->Session->setFlash('Đã hủy khóa học thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+            /* Gửi mail thông báo */
+            $gui = Configure::read('SEND_MAIL_WHEN_CANCEL_COURSE');
+            if ($gui) {
+                $ten_khoa_hoc = $this->Course->field('name');
+                $subject = 'Thông báo HỦY khóa học ' . $ten_khoa_hoc;
+                $message = "Vì khóa học {$ten_khoa_hoc} không đủ điều kiện mở lớp nên đã bị hủy. Mọi thắc mắc xin liên hệ 102 để được giải đáp";
+                $ds_sinh_vien = $this->Course->StudentsCourse->find('all', array('conditions' => array('StudentsCourse.course_id' => $id), 'contain' => array('Student' => array('id', 'name', 'email'))));
+                foreach ($ds_sinh_vien as $sinh_vien) {
+                    $to = $sinh_vien['Student']['email'];
+                    $this->__sendMail($to, $subject, $message);
+                }
+            }
+        } else {
+            $this->Session->setFlash('Hủy không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+        }
+        return $this->redirect($this->referer());
+    }
+
+    public function uncancel($id = null) {
+        $this->Course->id = $id;
+        if (!$this->Course->exists()) {
+            throw new NotFoundException('Không tìm thấy khóa học này');
+        }
+        $this->request->onlyAllow('post');
+        if ($this->Course->saveField('status', COURSE_REGISTERING)) {
+            $this->Session->setFlash('Phục hồi khóa học thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+        } else {
+            $this->Session->setFlash('Phục hồi không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+        }
+        return $this->redirect($this->referer());
+    }
+
+    public function publish() {
+        
+    }
+
+    public function unpublish() {
+        
+    }
+
+    public function attachment_list($id) {
+        $this->Course->id = $id;
+        if (!$this->Course->exists()) {
+            throw new Exception('Không tồn tại khóa học này');
+        }
+        $conditions = array('Attachment.model' => 'Course', 'Attachment.foreign_key' => $id);
+        $attachments = $this->Course->Attachment->find('all', array('conditions' => $conditions, 'recursive' => -1));
+        $this->set('attachments', $attachments);
+    }
+
+    public function upload($id = null) {
+        $this->Course->id = $id;
+        if (!$this->Course->exists()) {
+            throw new Exception('Không tồn tại khóa học này');
+        }
+        if (!empty($this->request->data)) {
+            try {
+                if ($this->Course->createWithAttachments($this->request->data)) {
+                    echo json_encode(array('status' => 1, 'course_id' => $id));
+                    die();
+                } else {
+                    echo json_encode(array('status' => 0));
+                    die();
+                }
+            } catch (Exception $exc) {
+                echo $exc->getTraceAsString();
+            }
+        } else {
+            $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id));
+            $this->request->data = $this->Course->find('first', $options);
+        }
+    }
+
+    public function download($attachment_id) {
+        $path = $this->Course->Attachment->getFilePath($attachment_id, 'attachment');
+
+        $this->response->file(
+                $path, array('download' => true, 'name' => $this->Course->Attachment->getFileName($attachment_id))
+        );
+// Return response object to prevent controller from trying to render
+// a view
+        return $this->response;
+    }
+
+    public function print_student($course_id=null) {
         if (!$this->Course->exists($course_id)) {
             throw new NotFoundException(__('Invalid course'));
         }

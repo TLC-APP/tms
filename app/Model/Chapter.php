@@ -40,7 +40,23 @@ class Chapter extends AppModel {
         'name' => array(
             'notEmpty' => array(
                 'rule' => array('notEmpty'),
-                'message' => 'Cần nhập tên chuyên đề',
+            //'message' => 'Your custom message here',
+            //'allowEmpty' => false,
+            //'required' => false,
+            //'last' => false, // Stop validation after this rule
+            //'on' => 'create', // Limit validation to 'create' or 'update' operations
+            ),
+            'isUnique'=>array('rule'=>array('isUnique'),
+                'message' => 'Tên chuyên đề đã tồn tại')
+        ),
+        'field_id' => array(
+            'numeric' => array(
+                'rule' => array('numeric'),
+            //'message' => 'Your custom message here',
+            //'allowEmpty' => false,
+            //'required' => false,
+            //'last' => false, // Stop validation after this rule
+            //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
             'mustUnique' => array(
                 'rule' => 'isUnique',
@@ -128,4 +144,5 @@ class Chapter extends AppModel {
         $courses_id_array = Set::classicExtract($chapters, '{n}.Chapter.id');
         return $courses_id_array;
     }
+
 }

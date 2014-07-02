@@ -246,6 +246,7 @@ class Course extends AppModel {
         return $coursescompleted_id_array;
     }
 
+
     public function getCoursesUnCompleted() {
         $conditions = array('Course.status' => COURSE_UNCOMPLETED);
         $coursescompleted = $this->find('all', array('conditions' => $conditions, 'recursive' => -1));

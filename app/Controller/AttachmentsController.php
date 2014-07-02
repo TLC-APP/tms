@@ -27,13 +27,7 @@ class AttachmentsController extends AppController {
         $this->set('attachments', $this->Paginator->paginate());
     }
 
-    /**
-     * view method
-     *
-     * @throws NotFoundException
-     * @param string $id
-     * @return void
-     */
+   
     public function view($id = null) {
         if (!$this->Attachment->exists($id)) {
             throw new NotFoundException(__('Invalid attachment'));

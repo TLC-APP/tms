@@ -117,7 +117,6 @@ class FieldsController extends AppController {
 
     public function manager_index() {
         $contain = array('CreatedUser' => array('fields' => array('id', 'name')), 'ManageBy' => array('fields' => array('id', 'name')));
-
         $this->Paginator->settings = array('contain' => $contain);
         $this->set('fields', $this->Paginator->paginate());
     }

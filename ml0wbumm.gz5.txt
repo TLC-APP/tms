@@ -1,0 +1,18 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   app/Config/core.php
+#	modified:   app/Controller/AppController.php
+#	modified:   app/Plugin/AclManager/View/Acl/permissions.ctp
+#	modified:   app/View/Dashboards/home.ctp
+#	modified:   app/View/Elements/Menu/fieldsManager/top_right_nav.ctp
+#	modified:   app/View/Elements/Menu/guest/header.ctp
+#	modified:   app/View/Elements/Menu/guest/nav.ctp
+#	modified:   nbproject/private/private.properties
+#	modified:   nbproject/private/private.xml
+#
+

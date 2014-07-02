@@ -8,12 +8,9 @@
         <ul class="dropdown-menu">
             <!-- User image -->
             <li class="user-header bg-light-blue">
-               <img src="/files/user/avatar/<?php echo AuthComponent::user('avatar_path').'/'.AuthComponent::user('avatar')?>" class="img-circle" alt="" />
+                <img src="/files/user/avatar/<?php echo AuthComponent::user('avatar_path') . '/' . AuthComponent::user('avatar') ?>" class="img-circle" alt="" />
                 <p>
-
                     <?php echo AuthComponent::user('name') ?> - <?php echo AuthComponent::user('email') ?>
-                    <small>Member since Nov. 2012</small>
-                    <?php echo AuthComponent::user('name')?> - <?php echo AuthComponent::user('email')?>
                 </p>
             </li>
             <!-- Menu Footer-->

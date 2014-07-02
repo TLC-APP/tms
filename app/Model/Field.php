@@ -60,7 +60,7 @@ class Field extends AppModel {
 
     /* belongsTo */
     public $belongsTo = array(
-        'User' => array(
+        'CreatedUser' => array(
             'className' => 'User',
             'foreignKey' => 'created_user_id',
             'conditions' => '',
