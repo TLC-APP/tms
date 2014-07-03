@@ -10,7 +10,14 @@ class AppController extends Controller {
         'DebugKit.Toolbar',
         'Paginator',
         'Acl',
-        'Auth'
+        'Auth' => array(
+            'authError' => 'Rất tiếc bạn cần liên hệ admin để đươc nâng cấp tài khoản.',
+            'flash' => array(
+                'element' => 'alert',
+                'key' => 'auth',
+                'params' => array('plugin'=>'BoostCake','class'=>'alert-warning')
+            )
+        )
     );
     public $helpers = array('Session',
         'Js',
@@ -24,7 +31,7 @@ class AppController extends Controller {
         if (!empty($this->params['prefix'])) {
             $this->layout = $this->params['prefix'];
         }
-        if (in_array($this->action, array('home','courses_completed','help','contact', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao')) || $this->params['prefix'] == 'guest') {
+        if (in_array($this->action, array('home', 'courses_completed', 'help', 'contact', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao')) || $this->params['prefix'] == 'guest') {
             $this->Auth->allow($this->action);
         }
         if ($this->Auth->loggedIn()) {
@@ -32,7 +39,7 @@ class AppController extends Controller {
             $department_id = ($this->User->field('User.department_id'));
             $birthday = (($this->User->field('birthday')));
             $birthplace = (($this->User->field('birthplace')));
-            $action = (in_array($this->request->action, array( 'logout', 'student_edit_profile')));
+            $action = (in_array($this->request->action, array('logout', 'student_edit_profile')));
             $show = ((!$department_id || empty($birthday) || empty($birthplace)) && !$action);
             if ($show) {
                 $this->Session->setFlash('Vui lòng cập nhật đầy đủ thông tin cá nhân', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));

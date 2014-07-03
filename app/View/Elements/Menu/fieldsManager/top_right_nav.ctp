@@ -16,14 +16,11 @@
             <!-- Menu Footer-->
             <li class="user-footer">
                 <div class="pull-left">
-                    <?php echo $this->Html->link('Hồ sơ', array('fields_manager'=>false,'controller' => 'users', 'action' => 'profile'), array('class' => 'btn btn-default btn-flat')); ?>
+                    <?php echo $this->Html->link('Hồ sơ', array('fields_manager'=>true,'controller' => 'users', 'action' => 'profile',  AuthComponent::user('id')), array('class' => 'btn btn-default btn-flat')); ?>
                 </div>
                 <div class="pull-right">                    
                     <?php echo $this->Html->link('Thoát', array('fields_manager'=>false,'controller' => 'users', 'action' => 'logout'), array('class' => 'btn btn-default btn-flat')); ?>
-                    <a class="btn btn-info" href="/fields_manager/users/profile/<?php echo AuthComponent::user('id')?>" >Hồ sơ</a>
-                </div>
-                <div class="pull-right">
-                    <a href="/users/logout" class="btn btn-info">Thoát</a>
+
                 </div>
             </li>
         </ul>

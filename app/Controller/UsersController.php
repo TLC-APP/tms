@@ -181,15 +181,7 @@ class UsersController extends AppController {
         if (!$this->User->exists($id)) {
             throw new NotFoundException(__('Invalid user'));
         }
-        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => array('Department'));
-        $this->set('user', $this->User->find('first', $options));
-    }
-
-    public function guest_profile($id = null) {
-        if (!$this->User->exists($id)) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => array('Department'));
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => array('Department','HocHam','HocVi'));
         $this->set('user', $this->User->find('first', $options));
     }
 
@@ -211,26 +203,6 @@ class UsersController extends AppController {
             $hocVis = $this->User->HocVi->find('list');
 
             $this->set(compact('departments', 'hocVis', 'hocHams'));
-            $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
-            $this->request->data = $this->User->find('first', $options);
-        }
-    }
-
-    public function guest_edit_profile($id) {
-        if (!$this->User->exists($id)) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-        if ($this->request->is(array('post', 'put'))) {
-            //debug($this->request->data);die;
-            if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash('Đã cập nhật thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
-                return $this->redirect(array('action' => 'profile', $id, 'guest' => true));
-            } else {
-                $this->Session->setFlash('Lỗi cập nhật hồ sơ!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
-            }
-        } else {
-            $departments = $this->User->Department->find('list');
-            $this->set('departments', $departments);
             $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
             $this->request->data = $this->User->find('first', $options);
         }
@@ -270,7 +242,9 @@ class UsersController extends AppController {
             }
         } else {
             $departments = $this->User->Department->find('list');
-            $this->set('departments', $departments);
+            $hocHams = $this->User->HocHam->find('list');
+            $hocVis = $this->User->HocVi->find('list');
+            $this->set(compact('departments', 'hocVis', 'hocHams'));
             $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
             $this->request->data = $this->User->find('first', $options);
         }
@@ -354,7 +328,8 @@ class UsersController extends AppController {
         }
         $hocHams = $this->User->HocHam->find('list');
         $hocVis = $this->User->HocVi->find('list');
-        $this->set(compact('hocHams', 'hocVis'));
+        $departments = $this->User->Department->find('list');
+        $this->set(compact('hocHams', 'hocVis','departments'));
     }
 
     public function fields_manager_edit($id) {

@@ -17,9 +17,6 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-            <li>
-                <?php echo $this->Html->link('<i class="fa fa-dashboard"></i> <span>Dashboard</span>', array('controller' => 'dashboards', 'action' => 'home', 'fields_manager' => true), array('escape' => false)); ?>
-            </li>
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i>

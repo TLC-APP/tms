@@ -54,7 +54,7 @@ class AclController extends AclManagerAppController {
 	public function drop() {
 		$this->Acl->Aco->deleteAll(array("1 = 1"));
 		$this->Acl->Aro->deleteAll(array("1 = 1"));
-		$this->Session->setFlash(__("Both ACOs and AROs have been dropped"));
+		$this->Session->setFlash(__("Đã xóa ACOs và AROs"));
 		$this->redirect(array("action" => "index"));
 	}
 	

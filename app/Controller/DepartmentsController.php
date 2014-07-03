@@ -18,6 +18,34 @@ class DepartmentsController extends AppController {
      */
     public $components = array('Paginator', 'Session');
 
+    public function add() {
+        if (!empty($this->request->data)) {            
+            if ($this->Department->save($this->request->data)) {
+                if ($this->request->is('ajax')) {
+                    $response = array('status' => 1, 'id' => $this->Department->id, 'name' => $this->Department->field('name'));
+                    $this->set('response', $response);
+                    $this->set('_serialize', array('response'));
+                } else {
+                    $this->Session->setFlash('Đã lưu thành công!');
+                    $this->redirect(array('action' => 'index'));
+                }
+            } else {
+                /* Yeu cau bang ajax */
+                if ($this->RequestHandler->isAjax()) {
+                    $response = array('status' => 0, 'message' => '<div class="alert alert-warning alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>Cảnh báo!</strong> Lưu không thành công, vui lòng kiểm tra lại thông tin.</div>');
+                    $this->set('response', $response);
+                    $this->set('_serialize', array('response'));
+                } else {
+                    $this->Session->setFlash('Lưu không thành công');
+                }
+            }
+        }
+        $parents = $this->Department->ParentDepartment->find('list');
+        $this->set(compact('parents'));
+    }
+    
     /**
      * index method
      *

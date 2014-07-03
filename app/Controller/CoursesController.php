@@ -93,12 +93,6 @@ class CoursesController extends AppController {
         return $this->response;
     }
 
-    public function dropbox_index() {
-        $files = $this->DropboxApi->ls();
-        debug($files);
-        die;
-    }
-
     public function edit($id = null) {
         if (!$this->Course->exists($id)) {
             throw new NotFoundException(__('Invalid course'));
@@ -267,11 +261,10 @@ class CoursesController extends AppController {
             $manage_fields_id_array = Set::classicExtract($manage_fields, '{n}.Field.id');
         }
         $chapters = $this->Course->Chapter->find('list', array('conditions' => array('Chapter.field_id' => $manage_fields_id_array)));
-
-
         $teachers = $this->Course->Teacher->find('list');
         $this->set(compact('chapters', 'teachers'));
     }
+    
     public function fields_manager_edit($id = null) {
         if (!$this->Course->exists($id)) {
             throw new NotFoundException(__('Invalid course'));
@@ -579,11 +572,7 @@ class CoursesController extends AppController {
         }
         return $this->redirect($this->referer());
     }
-
-    public function unpublish() {
-        
-    }
-
+    
     public function print_student($course_id=null) {
         if (!$this->Course->exists($course_id)) {
             throw new NotFoundException(__('Invalid course'));
@@ -601,11 +590,7 @@ class CoursesController extends AppController {
         $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $course_id), 'contain' => $contain);
         $this->set('course', $this->Course->find('first', $options));
     }
-
-    public function publish() {
-        
-    }
-
+    
     public function student_khoamoidangki() {
         $contain = array(
             'User' => array('fields' => array('id', 'name')), //create user

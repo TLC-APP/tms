@@ -13,9 +13,9 @@ class DashboardsController extends AppController {
     public function home() {
         if ($this->Auth->loggedIn()) {
             $user = $this->User->find('first', array('contain' => array('Group'), 'conditions' => array('User.id' => $this->Auth->user('id'))));
-           /* if (count($user['Group']) == 1) {
-                $this->redirect("/{$user['Group'][0]['alias']}/dashboards/home");
-            }*/
+            /* if (count($user['Group']) == 1) {
+              $this->redirect("/{$user['Group'][0]['alias']}/dashboards/home");
+              } */
             $this->set('users', $user);
         }
     }
@@ -49,18 +49,15 @@ class DashboardsController extends AppController {
     }
 
     public function teacher_home() {
-        $this->Session->write('layout', 'teacher');
-        $this->layout = 'teacher';
+
     }
 
     public function manager_home() {
-        $this->Session->write('layout', 'manager');
-        $this->layout = 'manager';
+
     }
 
     public function fields_manager_home() {
-        $this->Session->write('layout', 'fields_manager');
-        $this->layout = 'fields_manager';
+        $this->redirect(array('fields_manager' => true, 'action' => 'index', 'controller' => 'courses', COURSE_OPENABLE));
     }
 
     public function boss_home() {
@@ -72,7 +69,6 @@ class DashboardsController extends AppController {
         $this->Session->write('layout', 'admin');
         $this->layout = 'admin';
     }
-    
 
     public function loggedInMenu() {
 

@@ -45,7 +45,13 @@ class ChaptersController extends AppController {
 
     public function fields_manager_index() {
         $contain = array('User' => array('fields' => array('id', 'name')), 'Field');
-        $this->Paginator->settings = array('conditions' => array('Chapter.created_user_id' => $this->Auth->user('id')), 'contain' => $contain);
+        $manage_fields = $this->Chapter->Field->find('all', array('fields' => array('id'), 'recursive' => -1, 'conditions' => array(
+                'Field.manage_user_id' => $this->Auth->user('id'))));
+        $manage_fields_id_array = array();
+        if (!empty($manage_fields)) {
+            $manage_fields_id_array = Set::classicExtract($manage_fields, '{n}.Field.id');
+        }
+        $this->Paginator->settings = array('conditions' => array('Chapter.field_id' => $manage_fields_id_array), 'contain' => $contain);
         $this->set('chapters', $this->Paginator->paginate());
     }
 
@@ -98,8 +104,6 @@ class ChaptersController extends AppController {
         $fields = $this->Chapter->Field->find('list');
         $this->set(compact('fields'));
     }
-
-    /* manager */
 
     public function manager_index() {
         $contain = array('User' => array('fields' => array('id', 'name')), 'Field');
