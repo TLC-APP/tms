@@ -1,22 +1,33 @@
-<div class="messages form">
-<?php echo $this->Form->create('Message'); ?>
-	<fieldset>
-		<legend><?php echo __('Add Message'); ?></legend>
-	<?php
-		echo $this->Form->input('title');
-		echo $this->Form->input('content');
-		echo $this->Form->input('published');
-		echo $this->Form->input('created_user_id');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Html->link(__('List Messages'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Created User'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-	</ul>
+<?php
+echo $this->element('Common/tinymce');
+$this->Html->addCrumb('Thông báo', '/manager/messages');
+$this->Html->addCrumb('Thêm thông báo mới');
+?>
+<div class="col-lg-10 well">
+    <?php
+    echo $this->Form->create('Message', array(
+        'type' => 'file',
+        'inputDefaults' => array(
+            'div' => 'form-group',
+            'wrapInput' => false,
+            'class' => 'form-control'
+        ),
+        'class' => 'well'
+    ));
+    ?>
+    <fieldset>
+        <legend><?php echo 'Thêm thông báo mới'; ?></legend>
+        <?php
+         echo $this->Form->input('id');
+        echo $this->Form->input('title', array('label' => 'Tiêu đề'));
+        echo $this->Form->input('content', array('label' => 'Nội dung','required'=>false));
+         echo $this->Form->input('category_id', array('label' => 'Nhóm người nhận','empty'=>'-- Chọn nhóm người nhận --'));
+        echo $this->Form->input('published', array('label' => 'Trạng thái'));
+        ?>
+    </fieldset>
+    <div class="btn-toolbar" style="text-align: center;">
+        <?php echo $this->Form->button('Lưu', array('type' => 'submit', 'class' => 'btn btn-info')) ?>
+        <?php echo $this->Html->link('Back', array('action' => 'index'), array('type' => 'button', 'class' => 'btn btn-primary')) ?>
+    </div>
+    <?php echo $this->Form->end(); ?>
 </div>

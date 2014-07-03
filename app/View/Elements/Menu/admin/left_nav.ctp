@@ -84,6 +84,8 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+                    <li><a href="/users"><i class="fa fa-angle-double-right"></i> Người dùng</a></li>
+                    <li><a href="/users/add"><i class="fa fa-angle-double-right"></i> Thêm user</a></li>
                     <li><a href="/groups"><i class="fa fa-angle-double-right"></i> Danh sách nhóm</a></li>
                     <li><a href="/groups/add"><i class="fa fa-angle-double-right"></i> Thêm nhóm</a></li>
                     <li><a href="/acl_manager/acl"><i class="fa fa-angle-double-right"></i> Phân quyền</a></li>
