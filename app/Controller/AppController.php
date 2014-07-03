@@ -11,11 +11,15 @@ class AppController extends Controller {
         'Paginator',
         'Acl',
         'Auth' => array(
+            'authorize' => array(
+                'Controller',
+                'Authorize.Acl' => array('actionPath' => 'Models/')
+            ),
             'authError' => 'Rất tiếc bạn cần liên hệ admin để đươc nâng cấp tài khoản.',
             'flash' => array(
                 'element' => 'alert',
                 'key' => 'auth',
-                'params' => array('plugin'=>'BoostCake','class'=>'alert-warning')
+                'params' => array('plugin' => 'BoostCake', 'class' => 'alert-warning')
             )
         )
     );
@@ -28,12 +32,22 @@ class AppController extends Controller {
     public $uses = array('Course', 'CoursesRoom', 'User');
 
     function beforeFilter() {
+
         if (!empty($this->params['prefix'])) {
             $this->layout = $this->params['prefix'];
         }
         if (in_array($this->action, array('home', 'courses_completed', 'help', 'contact', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao')) || $this->params['prefix'] == 'guest') {
             $this->Auth->allow($this->action);
+        } else {
+            
+            if (!$this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))),  $this->action)) {
+                $this->Session->setFlash('Rất tiếc bạn cần liên hệ admin để đươc nâng cấp tài khoản.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                return $this->redirect($this->Auth->redirectUrl());
+            } else {
+                $this->Auth->allow($this->action);
+            }
         }
+
         if ($this->Auth->loggedIn()) {
             $this->User->id = $this->Auth->user('id');
             $department_id = ($this->User->field('User.department_id'));
@@ -46,6 +60,7 @@ class AppController extends Controller {
                 $this->redirect(array('student' => true, 'controller' => 'users', 'action' => 'edit_profile', $this->Auth->user('id')));
             }
         }
+
         $this->Auth->loginAction = array(
             'controller' => 'users',
             'action' => 'login',
@@ -79,18 +94,11 @@ class AppController extends Controller {
     }
 
     public function isAuthorized($user) {
-        if (in_array($this->action, array('home', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao'))) {
-            //$this->Auth->allow($this->action);
-            return true;
-        }
-        if ($this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))), $this->controller, $this->action)) {
-            return true;
-        }
-        //return false;
+
+        return $this->Auth->loggedIn();
     }
 
     public function elfinder() {
-
         $this->TinymceElfinder->elfinder();
     }
 
