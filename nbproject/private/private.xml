@@ -2,6 +2,18 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/DashboardsController.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Dashboards/home.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/DepartmentsController.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/AppController.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/lib/Cake/Controller/Controller.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/admin/left_nav.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Config/routes.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Plugin/AclManager/Config/bootstrap.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Plugin/AclManager/README.md</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Plugin/AclManager/Controller/AclController.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Plugin/AclManager/View/Acl/permissions.ctp</file>
+        </group>
     </open-files>
 </project-private>

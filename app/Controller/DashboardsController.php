@@ -61,13 +61,10 @@ class DashboardsController extends AppController {
     }
 
     public function boss_home() {
-        $this->Session->write('layout', 'boss');
-        $this->layout = 'boss';
+
     }
 
     public function admin_home() {
-        $this->Session->write('layout', 'admin');
-        $this->layout = 'admin';
     }
 
     public function loggedInMenu() {

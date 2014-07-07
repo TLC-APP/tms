@@ -88,7 +88,12 @@
                     <li><a href="/users/add"><i class="fa fa-angle-double-right"></i> Thêm user</a></li>
                     <li><a href="/groups"><i class="fa fa-angle-double-right"></i> Danh sách nhóm</a></li>
                     <li><a href="/groups/add"><i class="fa fa-angle-double-right"></i> Thêm nhóm</a></li>
-                    <li><a href="/acl_manager/acl"><i class="fa fa-angle-double-right"></i> Phân quyền</a></li>
+                    <li><a href="/admin/acl_manager/acl/update_aros"><i class="fa fa-angle-double-right"></i> Cập nhật AROS</a></li>
+                    <li><a href="/admin/acl_manager/acl/update_acos"><i class="fa fa-angle-double-right"></i> Cập nhật ACOS</a></li>
+                    <li><a href="/admin/acl_manager/acl/drop"><i class="fa fa-angle-double-right"></i> Xóa ACOS/AROS</a></li>
+                    <li><a href="/admin/acl_manager/acl"><i class="fa fa-angle-double-right"></i> Phân quyền</a></li>
+                    <li><a href="/admin/acl_manager/acl/drop_perms"><i class="fa fa-angle-double-right"></i> Xóa phân quyền</a></li>
+
 
                 </ul>
             </li>

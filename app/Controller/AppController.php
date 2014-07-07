@@ -7,12 +7,13 @@ class AppController extends Controller {
 
     public $components = array(
         'Session', 'RequestHandler',
-        'DebugKit.Toolbar',
+        //'DebugKit.Toolbar',
         'Paginator',
         'Acl',
         'Auth' => array(
             'authorize' => array(
                 'Controller',
+                'Actions' => array('actionPath' => 'controllers'),
                 'Authorize.Acl' => array('actionPath' => 'Models/')
             ),
             'authError' => 'Rất tiếc bạn cần liên hệ admin để đươc nâng cấp tài khoản.',
@@ -32,22 +33,13 @@ class AppController extends Controller {
     public $uses = array('Course', 'CoursesRoom', 'User');
 
     function beforeFilter() {
+        if (in_array($this->request->action, array('home','guest_cothedangki', 'guest_lich_homnay','courses_completed', 'help', 'contact', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao'))) {
 
+            $this->Auth->allow($this->request->action);
+        }
         if (!empty($this->params['prefix'])) {
             $this->layout = $this->params['prefix'];
         }
-        if (in_array($this->action, array('home', 'courses_completed', 'help', 'contact', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao')) || $this->params['prefix'] == 'guest') {
-            $this->Auth->allow($this->action);
-        } else {
-            
-            if (!$this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))),  $this->action)) {
-                $this->Session->setFlash('Rất tiếc bạn cần liên hệ admin để đươc nâng cấp tài khoản.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
-                return $this->redirect($this->Auth->redirectUrl());
-            } else {
-                $this->Auth->allow($this->action);
-            }
-        }
-
         if ($this->Auth->loggedIn()) {
             $this->User->id = $this->Auth->user('id');
             $department_id = ($this->User->field('User.department_id'));
@@ -94,8 +86,11 @@ class AppController extends Controller {
     }
 
     public function isAuthorized($user) {
-
-        return $this->Auth->loggedIn();
+       return true;
+        if ($this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))), $this->action)) {
+            return true;
+        }
+        return false;
     }
 
     public function elfinder() {

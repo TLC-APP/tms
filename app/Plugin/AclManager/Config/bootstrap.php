@@ -24,14 +24,14 @@ Configure::write('AclManager.aros', array('Group', 'User'));
  * Replace {alias} with ARO alias
  * Configure::write('AclManager.{alias}.limit', 3)
  */
-// Configure::write('AclManager.Group.limit', 3);
+//Configure::write('AclManager.Group.limit', 3);
 
 /**
  * Routing Prefix
  * Set the prefix you would like to restrict the plugin to
  * @see Configure::read('Routing.prefixes')
  */
-// Configure::write('AclManager.prefix', 'admin');
+ Configure::write('AclManager.prefix', 'admin');
 
 /**
  * Ugly identation?
@@ -43,7 +43,14 @@ Configure::write('AclManager.uglyIdent', true);
  * Actions to ignore when looking for new ACOs
  * Format: 'action', 'Controller/action' or 'Plugin.Controller/action'
  */
-Configure::write('AclManager.ignoreActions', array('isAuthorized'));
+Configure::write('AclManager.ignoreActions', array(
+    'elfinder','connector',
+    'isAuthorized','home', 'courses_completed', 
+    'help', 'contact', 'login', 'new_courses', 
+    'getLastMessage', 'xem_thong_bao','DebugKit.ToolbarAccess/history_state',
+    'DebugKit.ToolbarAccess/sql_explain','DebugKit.ToolbarAccess/check_expire_course',
+    'BoostCake.BoostCake/index','BoostCake.BoostCake/bootstrap2','BoostCake.BoostCake/bootstrap3'
+    ));
 
 /**
  * List of ARO models to load
