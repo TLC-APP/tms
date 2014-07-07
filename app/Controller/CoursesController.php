@@ -649,6 +649,23 @@ class CoursesController extends AppController {
         $this->set(compact('course'));
     }
 
+    public function teacher_view1($id = null){
+        if (!$this->Course->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $contain = array(
+            'User' => array('fields' => array('id', 'name')),
+            'CoursesRoom' => array('conditions' => array('CoursesRoom.start is not null'), 'order' => array('CoursesRoom.priority' => 'ASC')),
+            'Teacher' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'HocHam', 'HocVi'),
+            'Chapter' => array('Attachment'),
+            'Attachment',
+            'StudentsCourse' => array('Student' => array('fields' => array('id', 'name', 'email', 'phone_number')))
+        );
+        $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
+        $course = $this->Course->find('first', $options);
+        $this->set(compact('course'));
+    }
+    
     public function teacher_index() {
         /* Hiển thị tất cả các khóa học đang được tập huấn */
         /* Hiển thị lịch tập huấn trong tháng */

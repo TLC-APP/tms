@@ -16,7 +16,7 @@ class AppController extends Controller {
                 'Actions' => array('actionPath' => 'controllers'),
                 'Authorize.Acl' => array('actionPath' => 'Models/')
             ),
-            'authError' => 'Rất tiếc bạn cần liên hệ admin để đươc nâng cấp tài khoản.',
+            'authError' => 'Tài khoản không được cấp phép.',
             'flash' => array(
                 'element' => 'alert',
                 'key' => 'auth',
@@ -86,8 +86,7 @@ class AppController extends Controller {
     }
 
     public function isAuthorized($user) {
-       return true;
-        if ($this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))), $this->action)) {
+        if ($this->Auth->loggedIn()&&$this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))), $this->action)) {
             return true;
         }
         return false;

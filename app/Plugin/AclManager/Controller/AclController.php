@@ -84,7 +84,7 @@ class AclController extends AclManagerAppController {
     public function permissions() {
         // Saving permissions
         if ($this->request->is('post') || $this->request->is('put')) {
-            debug($this->request->data);die;
+            //debug($this->request->data);die;
             $perms = isset($this->request->data['Perms']) ? $this->request->data['Perms'] : array();
             foreach ($perms as $aco => $aros) {
                 $action = str_replace(":", "/", $aco);
