@@ -20,9 +20,11 @@ class Course extends AppModel {
         'register_student_number' => "SELECT count(id) as Course__register_student_number 
         FROM  students_courses as StudentsCourse 
          where StudentsCourse.course_id=Course.id",
+        
         'pass_number' => 'SELECT count(id) as Course__pass_number
         FROM  students_courses as StudentsCourse 
          where StudentsCourse.course_id=Course.id and StudentsCourse.is_passed',
+        
         'so_buoi' => 'SELECT count(id) as Course__so_buoi
         FROM  courses_rooms as CoursesRoom 
          where CoursesRoom.course_id=Course.id'
@@ -183,7 +185,7 @@ class Course extends AppModel {
         'CoursesRoom' => array(
             'className' => 'CoursesRoom',
             'foreignKey' => 'course_id',
-            'dependent' => false,
+            'dependent' => true,
             'conditions' => '',
             'fields' => '',
             'order' => '',
@@ -196,7 +198,7 @@ class Course extends AppModel {
         'Attachment' => array(
             'className' => 'Attachment',
             'foreignKey' => 'foreign_key',
-            'dependent' => false,
+            'dependent' => true,
             'conditions' => array(
                 'Attachment.model' => 'Course',
             ),

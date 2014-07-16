@@ -1,7 +1,7 @@
 <div class="col-md-8">
     <!-- WIDGET Lịch học hôm nay của tôi-->
     <?php
-    $courses_today = $this->requestAction(array('student' => true, 'controller' => 'coursesrooms', 'action' => 'student_lich_homnay'));
+    $courses_today = $this->requestAction(array('student' => true, 'controller' => 'courses_rooms', 'action' => 'student_lich_homnay'));
     ?>
     <?php echo $this->element('Widgets/student/today_schedule', array('courses_today' => $courses_today)) ?>
     <!-- WIDGET Lớp tập huấn có thể đăng ký-->
@@ -16,7 +16,7 @@
         <?php echo $this->element('Widgets/student/news', array('courses_register' => $courses_register)); ?>
         <!--WIDGET Thông báo chứng nhận-->
         <?php
-        $courses_notification = $this->requestAction(array('student' => true, 'controller' => 'studentscourses', 'action' => 'student_thongbao'));
+        $courses_notification = $this->requestAction(array('student' => true, 'controller' => 'students_courses', 'action' => 'student_thongbao'));
         ?>
         <?php echo $this->element('Widgets/student/statistics', array('courses_notification' => $courses_notification)) ?>
 

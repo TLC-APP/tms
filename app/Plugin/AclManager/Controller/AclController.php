@@ -234,7 +234,7 @@ class AclController extends AclManagerAppController {
      * Sets the missing actions in the database
      */
     public function update_acos() {
-
+Configure::write('debug', 2);
         $count = 0;
         $knownAcos = $this->_getAcos();
 
@@ -243,6 +243,7 @@ class AclController extends AclManagerAppController {
         if (!$rootNode = $this->Acl->Aco->node($aco)) {
             $rootNode = $this->_buildAcoNode($aco, null);
             $count++;
+           
         }
         $knownAcos = $this->_removeActionFromAcos($knownAcos, $aco);
 
@@ -263,6 +264,8 @@ class AclController extends AclManagerAppController {
             if ($plugin && !$newNode = $this->Acl->Aco->node($aco)) {
                 $newNode = $this->_buildAcoNode($plugin, $parentNode);
                 $count++;
+                            
+
             }
             $parentNode = $newNode;
             $knownAcos = $this->_removeActionFromAcos($knownAcos, $aco);
@@ -272,6 +275,8 @@ class AclController extends AclManagerAppController {
             if (!$newNode = $this->Acl->Aco->node($aco)) {
                 $newNode = $this->_buildAcoNode($controller, $parentNode);
                 $count++;
+                            
+
             }
             $parentNode = $newNode;
             $knownAcos = $this->_removeActionFromAcos($knownAcos, $aco);
@@ -285,12 +290,14 @@ class AclController extends AclManagerAppController {
                 ));
                 if (!$node = $this->Acl->Aco->node($aco)) {
                     $this->_buildAcoNode($action, $parentNode);
+                    
                     $count++;
                 }
                 $knownAcos = $this->_removeActionFromAcos($knownAcos, $aco);
             }
+            //debug($newNode);
         }
-
+        //die;
         // Some ACOs are in the database but not in the controllers
         if (count($knownAcos) > 0) {
             $acoIds = Set::extract('/Aco/id', $knownAcos);
@@ -308,7 +315,7 @@ class AclController extends AclManagerAppController {
     public function update_aros() {
 
         // Debug off to enable redirect
-        Configure::write('debug', 0);
+        Configure::write('debug', 2);
 
         $count = 0;
         $type = 'Aro';

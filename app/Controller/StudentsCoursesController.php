@@ -66,6 +66,88 @@ class StudentsCoursesController extends AppController {
         $email->send($message);
     }
 
+    public function manager_thong_ke_student($export = null) {
+        Configure::write('debug',0);
+        $student_id_array = array();
+        $course_id_array = array();
+        $student_conditions = array();
+        $course_conditions = array();
+        $student_course_conditions = array();
+        if ($export) {
+            
+        } else {
+            if (!empty($this->request->data)) {
+                if (!empty($this->request->data['Student']['department_id'])) {
+                    $student_conditions = Set::merge($student_course_conditions, array('Student.department_id' => $this->request->data['Student']['department_id']));
+                    $students = $this->StudentsCourse->Student->find('all', array('conditions' => $student_conditions, 'recursive' => -1, 'fields' => array('id')));
+                    $student_id_array = Set::classicExtract($students, '{n}.Student.id');
+                }
+                if (!empty($this->request->data['Course']['chapter_id'])) {
+                    $course_conditions = Set::merge($course_conditions, array('Course.chapter_id' => $this->request->data['Course']['chapter_id']));
+                } else {
+                    if (!empty($this->request->data['Course']['field_id'])) {
+                        $chapter_id_array = $this->StudentsCourse->Course->Chapter->getChapterByField_id($this->request->data['Course']['field_id']);
+                        $course_conditions = Set::merge($course_conditions, array('Course.chapter_id' => $chapter_id_array));
+                    }
+                }
+                if (!empty($this->request->data['Course']['chapter_id'])) {
+                    $course_conditions = Set::merge($course_conditions, array('Course.chapter_id' => $this->request->data['Course']['chapter_id']));
+                }
+                if (!empty($this->request->data['Course']['status'])) {
+                    $course_conditions = Set::merge($course_conditions, array('Course.status' => $this->request->data['Course']['status']));
+                }
+                if (!empty($this->request->data['Course']['teacher_id'])) {
+                    $course_conditions = Set::merge($course_conditions, array('Course.teacher_id' => $this->request->data['Course']['teacher_id']));
+                }
+                if (!empty($this->request->data['Course']['begin']) && !empty($this->request->data['Course']['end'])) {
+                    $begin = new DateTime();
+                    if ($begin->setDate($this->request->data['Course']['begin']['year'], $this->request->data['Course']['begin']['month'], $this->request->data['Course']['begin']['day'])) {
+                        $course_conditions = Set::merge($course_conditions, array('Course.created >=' => $begin->format('Y-m-d 00:00:00')));
+                        $end = new DateTime();
+                        if ($end->setDate($this->request->data['Course']['end']['year'], $this->request->data['Course']['end']['month'], $this->request->data['Course']['end']['day'])) {
+                            if ($begin > $end) {
+                                return $this->Session->setFlash('Khoảng thống kê không hợp lệ, từ < đến', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                            } else {
+                                $course_conditions = Set::merge($course_conditions, array('Course.created <=' => $end->format('Y-m-d 00:00:00')));
+                            }
+                        }
+                    } else {
+
+                        $end = new DateTime();
+                        if ($end->setDate($this->request->data['Course']['end']['year'], $this->request->data['Course']['end']['month'], $this->request->data['Course']['end']['day'])) {
+
+                            $course_conditions = Set::merge($course_conditions, array('Course.created <=' => $end->format('Y-m-d 00:00:00')));
+                        }
+                    }
+                }
+                $courses = $this->StudentsCourse->Course->find('all', array('conditions' => $course_conditions, 'recursive' => -1, 'fields' => array('id')));
+                $course_id_array = Set::classicExtract($courses, '{n}.Course.id');
+                if (!empty($this->request->data['StudentsCourse']['ket_qua'])) {
+                    $student_course_conditions = Set::merge($student_course_conditions, array('StudentsCourse.is_passed' => $this->request->data['StudentsCourse']['ket_qua']));
+                }
+                $students_courses = $this->StudentsCourse->find('all', array(
+                    'fields' => array('id', 'course_id', 'student_id', 'is_passed', 'created'),
+                    'conditions' => array(
+                        'StudentsCourse.student_id' => $student_id_array,
+                        'StudentsCourse.course_id' => $course_id_array,
+                        $student_course_conditions),
+                    'contain' => array('Course' => array(
+                            'fields' => array('id', 'name', 'teacher_id', 'chapter_id','created'),
+                            'Chapter' => array('Field' => array('id', 'name'), 'fields' => array('id', 'name')),
+                            'Teacher' => array('fields' => array('id', 'name'))
+                        ),
+                        'Student' => array('fields' => array('id', 'name'), 'Department' => array('id', 'name'))),
+                ));
+                $this->set('students_courses', $students_courses);
+                $this->render('xuat_thong_ke_ds_student');
+            }
+            $departments = $this->StudentsCourse->Student->Department->find('list');
+            $fields = $this->Course->Chapter->Field->find('list');
+            $teachers = $this->Course->Teacher->find('list');
+            $this->set(compact('fields', 'teachers', 'fields', 'departments'));
+        }
+    }
+
     public function register($course_id) {
         //Kiem tra khoa hoc co ton tai ko
         $this->StudentsCourse->Course->id = $course_id;
@@ -203,14 +285,14 @@ class StudentsCoursesController extends AppController {
             if (!empty($khoa_da_dang_ky) && !empty($course_uncompleted)) {
                 $course = array_intersect($khoa_da_dang_ky, $course_uncompleted);
             }
-            $conditions = array('StudentsCourse.course_id' => $course,'StudentsCourse.student_id'=>$loggin_id );
+            $conditions = array('StudentsCourse.course_id' => $course, 'StudentsCourse.student_id' => $loggin_id);
             if (!empty($this->request->data)) {
                 $field_id = $this->request->data['field_name'];
                 if (!empty($field_id)) {
                     $chapter_id = $this->StudentsCourse->Course->Chapter->getChapterByField_id($field_id);
                     $course_id = $this->StudentsCourse->Course->getCoursesByChapter_id($chapter_id);
                     $course = array_intersect($khoa_da_dang_ky, $course_uncompleted, $course_id);
-                    $conditions = array('StudentsCourse.course_id' => $course,'StudentsCourse.student_id'=>$loggin_id);
+                    $conditions = array('StudentsCourse.course_id' => $course, 'StudentsCourse.student_id' => $loggin_id);
                 }
             }
             $this->set(compact('fields'));
@@ -245,14 +327,14 @@ class StudentsCoursesController extends AppController {
             if (!empty($khoa_da_dang_ky) && !empty($course_completed)) {
                 $course = array_intersect($khoa_da_dang_ky, $course_completed);
             }
-            $conditions = array('StudentsCourse.course_id' => $course,'StudentsCourse.student_id'=>$loggin_id);
+            $conditions = array('StudentsCourse.course_id' => $course, 'StudentsCourse.student_id' => $loggin_id);
             if (!empty($this->request->data)) {
                 $field_id = $this->request->data['field_name'];
                 if (!empty($field_id)) {
                     $chapter_id = $this->StudentsCourse->Course->Chapter->getChapterByField_id($field_id);
                     $course_id = $this->StudentsCourse->Course->getCoursesByChapter_id($chapter_id);
                     $course = array_intersect($khoa_da_dang_ky, $course_completed, $course_id);
-                    $conditions = array('StudentsCourse.course_id' => $course,'StudentsCourse.student_id'=>$loggin_id);
+                    $conditions = array('StudentsCourse.course_id' => $course, 'StudentsCourse.student_id' => $loggin_id);
                 }
             }
             $this->set(compact('fields'));

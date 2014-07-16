@@ -7,11 +7,11 @@
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
 
-                    <li class="active"><a data-toggle="tab" href="#tab_2-4">Lịch học</a></li>
-                    <li class=""><a data-toggle="tab" href="#tab_2-5">Tài liệu</a></li>
+                    <li class="active"><a data-toggle="tab" href="#lich_hoc">Lịch học</a></li>
+                    <li class=""><a data-toggle="tab" href="#tai_lieu">Tài liệu</a></li>
                     <li class=""><a data-toggle="tab" href="#tab_hoc_vien">Học viên</a></li>
-                    <li class=""><a data-toggle="tab" href="#tab_2-2">Thông tin</a></li>
-                    <li class=""><a data-toggle="tab" href="#tab_1-1">Nội dung</a></li>
+                    <li class=""><a data-toggle="tab" href="#thong_tin">Thông tin</a></li>
+                    <li class=""><a data-toggle="tab" href="#noi_dung">Nội dung</a></li>
 
                 </ul>
                 <div class="tab-content">
@@ -22,14 +22,14 @@
                         <?php if ($course['Course']['status'] == COURSE_REGISTERING) echo $this->element('manager/course/view/course_registering_students', array('students' => $course['StudentsCourse'])); ?>
                     </div><!-- /.tab-pane -->
 
-                    <div id="tab_1-1" class="tab-pane">
+                    <div id="noi_dung" class="tab-pane">
                         <div class="noi_dung" >
-                            <img alt="" class="pull-left"  style="padding-right: 10px; width: 500px;"src="/files/course/image/<?php echo $course['Course']['image_path'] . '/' . $course['Course']['image']; ?>">
+                            <img alt="" class="pull-left"  style="padding-right: 10px; width: 500px;"src="<?php echo SUB_DIR;?>/files/course/image/<?php echo $course['Course']['image_path'] . '/' . $course['Course']['image']; ?>">
 
                             <p><?php echo $course['Course']['decription']; ?></p>
                         </div>
                     </div><!-- /.tab-pane -->
-                    <div id="tab_2-2" class="tab-pane">
+                    <div id="thong_tin" class="tab-pane">
                         <table class="table table-condensed">
 
                             <tbody style="font-size: 15px;">
@@ -78,7 +78,7 @@
                         </table>
                     </div><!-- /.tab-pane -->
 
-                    <div id="tab_2-4" class="tab-pane active">
+                    <div id="lich_hoc" class="tab-pane active">
                         <div class="row">
                             <div class="col-md-12">
 
@@ -99,7 +99,7 @@
                             </div>
                         </div> 
                     </div>
-                    <div id="tab_2-5" class="tab-pane">
+                    <div id="tai_lieu" class="tab-pane">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class='col-md-6'>
@@ -138,7 +138,8 @@
                                                     <?php
                                                     echo $this->Html->link(
                                                             '<button class="btn btn-success btn-xs active" type="button">'
-                                                            . '<span><i class="fa fa-plus"></i> Đính kèm</span></button>', '/courses/upload/' . $course['Course']['id'], array('escape' => false,
+                                                            . '<span><i class="fa fa-plus"></i> Đính kèm</span></button>',
+                                                            array('action'=>'upload','controller'=>'courses','manager'=>false,$course['Course']['id']), array('escape' => false,
                                                         'class' => 'add-button fancybox.ajax'));
                                                     ?>
 
@@ -157,12 +158,12 @@
                                                             ?>
                                                             <tr id='attachment_<?php echo $tailieu['id'] ?>'>
                                                                 <td><?php echo ++$stt ?></td>
-                                                                <td><?php echo $this->Html->link($tailieu['attachment'], array('fields_manager' => false, 'action' => 'download', $tailieu['id']));
+                                                                <td><?php echo $this->Html->link($tailieu['attachment'], array('manager' => false, 'action' => 'download', $tailieu['id']));
                                                         ?></td>
                                                                 <td>
                                                                     <?php
                                                                     //echo $this->Form->postLink('<button class="btn btn-mini btn-warning" type="button">xóa</button>', array('fields_manager' => false, 'controller' => 'attachments', 'action' => 'delete', $tailieu['Attachment']['id']), array('escape' => false), __('bạn chắc xóa file %s?', $tailieu['Attachment']['attachment']));
-                                                                    echo $this->Html->link('<button class="btn btn-mini btn-warning" type="button">xóa</button>', '/attachments/delete/' . $tailieu['id'], array('escape' => false, 'class' => 'delete-attachment-button'));
+                                                                    echo $this->Html->link('<button class="btn btn-mini btn-warning" type="button">xóa</button>',array('action'=>'delete','controller'=>'attachments','manager'=>false,$tailieu['id']), array('escape' => false, 'class' => 'delete-attachment-button'));
                                                                     ?>
                                                                 </td>
                                                             </tr>

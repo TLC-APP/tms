@@ -49,7 +49,7 @@
             $.fancybox.close();
             $.ajax({
                 type: "POST",
-                url: '/courses/attachment_list/' + response.course_id
+                url: '<?php echo Router::url('/',true)?>courses/attachment_list/' + response.course_id
             }).done(function(data, textStatus, jqXHR) {
                 $('#attachments_list').html(data);
             });

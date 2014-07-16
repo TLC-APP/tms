@@ -1,21 +1,10 @@
 <aside class="left-side sidebar-offcanvas">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-        <!-- Sidebar user panel -->
-        <div class="user-panel">
-            <div class="pull-left image">
-                <img src="img/avatar3.png" class="img-circle" alt="User Image" />
-            </div>
-            <div class="pull-left info">
-                <p>Xin chào, Toàn</p>
-
-                <a href="/users/logout"><i class="fa fa-power-off text-success"></i> Thoát</a>
-            </div>
-        </div>
         <!-- search form -->
-        <form action="#" method="get" class="sidebar-form">
+        <form action="<?php echo SUB_DIR;?>/admin/users/search" method="post" class="sidebar-form">
             <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Tìm kiếm..."/>
+                <input type="text" name="name" class="form-control" placeholder="Nhập tên user cần tìm..."/>
                 <span class="input-group-btn">
                     <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
                 </span>
@@ -25,7 +14,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="active">
-                <a href="/">
+                <a href="<?php echo SUB_DIR;?>/admin/">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
@@ -37,25 +26,14 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm mới</span>', array('controller' => 'courses', 'action' => 'add', 'admin' => true), array('escape' => false)); ?></li>
-                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đang đăng ký</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_REGISTERING), array('escape' => false)); ?></li>
-                    <li> <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đủ điều kiện mở lớp</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_OPENABLE), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đang đăng kí</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_REGISTERING), array('escape' => false)); ?></li>
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Chưa hoàn thành</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_UNCOMPLETED), array('escape' => false)); ?></li>
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đã hoàn thành</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_COMPLETED), array('escape' => false)); ?></li>
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đã hủy</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_CANCELLED), array('escape' => false)); ?></li>
 
                 </ul>
             </li>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-sign-in"></i> <span>Chứng nhận</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="pages/examples/login.html"><i class="fa fa-angle-double-right"></i> Quản lý sổ chứng nhận</a></li>
-                    <li><a href="pages/examples/invoice.html"><i class="fa fa-angle-double-right"></i> In theo học viên</a></li>
-                    <li><a href="pages/examples/login.html"><i class="fa fa-angle-double-right"></i> In theo lớp</a></li>
-                </ul>
-            </li>
+
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i>
@@ -63,8 +41,8 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/admin/fields"><i class="fa fa-angle-double-right"></i> Danh sách lĩnh vực</a></li>
-                    <li><a href="/admin/fields/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
+                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i><span>Danh sách</span>', array('controller' => 'fields', 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
+                    <li><a href="<?php echo SUB_DIR;?>/admin/fields/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -74,39 +52,56 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/admin/chapters"><i class="fa fa-angle-double-right"></i> Danh sách chuyên đề</a></li>
-                    <li><a href="/admin/chapters/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
+                      <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i><span>Danh sách</span>', array('controller' => 'chapters', 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
+                    <li><a href="<?php echo SUB_DIR;?>/admin/chapters/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
                 </ul>
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-user"></i> <span>User</span>
+                    <i class="fa fa-user"></i> <span>Người dùng</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/users"><i class="fa fa-angle-double-right"></i> Người dùng</a></li>
-                    <li><a href="/users/add"><i class="fa fa-angle-double-right"></i> Thêm user</a></li>
-                    <li><a href="/groups"><i class="fa fa-angle-double-right"></i> Danh sách nhóm</a></li>
-                    <li><a href="/groups/add"><i class="fa fa-angle-double-right"></i> Thêm nhóm</a></li>
-                    <li><a href="/admin/acl_manager/acl/update_aros"><i class="fa fa-angle-double-right"></i> Cập nhật AROS</a></li>
-                    <li><a href="/admin/acl_manager/acl/update_acos"><i class="fa fa-angle-double-right"></i> Cập nhật ACOS</a></li>
-                    <li><a href="/admin/acl_manager/acl/drop"><i class="fa fa-angle-double-right"></i> Xóa ACOS/AROS</a></li>
-                    <li><a href="/admin/acl_manager/acl"><i class="fa fa-angle-double-right"></i> Phân quyền</a></li>
-                    <li><a href="/admin/acl_manager/acl/drop_perms"><i class="fa fa-angle-double-right"></i> Xóa phân quyền</a></li>
-
-
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Danh sách</span>', array('controller' => 'users', 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm người dùng</span>', array('controller' => 'users', 'action' => 'add', 'admin' => true), array('escape' => false)); ?></li>
+                   <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm nhóm</span>', array('controller' => 'groups', 'action' => 'add', 'admin' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Danh sách nhóm</span>', array('plugin'=>'acl_manager','controller' => 'groups', 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Cập nhật AROS</span>', array('plugin'=>'acl_manager','controller' => 'acl', 'action' => 'update_aros', 'admin' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Cập nhật ACOS</span>', array('plugin'=>'acl_manager','controller' => 'acl', 'action' => 'update_acos', 'admin' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Xóa ACOS/AROS</span>', array('plugin'=>'acl_manager','controller' => 'acl', 'action' => 'drop', 'admin' => true), array('escape' => false)); ?></li>
+                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Phân quyền</span>', array('plugin'=>'acl_manager','controller' => 'acl', 'action' => 'permissions', 'admin' => true), array('escape' => false)); ?></li>
+                      <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Xóa phân quyền</span>', array('plugin'=>'acl_manager','controller' => 'acl', 'action' => 'drop_perms', 'admin' => true), array('escape' => false)); ?></li>
                 </ul>
             </li>
 
-            <li>
-                <a href="/admin/departments">
+            
+             <li class="treeview">
+                <a href="#">
                     <i class="fa fa-calendar"></i> <span>Đơn vị</span>
+                    <i class="fa fa-angle-left pull-right"></i>
                 </a>
+                <ul class="treeview-menu">
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('admin' => true, 'controller' => 'departments', 'action' => 'index'), array('escape' => false)); ?>
+                    </li>
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('admin' => true, 'controller' => 'departments', 'action' => 'add'), array('escape' => false)); ?>
+                    </li>
+
+                </ul>
             </li>
-            <li>
-                <a href="/admin/courses/thong_ke">
-                    <i class="fa fa-calendar"></i> <span>Thống kê</span>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-bar-chart-o"></i> <span>Thống kê</span>
+                    <i class="fa fa-angle-left pull-right"></i>
                 </a>
+                <ul class="treeview-menu">
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Theo đơn vị</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Theo lĩnh vực</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Theo chuyên đề</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Tập huấn viên</a></li>
+                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Khoảng thời gian</a></li>
+                </ul>
             </li>
         </ul>
     </section>

@@ -14,11 +14,11 @@
                     <?php echo $this->Html->link('Trang chủ', array('controller' => 'dashboards', 'action' => 'teacher_home')); ?>
                 </li>
                 <li class=" nav-item">
-                    <?php echo $this->Html->link('Khóa học sắp tổ chức', array('controller' => 'coursesrooms', 'action' => 'sap_to_chuc')); ?>
+                    <?php echo $this->Html->link('Khóa học sắp tổ chức', array('controller' => 'courses_rooms', 'action' => 'sap_to_chuc')); ?>
                 </li>
 
                 <li class=" nav-item">
-                    <?php echo $this->Html->link('Khóa học đã tập huấn', array('controller' => 'coursesrooms', 'action' => 'da_tap_huan')); ?>
+                    <?php echo $this->Html->link('Khóa học đã tập huấn', array('controller' => 'courses_rooms', 'action' => 'da_tap_huan')); ?>
                 </li>
 
             </ul><!--//nav-->

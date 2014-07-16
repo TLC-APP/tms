@@ -28,14 +28,27 @@ class ChaptersController extends AppController {
         return $this->redirect(array('action' => $role . "_index"));
     }
 
-    public function search() {
+    public function fill_selectbox($field_id = null) {
+        //$this->autoRender = false;
+        $conditions = array();
+        if ($field_id) {
+            $conditions = Set::merge($conditions, array('Chapter.field_id' => $field_id));
+        }
+        $chapters = $this->Chapter->find('list', array('conditions' => $conditions));
+        $chapters=Set::merge($chapters,array(""=>"-- Tất cả --"));
+        $this->set(array(
+            'chapters' => $chapters,
+            '_serialize' => array('chapters')
+        ));
+    }
 
+    public function search() {
         if ($this->request->is('ajax')) {
             // Use data from serialized form
             $chapter_name = $this->request->data['chapter_name'];
             $this->Paginator->settings = array(
                 'conditions' => array(
-                    'Chapter.created_user_id' => $this->Auth->user('id'),
+                    //  'Chapter.created_user_id' => $this->Auth->user('id'),
                     'Chapter.name like ' => '%' . $chapter_name . '%'
             ));
             $this->set('chapters', $this->Paginator->paginate());
@@ -107,11 +120,26 @@ class ChaptersController extends AppController {
 
     public function manager_index() {
         $contain = array('User' => array('fields' => array('id', 'name')), 'Field');
-        $this->Paginator->settings = array('conditions' => array('Chapter.created_user_id' => $this->Auth->user('id')), 'contain' => $contain);
+        $this->Paginator->settings = array('contain' => $contain);
+        $this->set('chapters', $this->Paginator->paginate());
+    }
+
+    public function admin_index() {
+        $contain = array('User' => array('fields' => array('id', 'name')), 'Field');
+        $this->Paginator->settings = array('contain' => $contain);
         $this->set('chapters', $this->Paginator->paginate());
     }
 
     public function manager_view($id) {
+        if (!$this->Chapter->exists($id)) {
+            throw new NotFoundException(__('Invalid chapter'));
+        }
+        $contain = array('Attachment', 'User' => array('fields' => array('id', 'name')), 'Field');
+        $options = array('conditions' => array('Chapter.' . $this->Chapter->primaryKey => $id), 'contain' => $contain);
+        $this->set('chapter', $this->Chapter->find('first', $options));
+    }
+
+    public function admin_view($id) {
         if (!$this->Chapter->exists($id)) {
             throw new NotFoundException(__('Invalid chapter'));
         }
@@ -139,7 +167,44 @@ class ChaptersController extends AppController {
         $this->set(compact('fields'));
     }
 
+    public function admin_add() {
+        $loginId = $this->Auth->user('id');
+        if ($this->request->is('post')) {
+            $this->Chapter->create();
+            $this->request->data['Chapter']['created_user_id'] = $loginId;
+            try {
+                if ($this->Chapter->createWithAttachments($this->request->data)) {
+                    $this->Session->setFlash('Thêm chuyên đề thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                    return $this->redirect(array('action' => 'index'));
+                }
+            } catch (Exception $exc) {
+                echo $exc->getTraceAsString();
+            }
+        }
+
+        $fields = $this->Chapter->Field->find('list');
+        $this->set(compact('fields'));
+    }
+
     public function manager_edit($id = null) {
+        if (!$this->Chapter->exists($id)) {
+            throw new NotFoundException(__('Invalid chapter'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            if ($this->Chapter->save($this->request->data)) {
+                $this->Session->setFlash('Cập nhật chuyên đề thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'index'));
+            }
+        } else {
+
+            $options = array('conditions' => array('Chapter.' . $this->Chapter->primaryKey => $id));
+            $this->request->data = $this->Chapter->find('first', $options);
+        }
+        $fields = $this->Chapter->Field->find('list');
+        $this->set(compact('fields'));
+    }
+
+    public function admin_edit($id = null) {
         if (!$this->Chapter->exists($id)) {
             throw new NotFoundException(__('Invalid chapter'));
         }
@@ -256,6 +321,60 @@ class ChaptersController extends AppController {
                 } else {
                     $this->Session->setFlash('Xóa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
                     return $this->redirect($this->render());
+                }
+            }
+        }
+    }
+
+    public function manager_delete($id = null) {
+
+        $this->Chapter->id = $id;
+        if (!$this->Chapter->exists()) {
+            throw new NotFoundException(__('Invalid chapter'));
+        }
+        $this->request->onlyAllow('post', 'delete');
+        if (!$this->Chapter->isOwnedBy($id, $this->Auth->user('id')) && (!$this->Chapter->User->isAdmin() || !$this->Chapter->User->isManager())) {
+            $this->Session->setFlash('Bạn không có quyền xóa chuyên đề người khác tạo', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            return $this->redirect(array('action' => 'index'));
+        } else {
+            $course_number = $this->Chapter->field('course_number');
+            if ($course_number > 0) {
+                $this->Session->setFlash('Có ' . $course_number . ' khóa học thuộc chuyên đề này, bạn cần xóa chúng trước đã.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                return $this->redirect(array('action' => 'index'));
+            } else {
+                if ($this->Chapter->delete()) {
+                    $this->Session->setFlash('Xóa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                    return $this->redirect(array('action' => 'index'));
+                } else {
+                    $this->Session->setFlash('Xóa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                    return $this->redirect(array('action' => 'index'));
+                }
+            }
+        }
+    }
+
+    public function admin_delete($id = null) {
+
+        $this->Chapter->id = $id;
+        if (!$this->Chapter->exists()) {
+            throw new NotFoundException(__('Invalid chapter'));
+        }
+        $this->request->onlyAllow('post', 'delete');
+        if (!$this->Chapter->isOwnedBy($id, $this->Auth->user('id')) && (!$this->Chapter->User->isAdmin() || !$this->Chapter->User->isManager())) {
+            $this->Session->setFlash('Bạn không có quyền xóa chuyên đề người khác tạo', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            return $this->redirect(array('action' => 'index'));
+        } else {
+            $course_number = $this->Chapter->field('course_number');
+            if ($course_number > 0) {
+                $this->Session->setFlash('Có ' . $course_number . ' khóa học thuộc chuyên đề này, bạn cần xóa chúng trước đã.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                return $this->redirect(array('action' => 'index'));
+            } else {
+                if ($this->Chapter->delete()) {
+                    $this->Session->setFlash('Xóa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                    return $this->redirect(array('action' => 'index'));
+                } else {
+                    $this->Session->setFlash('Xóa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                    return $this->redirect(array('action' => 'index'));
                 }
             }
         }

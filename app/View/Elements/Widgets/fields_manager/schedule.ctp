@@ -50,7 +50,7 @@ echo $this->Html->css('jquery.minicolors', array('inline' => false));
                     <?php echo $this->Form->input('current_event_id', array('id' => 'txt_current_event', 'type' => 'hidden')); ?>
                 <div class="input-group">
 <?php echo $this->Form->input('room_id', array('label' => false, 'div' => false, 'id' => 'room-event', 'class' => 'form-control', 'empty' => "Chọn phòng..")); ?>
-                    <span class="input-group-addon"><a href="/rooms/add" class="fancybox.ajax add-button"><i class="glyphicon glyphicon-plus"></i></a></span>
+                    <span class="input-group-addon"><a href="<?php echo SUB_DIR?>/rooms/add" class="fancybox.ajax add-button"><i class="glyphicon glyphicon-plus"></i></a></span>
                 </div>
 
             </div>

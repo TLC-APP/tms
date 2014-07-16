@@ -3,17 +3,30 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/DashboardsController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Dashboards/home.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Users/manager_view.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Users/manager_add.ctp</file>
             <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/DepartmentsController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/AppController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/lib/Cake/Controller/Controller.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/admin/left_nav.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Config/routes.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Plugin/AclManager/Config/bootstrap.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Plugin/AclManager/README.md</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Plugin/AclManager/Controller/AclController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Plugin/AclManager/View/Acl/permissions.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Rooms/manager_edit.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Users/manager_edit.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Messages/xem_thong_bao.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Users/teacher_edit_profile.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Rooms/manager_add.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/student_view.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Users/teacher_profile.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/manager/left_menu.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Dashboards/student_home.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/Message.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/CoursesRoom.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/Room.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/FieldsController.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/User.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Rooms/manager_index.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Widgets/student/notification.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Config/database.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Messages/manager_index.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/RoomsController.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/MessagesController.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/UsersController.php</file>
         </group>
     </open-files>
 </project-private>

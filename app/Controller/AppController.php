@@ -1,13 +1,11 @@
 <?php
-
-//tét
 App::uses('Controller', 'Controller');
 
 class AppController extends Controller {
 
     public $components = array(
         'Session', 'RequestHandler',
-        //'DebugKit.Toolbar',
+        'DebugKit.Toolbar',
         'Paginator',
         'Acl',
         'Auth' => array(
@@ -33,7 +31,10 @@ class AppController extends Controller {
     public $uses = array('Course', 'CoursesRoom', 'User');
 
     function beforeFilter() {
-        if (in_array($this->request->action, array('home','guest_cothedangki', 'guest_lich_homnay','courses_completed', 'help', 'contact', 'login', 'new_courses', 'getLastMessage', 'xem_thong_bao'))) {
+        if (in_array($this->request->action, array(
+            'home','guest_cothedangki', 
+            'guest_lich_homnay','courses_completed', 'help', 'contact', 
+            'login', 'new_courses', 'getLastMessage', 'xem_thong_bao','guest_view_teacher','guest_view'))) {
 
             $this->Auth->allow($this->request->action);
         }
@@ -86,6 +87,8 @@ class AppController extends Controller {
     }
 
     public function isAuthorized($user) {
+        return true;
+        
         if ($this->Auth->loggedIn()&&$this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))), $this->action)) {
             return true;
         }

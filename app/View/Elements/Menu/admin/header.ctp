@@ -1,4 +1,4 @@
-<?php echo $this->Html->link('TMS', array('controller' => 'dashboards', 'action' => 'home', 'admin' => false), array('class' => 'logo')); ?>
+<?php echo $this->Html->link('TMS', array('controller' => 'dashboards', 'action' => 'home','admin'=>false,'plugin'=>false), array('class' => 'logo')); ?>
 
 
 <!-- Header Navbar: style can be found in header.less -->
@@ -183,10 +183,10 @@
                     <!-- Menu Footer-->
                     <li class="user-footer">
                         <div class="pull-left">
-                            <a href="/users/profile" class="btn btn-default btn-flat">Hồ sơ</a>
+                            <a href="/thgv/users/profile" class="btn btn-default btn-flat">Hồ sơ</a>
                         </div>
                         <div class="pull-right">
-                            <a href="/users/logout" class="btn btn-default btn-flat">Thoát</a>
+                            <a href="/thgv/users/logout" class="btn btn-default btn-flat">Thoát</a>
                         </div>
                     </li>
                 </ul>

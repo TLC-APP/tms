@@ -5,8 +5,8 @@
             <ul class="list-unstyled">
                 <li><b>Khu hiệu bộ, phòng: A11.408</b></li>
                 <li><b>Địa chỉ: Số 126, QL 53, Khóm 4, Phường 5, TP. Trà Vinh</b></li>
-                <li><b>ĐT: 0743 765364</b></li>
-                <li><b>Gặp anh Nguyễn Thái Toàn, DĐ: 01234 21 27 24</b></li>
+                <li><b>ĐT: 0743 765364 - Số nội bộ 102</b></li>
+                
             </ul>
         </div>
     </div>

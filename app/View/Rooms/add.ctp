@@ -29,7 +29,7 @@
         $('#addRoomForm').on('submit', function(e) {
             e.preventDefault(); // prevent native submit
             $(this).ajaxSubmit({
-                url: '/rooms/add.json',
+                url: '<?php echo SUB_DIR;?>/rooms/add.json',
                 success: addRoomResponse
             });
             return false;

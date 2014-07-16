@@ -25,12 +25,17 @@ class Room extends AppModel {
         'name' => array(
             'notEmpty' => array(
                 'rule' => array('notEmpty'),
-            //'message' => 'Your custom message here',
+            'message' => 'Tên phòng không rỗng',
             //'allowEmpty' => false,
             //'required' => false,
             //'last' => false, // Stop validation after this rule
             //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
+            'isUnique'=>array(
+                'rule'=>'isUnique',
+                'message'=>'Tên phòng đã có',
+                'last'=>true
+            )
         ),
     );
 

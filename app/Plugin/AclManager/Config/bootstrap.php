@@ -44,12 +44,15 @@ Configure::write('AclManager.uglyIdent', true);
  * Format: 'action', 'Controller/action' or 'Plugin.Controller/action'
  */
 Configure::write('AclManager.ignoreActions', array(
-    'elfinder','connector',
-    'isAuthorized','home', 'courses_completed', 
-    'help', 'contact', 'login', 'new_courses', 
-    'getLastMessage', 'xem_thong_bao','DebugKit.ToolbarAccess/history_state',
-    'DebugKit.ToolbarAccess/sql_explain','DebugKit.ToolbarAccess/check_expire_course',
-    'BoostCake.BoostCake/index','BoostCake.BoostCake/bootstrap2','BoostCake.BoostCake/bootstrap3'
+    
+    'isAuthorized',
+    //'home', 'courses_completed', 
+    //'help', 'contact', 'login', 'new_courses', 
+    //'getLastMessage', 'xem_thong_bao',
+    //'DebugKit.ToolbarAccess/history_state',
+    //'DebugKit.ToolbarAccess/sql_explain','DebugKit.ToolbarAccess/check_expire_course',
+    //'Users/guest_view_teacher','Courses/guest_view',
+    //'BoostCake.BoostCake/index','BoostCake.BoostCake/bootstrap2','BoostCake.BoostCake/bootstrap3'
     ));
 
 /**

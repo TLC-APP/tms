@@ -191,7 +191,7 @@ class User extends AppModel {
             'foreignKey' => 'teacher_id',
             'dependent' => false,
             'conditions' => '',
-            'fields' => array('id', 'name'),
+            'fields' => array('id', 'name','decription' ),
             'order' => '',
             'limit' => '',
             'offset' => '',
@@ -199,7 +199,7 @@ class User extends AppModel {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
-        'Course' => array(
+        'StudentsCourse' => array(
             'className' => 'StudentsCourse',
             'foreignKey' => 'student_id',
             'dependent' => false,
@@ -212,7 +212,7 @@ class User extends AppModel {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
-        'FieldManaged' => array(
+        /*'FieldManaged' => array(
             'className' => 'Field',
             'foreignKey' => 'manage_user_id',
             'dependent' => false,
@@ -224,7 +224,7 @@ class User extends AppModel {
             'exclusive' => '',
             'finderQuery' => '',
             'counterQuery' => ''
-        )
+        )*/
     );
     public $belongsTo = array(
         'HocHam' => array(

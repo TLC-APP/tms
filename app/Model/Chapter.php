@@ -58,10 +58,10 @@ class Chapter extends AppModel {
             //'last' => false, // Stop validation after this rule
             //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
-            'mustUnique' => array(
+          /*  'mustUnique' => array(
                 'rule' => 'isUnique',
                 'message' => 'Tên chuyên đề đã tồn tại',
-                'last' => true),
+                'last' => true),*/
         ),
     );
     public $belongsTo = array(

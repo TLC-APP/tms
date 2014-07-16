@@ -4,6 +4,7 @@ App::uses('AppModel', 'Model');
  * Message Model
  *
  * @property CreatedUser $CreatedUser
+ * @property Category $Category
  */
 class Message extends AppModel {
 
@@ -60,6 +61,16 @@ class Message extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+		'category_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
 	);
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -70,15 +81,15 @@ class Message extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'User' => array(
+		'CreatedUser' => array(
 			'className' => 'User',
 			'foreignKey' => 'created_user_id',
 			'conditions' => '',
-			'fields' => '',
+			'fields' => array('id','name'),
 			'order' => ''
 		),
-            'Category' => array(
-			'className' => 'Category',
+		'Group' => array(
+			'className' => 'Group',
 			'foreignKey' => 'category_id',
 			'conditions' => '',
 			'fields' => '',

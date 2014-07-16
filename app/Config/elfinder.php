@@ -24,8 +24,8 @@ $config = array (
  * }
  *  			
  */			
-		'window_url' => Router::fullbaseUrl().'/fields/elfinder',		// call elfinder window
-		'connector_url' => Router::fullbaseUrl().'/fields/connector',	// connect to retrive files
+		'window_url' => Router::fullbaseUrl().'/thgv/fields/elfinder',		// call elfinder window
+		'connector_url' => Router::fullbaseUrl().'/thgv/fields/connector',	// connect to retrive files
 		'locale' => 'en', 
 			
 /**

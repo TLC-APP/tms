@@ -90,7 +90,7 @@
                     day: 'ngày'
                 },
                 //Random default events
-                events: '/courses_rooms/index.json?course_id=' +<?php echo $course_id; ?>,
+                events: '<?php echo SUB_DIR?>/courses_rooms/index.json?course_id=' +<?php echo $course_id; ?>,
                 editable: true,
                 droppable: true, // this allows things to be dropped onto the calendar !!!
                 eventRender: function(event, element) {
@@ -113,7 +113,7 @@
 
                     $.ajax({
                         type: "POST",
-                        url: '/courses_rooms/eventResize/' + event.id,
+                        url: '<?php echo SUB_DIR?>/courses_rooms/eventResize/' + event.id,
                         data: {minuteDelta: minuteDelta}
                     }).error(function() {
                         bootstrap_alert("Thay đổi thời gian kết thúc không thành công");
@@ -124,7 +124,7 @@
                     var start = ($.fullCalendar.formatDate(event.start, 'yyyy-MM-dd H:mm'));
                     $.ajax({
                         type: "POST",
-                        url: '/courses_rooms/cap_nhat_buoi/' + event.id,
+                        url: '<?php echo SUB_DIR?>/courses_rooms/cap_nhat_buoi/' + event.id,
                         data: {start: start}
                     }).error(function() {
                         bootstrap_alert("Thay đổi thời gian bắt đầu không thành công");
@@ -137,7 +137,7 @@
                     //Cập nhật dữ liệu thời gian
                     $.ajax({
                         type: "POST",
-                        url: '/courses_rooms/cap_nhat_buoi/' + copiedEventObject.id,
+                        url: '<?php echo SUB_DIR?>/courses_rooms/cap_nhat_buoi/' + copiedEventObject.id,
                         data: {start: start}
                     })
                             .error(function() {
@@ -287,7 +287,7 @@
                         if (current_event && current_event.length == 1) {
                             $.ajax({
                                 type: "POST",
-                                url: '/courses_rooms/removeEvent/' + current_event_id
+                                url: '<?php echo SUB_DIR?>/courses_rooms/removeEvent/' + current_event_id
                             }).done(function(data, textStatus, jqXHR) {
 
                                 $('#calendar').fullCalendar('removeEvents', current_event_id);
@@ -338,7 +338,7 @@
                             }
                         }, // post-submit callback 
                         // other available options: 
-                        url: '/courses_rooms/' + current_event.id + '.json', // override for form's 'action' attribute 
+                        url: '<?php echo SUB_DIR?>/courses_rooms/' + current_event.id + '.json', // override for form's 'action' attribute 
                         type: 'put', // 'get' or 'post', override for form's 'method' attribute 
                         //resetForm: true, // reset the form after successful submit
                         timeout: 3000
@@ -350,7 +350,7 @@
             } else {
                 form.append('<input type="hidden" name="data[CoursesRoom][course_id]" value="<?php echo $course_id; ?>">');
                 form.ajaxSubmit({
-                    url: '/courses_rooms/add.json',
+                    url: '<?php echo SUB_DIR?>/courses_rooms/add.json',
                     success: addBuoiResponse
                 });
             }
@@ -362,7 +362,7 @@
                 $(this).append('<input type="hidden" name="data[CoursesRoom][course_id]" value="<?php echo $course_id; ?>">');
                 e.preventDefault();
                 $(this).ajaxSubmit({
-                    url: '/courses_rooms/add.json',
+                    url: '<?php echo SUB_DIR?>/courses_rooms/add.json',
                     success: addBuoiResponse
                 });
             });

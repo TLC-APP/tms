@@ -109,9 +109,11 @@ if (isset($status)) {
 
                             <?php
                             if (isset($status) && $status == COURSE_CANCELLED) {
-                                echo $this->Form->postLink('
-                                
+                                echo $this->Form->postLink('                                
   <span class="fa fa-refresh"></span>', array('manager' => false, 'action' => 'uncancel', $course['Course']['id']), array('escape' => false), __('Bạn có chắc phục hồi khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
+
+                                echo $this->Form->postLink('                                
+  <span class="fa fa-times"></span>', array('manager' => false, 'action' => 'delete', $course['Course']['id']), array('escape' => false), __('Bạn có chắc xóa khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
                             }
                             ?>
 

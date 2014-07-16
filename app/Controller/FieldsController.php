@@ -72,14 +72,32 @@ class FieldsController extends AppController {
         }
         if ($this->request->is(array('post', 'put'))) {
             if ($this->Field->save($this->request->data)) {
-                return $this->flash(__('The field has been saved.'), array('action' => 'index'));
+                $this->Session->setFlash('Cập nhật lĩnh vực thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'index'));
             }
         } else {
-            $options = array('conditions' => array('Field.' . $this->Field->primaryKey => $id));
-            $manageUsers = $this->Field->ManageBy->find('list');
-            $this->set(compact('fields', 'manageUsers'));
+            $options = array('conditions' => array('Field.' . $this->Field->primaryKey => $id),'recursive'=>-1);
             $this->request->data = $this->Field->find('first', $options);
         }
+        $manageUsers = $this->Field->ManageBy->find('list');
+        $this->set(compact('manageUsers'));
+    }
+    
+    public function admin_edit($id = null) {
+        if (!$this->Field->exists($id)) {
+            throw new NotFoundException(__('Invalid field'));
+        }
+        if ($this->request->is(array('post', 'put'))) {
+            if ($this->Field->save($this->request->data)) {
+                $this->Session->setFlash('Cập nhật lĩnh vực thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'index'));
+            }
+        } else {
+            $options = array('conditions' => array('Field.' . $this->Field->primaryKey => $id),'recursive'=>-1);
+            $this->request->data = $this->Field->find('first', $options);
+        }
+        $manageUsers = $this->Field->ManageBy->find('list');
+        $this->set(compact('manageUsers'));
     }
 
     /**
@@ -89,26 +107,60 @@ class FieldsController extends AppController {
      * @param string $id
      * @return void
      */
-    public function delete($id = null) {
+    public function manager_delete($id = null) {
         $this->Field->id = $id;
         if (!$this->Field->exists()) {
             throw new NotFoundException(__('Invalid field'));
         }
         $this->request->onlyAllow('post', 'delete');
         if ($this->Field->delete()) {
-            return $this->flash(__('The field has been deleted.'), array('action' => 'index'));
+            $this->Session->setFlash('Xóa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+            return $this->redirect(array('action' => 'index'));
         } else {
-            return $this->flash(__('The field could not be deleted. Please, try again.'), array('action' => 'index'));
+            $this->Session->setFlash('Xóa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            return $this->redirect(array('action' => 'index'));
+        }
+    }
+    
+     public function admin_delete($id = null) {
+        $this->Field->id = $id;
+        if (!$this->Field->exists()) {
+            throw new NotFoundException(__('Invalid field'));
+        }
+        $this->request->onlyAllow('post', 'delete');
+        if ($this->Field->delete()) {
+            $this->Session->setFlash('Xóa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+            return $this->redirect(array('action' => 'index'));
+        } else {
+            $this->Session->setFlash('Xóa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            return $this->redirect(array('action' => 'index'));
         }
     }
 
     /* Created by Nguyen Thai at 10h26 pm 10.06.2014 */
 
     public function manager_add() {
+        $loginId = $this->Auth->user('id');
         if ($this->request->is('post')) {
             $this->Field->create();
+            $this->request->data['Field']['created_user_id'] = $loginId;
             if ($this->Field->save($this->request->data)) {
-                return $this->flash(__('The field has been saved.'), array('action' => 'index'));
+                $this->Session->setFlash('Thêm lĩnh vực thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'index'));
+            }
+        }
+        $manageUsers = $this->Field->ManageBy->find('list');
+        $this->set(compact('fields', 'manageUsers'));
+    }
+    
+     public function admin_add() {
+        $loginId = $this->Auth->user('id');
+        if ($this->request->is('post')) {
+            $this->Field->create();
+            $this->request->data['Field']['created_user_id'] = $loginId;
+            if ($this->Field->save($this->request->data)) {
+                $this->Session->setFlash('Thêm lĩnh vực thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                return $this->redirect(array('action' => 'index'));
             }
         }
         $manageUsers = $this->Field->ManageBy->find('list');
@@ -116,6 +168,12 @@ class FieldsController extends AppController {
     }
 
     public function manager_index() {
+        $contain = array('CreatedUser' => array('fields' => array('id', 'name')), 'ManageBy' => array('fields' => array('id', 'name')));
+        $this->Paginator->settings = array('contain' => $contain);
+        $this->set('fields', $this->Paginator->paginate());
+    }
+    
+     public function admin_index() {
         $contain = array('CreatedUser' => array('fields' => array('id', 'name')), 'ManageBy' => array('fields' => array('id', 'name')));
         $this->Paginator->settings = array('contain' => $contain);
         $this->set('fields', $this->Paginator->paginate());

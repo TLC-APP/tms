@@ -3,9 +3,10 @@
     <section class="sidebar">
         <!-- Sidebar user panel -->
         <!-- search form -->
-        <form action="#" method="get" class="sidebar-form">
+        
+        <form action="<?php echo SUB_DIR;?>/manager/users/search" method="post" class="sidebar-form">
             <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Tìm kiếm..."/>
+                <input type="text" name="name" class="form-control" placeholder="Nhập tên user cần tìm..."/>
                 <span class="input-group-btn">
                     <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
                 </span>
@@ -94,7 +95,22 @@
                 </ul>
             </li>
 
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-user"></i> <span>Phòng học</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'rooms', 'action' => 'index'), array('escape' => false)); ?>
+                    </li>
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('manager' => true, 'controller' => 'rooms', 'action' => 'add'), array('escape' => false)); ?>
+                    </li>
 
+                </ul>
+            </li>
+            
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-user"></i> <span>Người dùng</span>
@@ -102,7 +118,7 @@
                 </a>
                 <ul class="treeview-menu">                    
                     <li>                    
-                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'users'), array('escape' => false)); ?>
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'users','action'=>'index'), array('escape' => false)); ?>
                     </li>
                     <li>                    
                         <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array('manager' => true, 'controller' => 'users', 'action' => 'add'), array('escape' => false)); ?>
@@ -135,15 +151,11 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Theo đơn vị</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Theo lĩnh vực</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Theo chuyên đề</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Tập huấn viên</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Khoảng thời gian</a></li>
+                    <li><a href="<?php echo SUB_DIR;?>/manager/courses/thong_ke"><i class="fa fa-angle-double-right"></i> Khóa học</a></li>
+                    <li><a href="<?php echo SUB_DIR;?>/manager/students_courses/thong_ke_student"><i class="fa fa-angle-double-right"></i> Người tham dự</a></li>
                 </ul>
             </li>
         </ul>
     </section>
     <!-- /.sidebar -->
 </aside>
-<?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array('manager' => true, 'controller' => 'messages', 'action' => 'index'), array('escape' => false)); ?>

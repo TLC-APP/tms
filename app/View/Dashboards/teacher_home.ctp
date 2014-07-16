@@ -1,7 +1,7 @@
 <div class="col-md-8">
     <!-- WIDGET Lịch tập huấn hôm nay-->
     <?php 
-        $teacher_courses_today = $this->requestAction(array('teacher' => true, 'controller' => 'coursesrooms', 'action' => 'teacher_lich_homnay'));
+        $teacher_courses_today = $this->requestAction(array('teacher' => true, 'controller' => 'courses_rooms', 'action' => 'teacher_lich_homnay'));
         
     ?>
     <?php echo $this->element('Widgets/teacher/teach_today_schedule',array('teacher_courses_today'=>$teacher_courses_today)) ?>

@@ -61,17 +61,12 @@
                             <td><?php echo $this->Html->link($message['Message']['title'], array('manager' => true, 'action' => 'view', $message['Message']['id'])); ?></td>
                             <td><?php echo $message['Message']['published']; ?></td>
                             <td>
-    <?php echo $this->Html->link($message['User']['name'], array('controller' => 'users', 'action' => 'view', $message['User']['id'])); ?>
+                                <?php echo $this->Html->link($message['CreatedUser']['name'], array('controller' => 'users', 'action' => 'view', $message['CreatedUser']['id'])); ?>
                             </td>
                             <td><?php echo h($message['Message']['created']); ?></td>
 
                             <td><?php
-                                if ($message['Message']['category_id'] == 1)
-                                    echo 'Tập huấn viên';
-                                if ($message['Message']['category_id'] == 2)
-                                    echo 'Học viên';
-                                if ($message['Message']['category_id'] == 3)
-                                    echo 'Tất cả';
+                                 echo h($message['Group']['name']);
                                 ?>&nbsp;</td>
 
                             <td><?php echo h($message['Message']['modified']); ?>&nbsp;</td>
@@ -82,7 +77,7 @@
 <span class="glyphicon glyphicon-trash"></span></button>', array('action' => 'delete', $message['Message']['id']), array('escape' => false), __('Bạn có chắc xóa thông báo?', $message['Message']['title'])); ?>
                             </td>
                         </tr>
-<?php endforeach; ?>
+                    <?php endforeach; ?>
                 </table>
             </div>
             <p>
@@ -99,7 +94,7 @@
         </div><!-- /.box-body -->
 
         <div class="box-footer" style="text-align: right;">
-<?php echo $this->Html->link('Thêm mới', array('action' => 'add'), array('class' => 'btn btn-success')); ?>
+            <?php echo $this->Html->link('Thêm mới', array('action' => 'add'), array('class' => 'btn btn-success')); ?>
 
         </div>
 

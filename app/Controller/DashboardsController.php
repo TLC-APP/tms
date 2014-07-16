@@ -57,7 +57,7 @@ class DashboardsController extends AppController {
     }
 
     public function fields_manager_home() {
-        $this->redirect(array('fields_manager' => true, 'action' => 'index', 'controller' => 'courses', COURSE_OPENABLE));
+        $this->redirect(array('fields_manager' => true, 'action' => 'index', 'controller' => 'courses', COURSE_REGISTERING));
     }
 
     public function boss_home() {
