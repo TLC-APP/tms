@@ -53,17 +53,17 @@ class CoursesController extends AppController {
     }
 
     public function manager_thong_ke($export = 0) {
-        Configure::write('debug',0);
+        Configure::write('debug', 0);
         $conditions = array();
-        $contain=array(
-            'Chapter'=>array(
-                'fields'=>array('id','name','field_id'),
-                'Field'=>array('fields'=>array('id','name'))
-                ),
-            'Teacher'=>array('fields'=>array('id','name')));
-        if ($export) {            
+        $contain = array(
+            'Chapter' => array(
+                'fields' => array('id', 'name', 'field_id'),
+                'Field' => array('fields' => array('id', 'name'))
+            ),
+            'Teacher' => array('fields' => array('id', 'name')));
+        if ($export) {
             $conditions = $this->Session->read('thong_ke_conditions');
-            $courses = $this->Course->find('all',array('conditions'=>$conditions,'contain'=>$contain,'fields'=>array('id','name','chapter_id','register_student_number','pass_number','so_buoi','created','status','is_published','max_enroll_number')));
+            $courses = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain, 'fields' => array('id', 'name', 'chapter_id', 'register_student_number', 'pass_number', 'so_buoi', 'created', 'status', 'is_published', 'max_enroll_number')));
             $this->set('courses', $courses);
             $this->render('xuat_thong_ke_course');
         } else {
@@ -115,7 +115,6 @@ class CoursesController extends AppController {
         }
     }
 
-    
     public function attachment_list($id) {
         $this->Course->id = $id;
         if (!$this->Course->exists()) {
@@ -139,14 +138,14 @@ class CoursesController extends AppController {
         $this->request->onlyAllow('post', 'delete');
         if ($this->Course->field('status') != COURSE_CANCELLED) {
             $this->Session->setFlash('Khóa học này chưa hủy bạn không thể xóa được', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
-            return $this->redirect(array('action' => 'index'));
+            return $this->redirect($this->request->referer());
         }
         if ($this->Course->delete()) {
             $this->Session->setFlash(__('The course has been deleted.'));
         } else {
             $this->Session->setFlash(__('The course could not be deleted. Please, try again.'));
         }
-        return $this->redirect(array('action' => 'index'));
+        return $this->redirect($this->request->referer());
     }
 
     public function fields_manager_delete($id = null) {
@@ -157,14 +156,14 @@ class CoursesController extends AppController {
         $this->request->onlyAllow('post', 'delete');
         if ($this->Course->field('status') != COURSE_CANCELLED) {
             $this->Session->setFlash('Khóa học này chưa hủy bạn không thể xóa được', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
-            return $this->redirect(array('action' => 'index'));
+           return $this->redirect($this->request->referer());
         }
         if ($this->Course->delete()) {
             $this->Session->setFlash(__('The course has been deleted.'));
         } else {
             $this->Session->setFlash(__('The course could not be deleted. Please, try again.'));
         }
-        return $this->redirect(array('action' => 'index'));
+        return $this->redirect($this->request->referer());
     }
 
     public function admin_delete($id = null) {
@@ -399,7 +398,8 @@ class CoursesController extends AppController {
             $manage_fields_id_array = Set::classicExtract($manage_fields, '{n}.Field.id');
         }
         $chapters = $this->Course->Chapter->find('list', array('conditions' => array('Chapter.field_id' => $manage_fields_id_array)));
-        $teachers = $this->Course->Teacher->find('list');
+        $teacher_id_array = $this->Course->Teacher->getTeacherIdArray();
+        $teachers = $this->Course->Teacher->find('list', array('conditions' => array('Teacher.id' => $teacher_id_array)));
         $this->set(compact('chapters', 'teachers'));
     }
 
@@ -407,7 +407,6 @@ class CoursesController extends AppController {
         if (!$this->Course->exists($id)) {
             throw new NotFoundException(__('Invalid course'));
         }
-
         if ($this->request->is(array('post', 'put'))) {
             if ($this->Course->save($this->request->data)) {
                 $this->Session->setFlash(__('The course has been saved.'));
@@ -449,7 +448,8 @@ class CoursesController extends AppController {
             }
         }
         $chapters = $this->Course->Chapter->find('list');
-        $teachers = $this->Course->Teacher->find('list');
+        $teacher_id_array = $this->Course->Teacher->getTeacherIdArray();
+        $teachers = $this->Course->Teacher->find('list', array('conditions' => array('Teacher.id' => $teacher_id_array)));
         $this->set(compact('chapters', 'teachers'));
     }
 
@@ -466,7 +466,8 @@ class CoursesController extends AppController {
             }
         }
         $chapters = $this->Course->Chapter->find('list');
-        $teachers = $this->Course->Teacher->find('list');
+        $teacher_id_array = $this->Course->Teacher->getTeacherIdArray();
+        $teachers = $this->Course->Teacher->find('list', array('conditions' => array('Teacher.id' => $teacher_id_array)));
         $this->set(compact('chapters', 'teachers'));
     }
 

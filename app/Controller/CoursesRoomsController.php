@@ -64,6 +64,7 @@ class CoursesRoomsController extends AppController {
     public function add() {
         if (!empty($this->request->data)) {
             $this->request->data['CoursesRoom']['created_user_id'] = $this->Auth->user('id');
+            
             if ($this->CoursesRoom->save($this->request->data)) {
                 $this->CoursesRoom->Room->id = $this->CoursesRoom->field('room_id');
                 $room_name = $this->CoursesRoom->Room->field('name');

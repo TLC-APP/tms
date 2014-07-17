@@ -58,6 +58,39 @@
             </li>
             <li class="treeview">
                 <a href="#">
+                    <i class="fa fa-user"></i> <span>Phòng học</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array( 'controller' => 'rooms', 'action' => 'index'), array('escape' => false)); ?>
+                    </li>
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array( 'controller' => 'rooms', 'action' => 'add'), array('escape' => false)); ?>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-bar-chart-o"></i>
+                    <span>Thông báo</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+               
+
+                    <li>
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Danh sách', array( 'controller' => 'messages', 'action' => 'index'), array('escape' => false)); ?>
+
+                    </li>
+                    <li>                    
+                        <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Thêm mới', array( 'controller' => 'messages', 'action' => 'add'), array('escape' => false)); ?>
+                    </li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
                     <i class="fa fa-user"></i> <span>Người dùng</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
