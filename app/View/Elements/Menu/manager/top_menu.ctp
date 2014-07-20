@@ -33,10 +33,10 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="/users/profile" class="btn btn-default btn-flat fancybox.ajax">Hồ sơ</a>
+                                <a href="<?php echo SUB_DIR;?>/student/users/profile/<?php echo AuthComponent::user('id')?>" class="btn btn-default btn-flat fancybox.ajax">Hồ sơ</a>
                             </div>
                             <div class="pull-right">
-                                <a href="/users/logout" class="btn btn-default btn-flat">Thoát</a>
+                                <a href="<?php echo SUB_DIR;?>/manager/users/logout" class="btn btn-default btn-flat">Thoát</a>
                             </div>
                         </li>
                     </ul>

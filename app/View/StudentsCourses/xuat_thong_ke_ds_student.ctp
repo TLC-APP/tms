@@ -1,4 +1,4 @@
-<?php //debug($students_courses); ?>
+
 <div clas="row">
     <table class="table table-condensed table-hover">
         <thead>

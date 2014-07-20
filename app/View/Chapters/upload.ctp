@@ -49,7 +49,7 @@
             $.fancybox.close();
             $.ajax({
                 type: "POST",
-                url: '/chapters/attachment_list/' + response.chapter_id
+                url: '<?php echo SUB_DIR;?>/chapters/attachment_list/' + response.chapter_id
             }).done(function(data, textStatus, jqXHR) {
                 $('#attachments_list').html(data);
             });

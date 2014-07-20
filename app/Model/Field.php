@@ -17,6 +17,13 @@ class Field extends AppModel {
      */
     public $displayField = 'name';
     public $actsAs=array('Containable');
+     public $virtualFields = array(
+        'chapter_number' =>
+        "SELECT count(id) as Field__chapter_number 
+         FROM  chapters as Chapter 
+         where 
+            Chapter.field_id=Field.id 
+            ");
     /**
      * Validation rules
      *

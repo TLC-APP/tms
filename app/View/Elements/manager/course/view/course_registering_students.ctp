@@ -11,6 +11,7 @@
 <tbody>
     <?php
     $stt = 1;
+
     foreach ($students as $student):
         ?>
         <tr>

@@ -239,16 +239,23 @@ class RoomsController extends AppController {
     public function delete($id = null) {
         $this->Room->id = $id;
         if (!$this->Room->exists()) {
-            throw new NotFoundException(__('Invalid room'));
+            throw new NotFoundException('Phòng không tồn tại');
         }
         $this->request->onlyAllow('post', 'delete');
-
-        if ($this->Room->delete()) {
-            $this->Session->setFlash(__('The room has been deleted.'));
-        } else {
-            $this->Session->setFlash(__('The room could not be deleted. Please, try again.'));
+        $course_number = $this->Room->field('course_number');
+        if ($course_number > 0) {
+            $this->Session->setFlash('Có '.$course_number.' khóa học đã đăng ký phòng này! Bạn không thể xóa!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+            $this->redirect($this->request->referer());
         }
-        return $this->redirect(array('action' => 'index'));
+        if ($this->Room->delete()) {
+            if ($this->Room->delete()) {
+                $this->Session->setFlash('Đã xóa phòng thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                $this->redirect($this->request->referer());
+            } else {
+                $this->Session->setFlash('Xóa phòng không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                $this->redirect($this->request->referer());
+            }
+        }
     }
 
 }

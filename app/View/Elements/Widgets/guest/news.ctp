@@ -8,7 +8,7 @@
         <ul>       
             <?php foreach ($messages as $message): ?>
 
-                <li><a href="/messages/xem_thong_bao/<?php echo $message['Message']['id'] ?>" class="add-button fancybox.ajax"><?php echo $message['Message']['title'] ?>
+                <li><a href="<?php echo SUB_DIR;?>/messages/xem_thong_bao/<?php echo $message['Message']['id'] ?>" class="add-button fancybox.ajax"><?php echo $message['Message']['title'] ?>
                         <span class="badge"><?php
                             $date = new DateTime($message['Message']['created']);
                             echo $date->format('H:i:s, d-m-Y')

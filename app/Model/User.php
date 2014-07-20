@@ -202,7 +202,7 @@ class User extends AppModel {
         'StudentsCourse' => array(
             'className' => 'StudentsCourse',
             'foreignKey' => 'student_id',
-            'dependent' => false,
+            'dependent' => true,
             'conditions' => '',
             'fields' => '',
             'order' => '',

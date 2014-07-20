@@ -1,6 +1,7 @@
 <?php
-$this->Html->addCrumb('Khóa học đăng đăng ký', '/chapters/index/1');
+$this->Html->addCrumb('Dashboard', "/" . SUB_DIR);
 $this->Html->addCrumb('Thống kê khóa học');
+echo $this->Html->script('jquery.form');
 ?>
 
 <div class="col-lg-12 well">
@@ -8,30 +9,31 @@ $this->Html->addCrumb('Thống kê khóa học');
     echo $this->Form->create('Course', array(
         'inputDefaults' => array(
             'div' => 'form-group',
+            'label' => false,
             'wrapInput' => false,
             'class' => 'form-control'
         ),
         'url' => array('action' => 'thong_ke', 'manager' => true),
-        'class' => 'form-horizontal',
+        'class' => 'form-inline',
         'id' => 'thong_ke_form'
     ));
     ?>
     <fieldset>
-        <legend>Thống kê Khóa học</legend>
+        <legend>Thống kê theo</legend>
         <?php
-        echo $this->Form->input('field_id', array('label' => 'Lĩnh vực', 'empty' => '-- Tất cả --'));
-        echo $this->Form->input('chapter_id', array('label' => 'Chuyên đề', 'empty' => '-- Tất cả --', 'required' => false));
-        echo $this->Form->input('status', array('label' => 'Tình trạng', 'type' => 'select', 'options' => array(
+        echo $this->Form->input('field_id', array('empty' => '-- Lĩnh vực --'));
+        echo $this->Form->input('chapter_id', array('empty' => '-- Chuyên đề --', 'required' => false));
+        echo $this->Form->input('status', array('empty' => '-- Tình trạng --', 'type' => 'select', 'options' => array(
                 COURSE_COMPLETED => 'Đã hoàn thành',
                 COURSE_UNCOMPLETED => 'Chưa hoàn thành',
                 COURSE_CANCELLED => 'Đã hủy'
             ), 'empty' => '-- Tất cả --', 'required' => false));
-        echo $this->Form->input('teacher_id', array('label' => 'Tập huấn bởi', 'empty' => '-- Tất cả --'));
-        echo $this->Form->input('begin', array('label' => 'Từ ', 'type' => 'date', 'class' => false, 'dateFormat' => 'DMY', 'monthNames' => false, 'empty' => true, 'minYear' => 2010));
-        echo $this->Form->input('end', array('label' => 'Đến ', 'type' => 'date', 'class' => false, 'dateFormat' => 'DMY', 'monthNames' => false, 'empty' => true, 'minYear' => 2010));
+        echo $this->Form->input('teacher_id', array('empty' => '-- Tập huấn bởi --'));
+        echo $this->Form->input('begin', array('label' => 'Từ ', 'type' => 'date', 'dateFormat' => 'DMY', 'monthNames' => false, 'empty' => true, 'minYear' => 2010));
+        echo $this->Form->input('end', array('label' => 'Đến ', 'type' => 'date', 'dateFormat' => 'DMY', 'monthNames' => false, 'empty' => true, 'minYear' => 2010));
         ?>
     </fieldset>
-    <?php echo $this->Form->button('Thực hiện', array('type' => 'submit', 'class' => 'btn btn-info')) ?>
+    <?php echo $this->Form->submit('Thực hiện', array('div' => 'form-group', 'class' => 'btn btn-default')); ?>
     <?php echo $this->Form->end(); ?>
 </div>
 <script>
@@ -53,6 +55,40 @@ $this->Html->addCrumb('Thống kê khóa học');
 
                         });
                     });
-                });
+        });
+        $('#thong_ke_form').on('submit', function(e) {
+
+            e.preventDefault(); // prevent native submit
+            $('#ket_qua').parent().append('<div class="overlay"></div><div class="loading-img"></div>');
+            $(this).ajaxSubmit({
+                url: '<?php echo SUB_DIR; ?>/manager/courses/thong_ke',
+                success: response
+            });
+            return false;
+        });
+// post-submit callback 
+        function response(responseText, statusText, xhr, $form) {
+
+            $('.overlay').remove();
+            $('.loading-img').remove();
+
+            $('#ket_qua').html(responseText);
+            return true;
+        }
     });
 </script>
+<div class="col-xs-12">
+
+    <div class="box">
+        <div class="box-header">
+            <h3>Kết quả thống kê</h3>
+        </div>
+        <div class="box-body table-responsive no-padding" id="ket_qua">
+
+        </div>
+
+
+    </div>
+</div>
+
+

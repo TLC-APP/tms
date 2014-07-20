@@ -15,6 +15,13 @@ class Room extends AppModel {
      * @var string
      */
     public $displayField = 'name';
+    public $virtualFields = array(
+        'course_number' =>
+        "SELECT count(id) as Room__course_number 
+         FROM  courses_rooms as Course 
+         where 
+            Course.room_id=Room.id 
+            ");
 
     /**
      * Validation rules
@@ -25,16 +32,16 @@ class Room extends AppModel {
         'name' => array(
             'notEmpty' => array(
                 'rule' => array('notEmpty'),
-            'message' => 'Tên phòng không rỗng',
+                'message' => 'Tên phòng không rỗng',
             //'allowEmpty' => false,
             //'required' => false,
             //'last' => false, // Stop validation after this rule
             //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
-            'isUnique'=>array(
-                'rule'=>'isUnique',
-                'message'=>'Tên phòng đã có',
-                'last'=>true
+            'isUnique' => array(
+                'rule' => 'isUnique',
+                'message' => 'Tên phòng đã có',
+                'last' => true
             )
         ),
     );

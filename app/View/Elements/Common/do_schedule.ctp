@@ -49,6 +49,7 @@
         function khoi_tao_full_canlendar() {
             $('#calendar').fullCalendar({
                 allDayDefault: false,
+                defaultView: 'agendaWeek',
                 firstHour: 8,
                 slotMinutes: 30,
                 defaultEventMinutes: 240,
@@ -112,35 +113,51 @@
                 },
                 eventResize: function(event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
 
-                    $.ajax({
-                        type: "POST",
-                        url: '<?php echo SUB_DIR ?>/courses_rooms/eventResize/' + event.id,
-                        data: {minuteDelta: minuteDelta}
-                    }).error(function() {
-                        bootstrap_alert("Thay đổi thời gian kết thúc không thành công");
-                    });
-                },
-                eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-
                     var start = ($.fullCalendar.formatDate(event.start, 'yyyy-MM-dd H:mm'));
                     var end = ($.fullCalendar.formatDate(event.end, 'yyyy-MM-dd H:mm'));
                     $.ajax({
                         type: "POST",
                         url: '<?php echo SUB_DIR ?>/courses_rooms/cap_nhat_buoi/' + event.id,
-                        data: {start: start,end:end}
+                        data: {start: start, end: end}
+                    }).error(function() {
+                        bootstrap_alert("Thay đổi thời gian bắt đầu không thành công");
+                    });
+                    /*
+                     $.ajax({
+                     type: "POST",
+                     url: '<?php //echo SUB_DIR      ?>/courses_rooms/eventResize/' + event.id,
+                     data: {minuteDelta: minuteDelta}
+                     }).error(function() {
+                     bootstrap_alert("Thay đổi thời gian kết thúc không thành công");
+                     });
+                     */
+                },
+                eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+
+                    var start = ($.fullCalendar.formatDate(event.start, 'yyyy-MM-dd H:mm'));
+                    var end = ($.fullCalendar.formatDate(event.end, 'yyyy-MM-dd H:mm'));
+
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo SUB_DIR ?>/courses_rooms/cap_nhat_buoi/' + event.id,
+                        data: {start: start, end: end}
                     }).error(function() {
                         bootstrap_alert("Thay đổi thời gian bắt đầu không thành công");
                     });
                 },
                 drop: function(date, allDay) {
+
                     var originalEventObject = $(this).data('eventObject');
                     var copiedEventObject = sao_chep_su_kien($(this), originalEventObject, date, allDay);
-                    var start = ($.fullCalendar.formatDate(copiedEventObject.start, 'yyyy-MM-dd H:mm'));
+                    //console.log(copiedEventObject);return;
+                    var start = $.fullCalendar.formatDate(copiedEventObject.start, 'yyyy-MM-dd H:mm');
+                    var end = $.fullCalendar.formatDate(copiedEventObject.end, 'yyyy-MM-dd H:mm');
+                   
                     //Cập nhật dữ liệu thời gian
                     $.ajax({
                         type: "POST",
                         url: '<?php echo SUB_DIR ?>/courses_rooms/cap_nhat_buoi/' + copiedEventObject.id,
-                        data: {start: start}
+                        data: {start: start, end: end}
                     })
                             .error(function() {
                                 bootstrap_alert("Cập nhật thời gian bắt đầu không thành công");
@@ -156,10 +173,10 @@
 if (!empty($buoi_dau_tien)) {
     $date = new DateTime($buoi_dau_tien);
     ?>
-    if (!click) {
-                        $('#calendar').fullCalendar('gotoDate', <?php echo $date->format('Y'); ?>,<?php echo ($date->format('m') - 1); ?>,<?php echo $date->format('d'); ?>);
-                    }
-                    click = true;                    
+                        if (!click) {
+                            $('#calendar').fullCalendar('gotoDate', <?php echo $date->format('Y'); ?>,<?php echo ($date->format('m') - 1); ?>,<?php echo $date->format('d'); ?>);
+                        }
+                        click = true;
 <?php } ?>
                 }
             });
@@ -200,7 +217,13 @@ if (!empty($buoi_dau_tien)) {
                 date.setMinutes(30);
                 //console.log(date);
             }
+
+            var end = new Date(date);
+
+
+            end.setMinutes(date.getMinutes() + 180);
             copiedEventObject.start = date;
+            copiedEventObject.end = end;
             copiedEventObject.allDay = false;
             copiedEventObject.backgroundColor = event.data("color");
             copiedEventObject.borderColor = event.css("border-color");

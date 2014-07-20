@@ -8,10 +8,6 @@
         <div class="info col-md-8 col-sm-8">
             <ul class="menu-top navbar-right hidden-xs">
                 <li class="divider"><a href="#">Xin chào <?php echo AuthComponent::user('name') ?>!</a></li>
-                <li class="divider">
-                    <?php echo $this->Html->link('Hồ sơ', array('student'=>true,'controller' => 'users', 'action' => 'profile', AuthComponent::user('id'))); ?>
-                </li>
-
                 <li>
                     <?php echo $this->Html->link('<i class="fa fa-power-off"></i> Thoát', array('controller' => 'users', 'action' => 'logout'),array('escape'=>false)); ?>
 

@@ -505,11 +505,11 @@ class UsersController extends AppController {
             $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
             $this->request->data = $this->User->find('first', $options);
         }
+        $departments = $this->User->Department->find('list');
         $hocHams = $this->User->HocHam->find('list');
         $hocVis = $this->User->HocVi->find('list');
         $groups = $this->User->Group->find('list', array('conditions' => array('NOT' => array('Group.alias' => array('admin', 'manager')))));
-
-        $this->set(compact('groups', 'hocHams', 'hocVis'));
+        $this->set(compact('departments', 'hocVis', 'hocHams', 'groups'));
     }
 
     public function admin_edit($id) {

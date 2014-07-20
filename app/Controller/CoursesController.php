@@ -92,6 +92,11 @@ class CoursesController extends AppController {
 
                 if (!empty($this->request->data['Course']['chapter_id'])) {
                     $conditions = Set::merge($conditions, array('Course.chapter_id' => $this->request->data['Course']['chapter_id']));
+                }else {
+                    if (!empty($this->request->data['Course']['field_id'])) {
+                        $chapter_id_array = $this->Course->Chapter->getChapterByField_id($this->request->data['Course']['field_id']);
+                        $conditions = Set::merge($conditions, array('Course.chapter_id' => $chapter_id_array));
+                    }
                 }
                 if (!empty($this->request->data['Course']['status'])) {
                     $conditions = Set::merge($conditions, array('Course.status' => $this->request->data['Course']['status']));
@@ -107,12 +112,14 @@ class CoursesController extends AppController {
 
                 $this->Paginator->settings = array('conditions' => $conditions);
                 $this->set('courses', $this->Paginator->paginate());
-                $this->render('ket_qua_thong_ke');
+                if ($this->request->is('ajax')) {
+                    $this->render('ket_qua_thong_ke');
+                }
             }
-            $fields = $this->Course->Chapter->Field->find('list');
-            $teachers = $this->Course->Teacher->find('list');
-            $this->set(compact('fields', 'teachers'));
         }
+        $fields = $this->Course->Chapter->Field->find('list');
+        $teachers = $this->Course->Teacher->find('list');
+        $this->set(compact('fields', 'teachers'));
     }
 
     public function attachment_list($id) {
@@ -156,7 +163,7 @@ class CoursesController extends AppController {
         $this->request->onlyAllow('post', 'delete');
         if ($this->Course->field('status') != COURSE_CANCELLED) {
             $this->Session->setFlash('Khóa học này chưa hủy bạn không thể xóa được', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
-           return $this->redirect($this->request->referer());
+            return $this->redirect($this->request->referer());
         }
         if ($this->Course->delete()) {
             $this->Session->setFlash(__('The course has been deleted.'));
@@ -243,15 +250,16 @@ class CoursesController extends AppController {
         }
         $contain = array(
             'User' => array('fields' => array('id', 'name')),
-            'CoursesRoom' => array('conditions' => array('CoursesRoom.start is not null'), 'order' => array('CoursesRoom.priority' => 'ASC')),
+            'CoursesRoom' => array(/* 'conditions' => array('CoursesRoom.start is not null'), */ 'order' => array('CoursesRoom.priority' => 'ASC'), 'Room'),
             'Teacher' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'HocHam', 'HocVi'),
             'Chapter' => array('Attachment'),
-            'StudentsCourse' => array('Student' => array('fields' => array('id', 'name', 'email', 'phone_number'))),
+            'StudentsCourse' => array('Student' => array('fields' => array('Student.id', 'Student.name', 'Student.email', 'Student.phone_number'))),
             'Attachment'
         );
         $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
         $rooms = $this->Course->CoursesRoom->Room->find('list');
         $course = $this->Course->find('first', $options);
+
         $this->set(compact('course', 'rooms'));
     }
 
@@ -354,7 +362,7 @@ class CoursesController extends AppController {
             'Teacher' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'HocHam', 'HocVi'),
             'Chapter' => array('Attachment'),
             'Attachment',
-            'StudentsCourse' => array('Student' => array('fields' => array('id', 'name', 'email', 'phone_number')))
+            'StudentsCourse' => array('Student' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'fields' => array('id', 'student_id', 'course_id')))
         );
         $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
         $rooms = $this->Course->CoursesRoom->Room->find('list');

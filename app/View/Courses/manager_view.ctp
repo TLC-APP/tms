@@ -92,7 +92,7 @@
                                             else
                                                 echo $this->element('Common/do_schedule', array('course_id' => $course['Course']['id']));
                                             ?>
-                                            <?php echo $this->element('Widgets/fields_manager/schedule'); ?>
+                                            <?php echo $this->element('Widgets/manager/schedule'); ?>
                                         </div>
                                     </div>
                                 </div>

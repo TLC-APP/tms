@@ -112,7 +112,13 @@ class FieldsController extends AppController {
         if (!$this->Field->exists()) {
             throw new NotFoundException(__('Invalid field'));
         }
+        
         $this->request->onlyAllow('post', 'delete');
+        $chapter_number=$this->Field->field('chapter_number');
+        if($chapter_number>0){
+            $this->Session->setFlash('Có '.$chapter_number.' chuyên đề thuộc lĩnh vực này! Bạn không thể xóa!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+            $this->redirect($this->request->referer());
+        }
         if ($this->Field->delete()) {
             $this->Session->setFlash('Xóa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
             return $this->redirect(array('action' => 'index'));
@@ -128,6 +134,11 @@ class FieldsController extends AppController {
             throw new NotFoundException(__('Invalid field'));
         }
         $this->request->onlyAllow('post', 'delete');
+        $chapter_number=$this->Field->field('chapter_number');
+        if($chapter_number>0){
+            $this->Session->setFlash('Có '.$chapter_number.' chuyên đề thuộc lĩnh vực này! Bạn không thể xóa!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+            $this->redirect($this->request->referer());
+        }
         if ($this->Field->delete()) {
             $this->Session->setFlash('Xóa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
             return $this->redirect(array('action' => 'index'));

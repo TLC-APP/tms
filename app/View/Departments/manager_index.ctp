@@ -1,5 +1,5 @@
 <div class="well">
-    <h2>Danh sách các đơn vị</h2>
+    <h2>Đơn vị</h2>
     <div class="table-responsive">
         <table class="table table-hover">
             <tr>
@@ -24,8 +24,8 @@
                     <td><?php echo h($department['Department']['modified']); ?>&nbsp;</td>
                     <td><?php echo h($department['Department']['id']); ?>&nbsp;</td>
                     <td class="actions">
-                        <?php echo $this->Html->link('sửa', array('action' => 'edit', $department['Department']['id'])); ?>
-                        <?php echo $this->Form->postLink('xóa', array('action' => 'delete', $department['Department']['id']), null, __('Are you sure you want to delete # %s?', $department['Department']['id'])); ?>
+                        <?php echo $this->Html->link(' <span class="fa fa-edit"></span>', array('action' => 'edit', $department['Department']['id']), array('escape' => false)); ?>
+                        <?php echo $this->Form->postLink('<span class="fa fa-trash-o"></span>', array('action' => 'delete', $department['Department']['id']), array('escape' => false), __('Are you sure you want to delete # %s?', $department['Department']['id'])); ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

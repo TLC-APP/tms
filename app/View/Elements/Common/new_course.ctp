@@ -19,8 +19,7 @@
                 </thead>
                 <tbody>
                     <?php $stt = ($this->Paginator->param('page') - 1) * $this->Paginator->param('limit') + 1; ?>
-                    <?php
-                    foreach ($courses as $course): ?>
+                    <?php foreach ($courses as $course): ?>
                         <tr>
                             <td><?php echo $stt++; ?></td>
                             <td>
@@ -30,18 +29,20 @@
                             <td><?php echo $course['Chapter']['name'] ?></td>
                             <td><?php echo count($course['CoursesRoom']); ?></td>
                             <td><?php
-                                echo $this->Html->link($course['Teacher']['name'], array('student' => true, 'controller' => 'users', 'action' => 'view_teacher', $course['Teacher']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'))
+                            echo $this->Html->link($course['Teacher']['name'], array('student' => true, 'controller' => 'users', 'action' => 'view_teacher', $course['Teacher']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'))
                                 ?></td>
                             <td><?php
-                                $start = new DateTime($course['Course']['enrolling_expiry_date']);
-                                echo $start->format('H:i');
-                                echo", ngày: ";
-                                echo $start->format('d/m/Y');
+                            $start = new DateTime($course['Course']['enrolling_expiry_date']);
+                            echo $start->format('H:i');
+                            echo", ngày: ";
+                            echo $start->format('d/m/Y');
                                 ?></td>
 
-                            <td><a href="/students_courses/register/<?php echo $course['Course']['id'] ?>"><span class="label label-success">Đăng ký</span></a></td>
+                            <td>
+                                <?php echo $this->Html->link('<span class="label label-success">Đăng ký</span>', array('student'=>false,'controller' => 'students_courses', 'action' => "register", $course['Course']['id']), array('escape' => false)); ?>
+                            </td>
                         </tr>
-<?php endforeach; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table><!--//table-->
         </div>

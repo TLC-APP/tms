@@ -7,6 +7,14 @@ App::uses('AppModel', 'Model');
  * @property Department $ChildDepartment
  */
 class Department extends AppModel {
+    
+     public $virtualFields = array(
+        'user_number' =>
+        "SELECT count(id) as Department__user_number 
+         FROM  users as User 
+         where 
+            User.department_id=Department.id 
+            ");
 
 /**
  * Display field
@@ -60,6 +68,19 @@ class Department extends AppModel {
 		'ChildDepartment' => array(
 			'className' => 'Department',
 			'foreignKey' => 'parent_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+            'User' => array(
+			'className' => 'User',
+			'foreignKey' => 'department_id',
 			'dependent' => false,
 			'conditions' => '',
 			'fields' => '',

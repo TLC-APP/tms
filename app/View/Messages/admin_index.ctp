@@ -74,7 +74,7 @@
                                 <?php echo $this->Html->link('<button type="button" class="btn btn-info">
 <span class="glyphicon glyphicon-edit"></span></button>', array('action' => 'edit', $message['Message']['id']), array('escape' => false)); ?>
                                 <?php echo $this->Form->postLink('<button type="button" class="btn btn-warning">
-<span class="glyphicon glyphicon-trash"></span></button>', array('action' => 'delete', $message['Message']['id']), array('escape' => false), __('Bạn có chắc xóa thông báo?', $message['Message']['title'])); ?>
+<span class="glyphicon glyphicon-trash"></span></button>', array('admin'=>false,'action' => 'delete', $message['Message']['id']), array('escape' => false), __('Bạn có chắc xóa thông báo?', $message['Message']['title'])); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

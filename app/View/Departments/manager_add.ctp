@@ -1,5 +1,10 @@
 <div class="well">
-    <?php echo $this->Form->create('Department'); ?>
+    <?php echo $this->Form->create('Department',array('inputDefaults' => array(
+            'div' => 'form-group',
+            'wrapInput' => false,
+            'class' => 'form-control'
+        ),
+        'class' => 'well')); ?>
     <fieldset>
         <legend>Thêm đơn vị</legend>
         <?php

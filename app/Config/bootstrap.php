@@ -44,7 +44,7 @@ Configure::write('SEND_MAIL_WHEN_OPEN_COURSE', 0);
 Configure::write('SEND_MAIL_WHEN_HAS_CERT', 0);
 
 if (!defined("SUB_DIR")) {
-    define("SUB_DIR", '');
+    define("SUB_DIR", '/thgv');
 }
 
 if (!defined("EMAIL_FROM_ADDRESS")) {

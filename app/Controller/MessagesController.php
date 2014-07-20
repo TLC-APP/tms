@@ -115,9 +115,12 @@ class MessagesController extends AppController {
         }
         $this->request->onlyAllow('post', 'delete');
         if ($this->Message->delete()) {
-            return $this->flash(__('The message has been deleted.'), array('action' => 'index'));
+            $this->Session->setFlash('Đã xóa thông báo thành công','alert', array('plugin' => 'BoostCake','class'=>'alert-success'));
+            $this->redirect($this->request->referer());
+            
         } else {
-            return $this->flash(__('The message could not be deleted. Please, try again.'), array('action' => 'index'));
+            $this->Session->setFlash('Xóa thông báo không thành công','alert', array('plugin' => 'BoostCake','class'=>'alert-warning'));
+            $this->redirect($this->request->referer());
         }
     }
 

@@ -11,14 +11,15 @@ echo $this->Html->css('jquery.minicolors', array('inline' => false));
     <div class="col-md-3">
         <div class="box box-primary">
             <div class="box-header">
-                <h4 class="box-title">Buổi</h4>
+                <h4 class="box-title">Buổi111</h4>
             </div>
             <div class="box-body">
                 <!-- the events -->
                 <div id='external-events'>  
                     <?php
+                    echo 'kakak';
                     foreach ($course['CoursesRoom'] as $buoi):
-                        if (empty($buoi['start'])) {
+                        if (empty($buoi['start'])||empty($buoi['end'])) {
                             ?>
 
                             <div class='external-event' style="color: #fff ;background-color: <?php echo $buoi['color']; ?>" 

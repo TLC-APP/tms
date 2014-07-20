@@ -67,7 +67,7 @@ class StudentsCoursesController extends AppController {
     }
 
     public function manager_thong_ke_student($export = null) {
-        Configure::write('debug',0);
+        //Configure::write('debug',0);
         $student_id_array = array();
         $course_id_array = array();
         $student_conditions = array();
@@ -139,6 +139,7 @@ class StudentsCoursesController extends AppController {
                         'Student' => array('fields' => array('id', 'name'), 'Department' => array('id', 'name'))),
                 ));
                 $this->set('students_courses', $students_courses);
+                
                 $this->render('xuat_thong_ke_ds_student');
             }
             $departments = $this->StudentsCourse->Student->Department->find('list');
