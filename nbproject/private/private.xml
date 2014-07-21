@@ -3,21 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Widgets/student/news.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/manager/header.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/DepartmentsController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Chapters/upload.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Config/bootstrap.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Layouts/student.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/student/header.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/manager/top_menu.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/ket_qua_thong_ke.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/StudentsCourses/manager_thong_ke_student.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/StudentsCourses/xuat_excel_ds_student.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/xuat_thong_ke_course.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/StudentsCourses/xuat_thong_ke_ds_student.ctp</file>
             <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/StudentsCoursesController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Dashboards/student_home.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/FieldsController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/Department.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/fields_manager_view.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Common/new_course.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/upload.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Dashboards/home.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/manager_thong_ke.ctp</file>
             <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/CoursesController.php</file>
         </group>
     </open-files>

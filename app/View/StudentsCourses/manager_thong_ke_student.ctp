@@ -22,7 +22,7 @@ echo $this->Html->script('jquery.form');
         <legend>Thống kê người tham dự</legend>
         <?php
         echo $this->Form->input('Student.department_id', array('empty' => '-- Chọn đơn vị --'));
-        echo $this->Form->input('StudentsCourse.ket_qua', array('options' => array('empty' => '-- Chọn kết quả --', '1' => 'Đạt', '0' => 'Không đạt')));
+        echo $this->Form->input('StudentsCourse.is_passed', array('type'=>'select','empty' => '-- Kết quả --','required'=>false,'options' => array( '1' => 'Đạt', '0' => 'Không đạt')));
         echo $this->Form->input('field_id', array('empty' => '-- Chọn lĩnh vực --'));
         echo $this->Form->input('chapter_id', array('empty' => '-- Chọn chuyên đề --', 'required' => false));
         echo $this->Form->input('status', array('type' => 'select', 'options' => array(

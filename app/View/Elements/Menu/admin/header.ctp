@@ -38,7 +38,7 @@
                     <!-- Menu Footer-->
                     <li class="user-footer">
                         <div class="pull-left">
-                            <a href="<?php echo SUB_DIR; ?>/users/profile" class="btn btn-default btn-flat">Hồ sơ</a>
+                            <a href="<?php echo SUB_DIR; ?>/admin/users/profile/<?php echo AuthComponent::user('id')?>" class="btn btn-default btn-flat">Hồ sơ</a>
                         </div>
                         <div class="pull-right">
                             <a href="<?php echo SUB_DIR; ?>/users/logout" class="btn btn-default btn-flat">Thoát</a>

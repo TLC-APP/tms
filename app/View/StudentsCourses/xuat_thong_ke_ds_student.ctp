@@ -1,5 +1,6 @@
 
 <div clas="row">
+    <?php debug($students_courses); ?>
     <table class="table table-condensed table-hover">
         <thead>
             <tr>
@@ -13,18 +14,39 @@
                 <th>Tình trạng khóa</th>
                 <th>Kết quả</th>
         <tbody>
-            <?php $stt = 1;
-            foreach ($students_courses as $row) : ?>
+            <?php
+            $stt = 1;
+            foreach ($students_courses as $row) :
+                ?>
+                <?php
+                switch ($row['Course']['status']) {
+                    case COURSE_CANCELLED:
+                        $status = 'Đã hủy';
+                        break;
+                    case COURSE_COMPLETED:
+                        $status = 'Đã hoàn thành';
+                        break;
+                    case COURSE_UNCOMPLETED:
+                        $status = 'Chưa hoàn thành';
+                        break;
+                    case COURSE_REGISTERING:
+                        $status = 'Đang đăng ký';
+                        break;
+
+                    default:
+                        break;
+                }
+                ?>
                 <tr>
-                    <td><?php echo $stt++;?></td>
-                    <td><?php echo $row['Student']['name'];?></td>
-                    <td><?php echo $row['Student']['Department']['name'];?></td>
-                    <td><?php echo $row['Course']['name'];?></td>
-                    <td><?php echo $row['Course']['Chapter']['name'];?></td>
-                    <td><?php echo $row['Course']['Chapter']['Field']['name'];?></td>
-                    <td><?php echo $row['Course']['created'];?></td>
-                    <td><?php echo $row['Course']['status'];?></td>
-                    <td><?php echo $row['StudentsCourse']['is_passed'];?></td>
+                    <td><?php echo $stt++; ?></td>
+                    <td><?php echo $row['Student']['name']; ?></td>
+                    <td><?php echo $row['Student']['Department']['name']; ?></td>
+                    <td><?php echo $row['Course']['name']; ?></td>
+                    <td><?php echo $row['Course']['Chapter']['name']; ?></td>
+                    <td><?php echo $row['Course']['Chapter']['Field']['name']; ?></td>
+                    <td><?php echo $row['Course']['created']; ?></td>
+                    <td><?php echo $status; ?></td>
+                    <td><?php echo $row['StudentsCourse']['is_passed']; ?></td>
 
                 </tr>
 <?php endforeach; ?>
@@ -35,4 +57,12 @@
         </tr>
         </thead>
     </table>
+    <div style="text-align: right;">
+        <?php
+        if (!empty($students_courses)) {
+            echo $this->Html->link('Xuất báo cáo (excel)', array(1), array('class' => 'btn btn-success'));
+        }
+        ?>
+
+    </div>
 </div>

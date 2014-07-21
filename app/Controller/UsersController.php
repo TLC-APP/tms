@@ -177,7 +177,10 @@ class UsersController extends AppController {
         if (!$this->User->exists($id)) {
             throw new NotFoundException(__('Invalid user'));
         }
-        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id), 'contain' => array('Department', 'HocHam', 'HocVi'));
+
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id),
+            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'StudentsCourse' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date')))),);
+        //debug($this->User->find('first', $options));die;
         $this->set('user', $this->User->find('first', $options));
     }
 
@@ -363,8 +366,9 @@ class UsersController extends AppController {
         }
         $hocHams = $this->User->HocHam->find('list');
         $hocVis = $this->User->HocVi->find('list');
+        $departments = $this->User->Department->find('list');
         $groups = $this->User->Group->find('list', array('conditions' => array('NOT' => array('Group.alias' => array('admin', 'manager')))));
-        $this->set(compact('hocHams', 'hocVis', 'groups'));
+        $this->set(compact('hocHams', 'hocVis', 'groups', 'departments'));
     }
 
     /* Teacher */
@@ -440,7 +444,9 @@ class UsersController extends AppController {
         if (!$this->User->exists($id)) {
             throw new NotFoundException(__('Invalid user'));
         }
-        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id),
+            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'StudentsCourse' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date')))),);
         $this->set('user', $this->User->find('first', $options));
     }
 
@@ -533,6 +539,17 @@ class UsersController extends AppController {
         $groups = $this->User->Group->find('list');
 
         $this->set(compact('groups', 'hocHams', 'hocVis'));
+    }
+
+    public function admin_view($id) {
+        if (!$this->User->exists($id)) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+
+        $options = array('conditions' => array('User.' . $this->User->primaryKey => $id),
+            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'StudentsCourse' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date')))),);
+        //debug($this->User->find('first', $options));die;
+        $this->set('user', $this->User->find('first', $options));
     }
 
     public function manager_view($id) {

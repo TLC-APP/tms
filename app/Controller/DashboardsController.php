@@ -37,6 +37,7 @@ class DashboardsController extends AppController {
             'NOT' => array('Course.id' => $not_in_course),
             'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'),
             'Course.is_published' => 1,
+            'Course.status'=>COURSE_REGISTERING,
             'Course.max_enroll_number > (SELECT count(id) as Course__register_student_number 
          FROM  students_courses as StudentsCourse 
          where StudentsCourse.course_id=Course.id)'

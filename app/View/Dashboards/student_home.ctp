@@ -5,13 +5,16 @@
     ?>
     <?php echo $this->element('Widgets/student/today_schedule', array('courses_today' => $courses_today)) ?>
     <!-- WIDGET Lớp tập huấn có thể đăng ký-->
-    <?php echo $this->element('Common/new_course', array('courses' => $courses)) ?>
+    <?php 
+    //debug($courses);
+    echo $this->element('Common/new_course', array('courses' => $courses)) ?>
 </div>
 <div class="col-md-4">
     <div class="row">
         <!--Khoa hoc moi dang ky-->
         <?php
         $courses_register = $this->requestAction(array('student' => true, 'controller' => 'courses', 'action' => 'student_khoamoidangki'));
+        //debug($courses_register);
         ?>
         <?php echo $this->element('Widgets/student/news', array('courses_register' => $courses_register)); ?>
         <!--WIDGET Thông báo chứng nhận-->

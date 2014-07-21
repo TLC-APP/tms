@@ -196,13 +196,7 @@ class DepartmentsController extends AppController {
             $this->redirect($this->request->referer());
             
         }
-        $children = $this->Department->childCount();
-        if ($children > 0) {
-
-            $this->Session->setFlash('xóa không thành công vì còn '.$children.' đơn vị con thuộc đơn vị này!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
-            $this->redirect($this->request->referer());
-            
-        }
+        
         if ($this->Department->delete()) {
             $this->Session->setFlash('Xóa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
         } else {
@@ -217,6 +211,22 @@ class DepartmentsController extends AppController {
             throw new NotFoundException(__('Invalid department'));
         }
         $this->request->onlyAllow('post', 'delete');
+        $children = $this->Department->childCount();
+        if ($children > 0) {
+
+            $this->Session->setFlash('xóa không thành công vì còn '.$children.' đơn vị con thuộc đơn vị này!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            $this->redirect($this->request->referer());
+            
+        }
+        
+        $users = $this->Department->field('user_number');
+        
+        if ($users > 0) {
+
+            $this->Session->setFlash('xóa không thành công vì còn '.$users.' người dùng thuộc đơn vị này!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            $this->redirect($this->request->referer());
+            
+        }
         if ($this->Department->delete()) {
             $this->Session->setFlash('Xóa thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
         } else {

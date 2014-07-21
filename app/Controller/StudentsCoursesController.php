@@ -67,32 +67,44 @@ class StudentsCoursesController extends AppController {
     }
 
     public function manager_thong_ke_student($export = null) {
-        //Configure::write('debug',0);
+        Configure::write('debug', 0);
         $student_id_array = array();
         $course_id_array = array();
         $student_conditions = array();
         $course_conditions = array();
         $student_course_conditions = array();
+        $chapter_id_array = array();
         if ($export) {
-            
+            $student_course_conditions = $this->Session->read('student_course_conditions');
+            $students_courses = $this->StudentsCourse->find('all', array(
+                'fields' => array('id', 'course_id', 'student_id', 'is_passed', 'created'),
+                'conditions' => $student_course_conditions,
+                'contain' => array('Course' => array(
+                        'fields' => array('id', 'name', 'teacher_id', 'chapter_id', 'created', 'status'),
+                        'Chapter' => array('Field' => array('id', 'name'), 'fields' => array('id', 'name')),
+                        'Teacher' => array('fields' => array('id', 'name')),
+                    ),
+                    'Student' => array('fields' => array('id', 'name'), 'Department' => array('id', 'name'))),
+            ));
+            $this->set('students_courses', $students_courses);
+
+            $this->render('xuat_excel_ds_student');
         } else {
             if (!empty($this->request->data)) {
                 if (!empty($this->request->data['Student']['department_id'])) {
                     $student_conditions = Set::merge($student_course_conditions, array('Student.department_id' => $this->request->data['Student']['department_id']));
                     $students = $this->StudentsCourse->Student->find('all', array('conditions' => $student_conditions, 'recursive' => -1, 'fields' => array('id')));
-                    $student_id_array = Set::classicExtract($students, '{n}.Student.id');
+                    $student_id_array = Set::merge($student_id_array, Set::classicExtract($students, '{n}.Student.id'));
                 }
                 if (!empty($this->request->data['Course']['chapter_id'])) {
                     $course_conditions = Set::merge($course_conditions, array('Course.chapter_id' => $this->request->data['Course']['chapter_id']));
                 } else {
                     if (!empty($this->request->data['Course']['field_id'])) {
-                        $chapter_id_array = $this->StudentsCourse->Course->Chapter->getChapterByField_id($this->request->data['Course']['field_id']);
+                        $chapter_id_array = Set::merge($chapter_id_array, $this->StudentsCourse->Course->Chapter->getChapterByField_id($this->request->data['Course']['field_id']));
                         $course_conditions = Set::merge($course_conditions, array('Course.chapter_id' => $chapter_id_array));
                     }
                 }
-                if (!empty($this->request->data['Course']['chapter_id'])) {
-                    $course_conditions = Set::merge($course_conditions, array('Course.chapter_id' => $this->request->data['Course']['chapter_id']));
-                }
+
                 if (!empty($this->request->data['Course']['status'])) {
                     $course_conditions = Set::merge($course_conditions, array('Course.status' => $this->request->data['Course']['status']));
                 }
@@ -121,25 +133,32 @@ class StudentsCoursesController extends AppController {
                     }
                 }
                 $courses = $this->StudentsCourse->Course->find('all', array('conditions' => $course_conditions, 'recursive' => -1, 'fields' => array('id')));
-                $course_id_array = Set::classicExtract($courses, '{n}.Course.id');
-                if (!empty($this->request->data['StudentsCourse']['ket_qua'])) {
-                    $student_course_conditions = Set::merge($student_course_conditions, array('StudentsCourse.is_passed' => $this->request->data['StudentsCourse']['ket_qua']));
+                $course_id_array = Set::merge($course_id_array, Set::classicExtract($courses, '{n}.Course.id'));
+                if (!empty($this->request->data['StudentsCourse']['is_passed'])) {
+                    $student_course_conditions = Set::merge($student_course_conditions, array('StudentsCourse.is_passed' => $this->request->data['StudentsCourse']['is_passed']));
                 }
+                if (!empty($student_id_array)) {
+                    $student_course_conditions = Set::merge($student_course_conditions, array('StudentsCourse.student_id' => $student_id_array));
+                }
+                if (!empty($course_id_array)) {
+                    $student_course_conditions = Set::merge($student_course_conditions, array('StudentsCourse.course_id' => $course_id_array));
+                }
+                if ($this->Session->check('student_course_conditions')) {
+                    $this->Session->delete('student_course_conditions');
+                }
+                $this->Session->write('student_course_conditions', $student_course_conditions);
                 $students_courses = $this->StudentsCourse->find('all', array(
                     'fields' => array('id', 'course_id', 'student_id', 'is_passed', 'created'),
-                    'conditions' => array(
-                        'StudentsCourse.student_id' => $student_id_array,
-                        'StudentsCourse.course_id' => $course_id_array,
-                        $student_course_conditions),
+                    'conditions' => $student_course_conditions,
                     'contain' => array('Course' => array(
-                            'fields' => array('id', 'name', 'teacher_id', 'chapter_id','created'),
+                            'fields' => array('id', 'name', 'teacher_id', 'chapter_id', 'created', 'status'),
                             'Chapter' => array('Field' => array('id', 'name'), 'fields' => array('id', 'name')),
-                            'Teacher' => array('fields' => array('id', 'name'))
+                            'Teacher' => array('fields' => array('id', 'name')),
                         ),
                         'Student' => array('fields' => array('id', 'name'), 'Department' => array('id', 'name'))),
                 ));
                 $this->set('students_courses', $students_courses);
-                
+
                 $this->render('xuat_thong_ke_ds_student');
             }
             $departments = $this->StudentsCourse->Student->Department->find('list');
@@ -273,6 +292,14 @@ class StudentsCoursesController extends AppController {
         }
     }
 
+    public function recieve($student_course_id=null){
+        $this->StudentsCourse->id=$student_course_id;
+        if($this->StudentsCourse->exists()){
+            throw new Exception('Không tồn tại dòng dữ liệu này');
+        }
+        $this->request->accepts('post');
+        
+    }
     public function student_courses_studying() {
         $loggin_id = $this->Auth->user('id');
         $khoa_da_dang_ky = $this->StudentsCourse->getEnrolledCourses($loggin_id);
