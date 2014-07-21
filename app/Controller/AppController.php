@@ -1,4 +1,5 @@
 <?php
+
 App::uses('Controller', 'Controller');
 
 class AppController extends Controller {
@@ -32,9 +33,9 @@ class AppController extends Controller {
 
     function beforeFilter() {
         if (in_array($this->request->action, array(
-            'home','guest_cothedangki', 
-            'guest_lich_homnay','courses_completed', 'help', 'contact', 
-            'login', 'new_courses', 'getLastMessage', 'xem_thong_bao','guest_view_teacher','guest_view'))) {
+                    'home', 'guest_cothedangki',
+                    'guest_lich_homnay', 'courses_completed', 'help', 'contact',
+                    'login', 'new_courses', 'getLastMessage', 'xem_thong_bao', 'guest_view_teacher', 'guest_view'))) {
 
             $this->Auth->allow($this->request->action);
         }
@@ -42,6 +43,10 @@ class AppController extends Controller {
             $this->layout = $this->params['prefix'];
         }
         if ($this->Auth->loggedIn()) {
+            if (!$this->Auth->user('activated')) {
+                $this->Session->setFlash('Tài khoản đã bị khóa!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'), 'auth');
+               return $this->redirect($this->Auth->logout());
+            }
             $this->User->id = $this->Auth->user('id');
             $department_id = ($this->User->field('User.department_id'));
             $birthday = (($this->User->field('birthday')));
@@ -88,8 +93,8 @@ class AppController extends Controller {
 
     public function isAuthorized($user) {
         return true;
-        
-        if ($this->Auth->loggedIn()&&$this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))), $this->action)) {
+
+        if ($this->Auth->loggedIn() && $this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))), $this->action)) {
             return true;
         }
         return false;

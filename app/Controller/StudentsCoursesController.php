@@ -163,7 +163,8 @@ class StudentsCoursesController extends AppController {
             }
             $departments = $this->StudentsCourse->Student->Department->find('list');
             $fields = $this->Course->Chapter->Field->find('list');
-            $teachers = $this->Course->Teacher->find('list');
+            $teacher_id_array = $this->Course->Teacher->getTeacherIdArray();
+            $teachers = $this->Course->Teacher->find('list', array('conditions' => array('Teacher.id' => $teacher_id_array)));
             $this->set(compact('fields', 'teachers', 'fields', 'departments'));
         }
     }
@@ -292,14 +293,43 @@ class StudentsCoursesController extends AppController {
         }
     }
 
-    public function recieve($student_course_id=null){
-        $this->StudentsCourse->id=$student_course_id;
-        if($this->StudentsCourse->exists()){
+    public function manager_recieve($student_course_id = null) {
+        $this->StudentsCourse->id = $student_course_id;
+        if ($this->StudentsCourse->exists()) {
             throw new Exception('Không tồn tại dòng dữ liệu này');
         }
         $this->request->accepts('post');
-        
+        $recieved = $this->StudentsCourse->field('is_recieved');
+        $recieve_date = $this->StudentsCourse->field('recieve_date');
+        if ($recieved) {
+            $this->Session->setFlash('Học viên đã nhận bằng rồi vào ngày ' . $recieve_date);
+            $this->redirect($this->request->referer());
+        }
+        if ($this->StudentsCourse->saveField('is_recieved', 1)) {
+            $this->StudentsCourse->saveField('recieve_date', getdate());
+            $this->Session->setFlash('Học viên đã nhận bằng thành công vào lúc' . $this->StudentsCourse->field('recieve_date'));
+            $this->redirect($this->request->referer());
+        }
     }
+
+    public function manager_cancel_recieve($student_course_id = null) {
+        $this->StudentsCourse->id = $student_course_id;
+        if ($this->StudentsCourse->exists()) {
+            throw new Exception('Không tồn tại dòng dữ liệu này');
+        }
+        $this->request->accepts('post');
+        $recieved = $this->StudentsCourse->field('is_recieved');
+        if (!$recieved) {
+            $this->Session->setFlash('Học viên vẫn chưa nhận bằng ');
+            $this->redirect($this->request->referer());
+        }
+        if ($this->StudentsCourse->saveField('is_recieved', 0)) {
+            $this->StudentsCourse->saveField('recieve_date', NULL);
+            $this->Session->setFlash('Đã hủy nhận bằng thành công vào lúc' . getdate());
+            $this->redirect($this->request->referer());
+        }
+    }
+
     public function student_courses_studying() {
         $loggin_id = $this->Auth->user('id');
         $khoa_da_dang_ky = $this->StudentsCourse->getEnrolledCourses($loggin_id);

@@ -83,7 +83,7 @@ class DepartmentsController extends AppController {
         if (!$this->Department->exists($id)) {
             throw new NotFoundException(__('Invalid department'));
         }
-        $options = array('conditions' => array('Department.' . $this->Department->primaryKey => $id));
+        $options = array('conditions' => array('Department.' . $this->Department->primaryKey => $id),'recursive'=>0);
         $this->set('department', $this->Department->find('first', $options));
     }
 

@@ -118,7 +118,9 @@ class CoursesController extends AppController {
             }
         }
         $fields = $this->Course->Chapter->Field->find('list');
-        $teachers = $this->Course->Teacher->find('list');
+        $teacher_id_array = $this->Course->Teacher->getTeacherIdArray();
+        
+        $teachers = $this->Course->Teacher->find('list', array('conditions' => array('Teacher.id' => $teacher_id_array)));
         $this->set(compact('fields', 'teachers'));
     }
 
@@ -441,7 +443,8 @@ class CoursesController extends AppController {
         }
         $chapters = $this->Course->Chapter->find('list', array('conditions' => array('Chapter.field_id' => $manage_fields_id_array)));
 
-        $teachers = $this->Course->Teacher->find('list');
+        $teacher_id_array = $this->Course->Teacher->getTeacherIdArray();
+        $teachers = $this->Course->Teacher->find('list', array('conditions' => array('Teacher.id' => $teacher_id_array)));
         $this->set(compact('chapters', 'teachers'));
     }
 
@@ -531,7 +534,8 @@ class CoursesController extends AppController {
             $this->request->data = $this->Course->find('first', $options);
         }
         $chapters = $this->Course->Chapter->find('list');
-        $teachers = $this->Course->Teacher->find('list');
+        $teacher_id_array = $this->Course->Teacher->getTeacherIdArray();
+        $teachers = $this->Course->Teacher->find('list', array('conditions' => array('Teacher.id' => $teacher_id_array)));
         $this->set(compact('chapters', 'teachers'));
     }
 
@@ -554,7 +558,8 @@ class CoursesController extends AppController {
             $this->request->data = $this->Course->find('first', $options);
         }
         $chapters = $this->Course->Chapter->find('list');
-        $teachers = $this->Course->Teacher->find('list');
+        $teacher_id_array = $this->Course->Teacher->getTeacherIdArray();
+        $teachers = $this->Course->Teacher->find('list', array('conditions' => array('Teacher.id' => $teacher_id_array)));
         $this->set(compact('chapters', 'teachers'));
     }
 

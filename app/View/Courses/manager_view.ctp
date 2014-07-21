@@ -24,7 +24,7 @@
 
                     <div id="noi_dung" class="tab-pane">
                         <div class="noi_dung" >
-                            <img alt="" class="pull-left"  style="padding-right: 10px; width: 500px;"src="<?php echo SUB_DIR;?>/files/course/image/<?php echo $course['Course']['image_path'] . '/' . $course['Course']['image']; ?>">
+                            <img alt="" class="pull-left"  style="padding-right: 10px; width: 500px;"src="<?php echo SUB_DIR; ?>/files/course/image/<?php echo $course['Course']['image_path'] . '/' . $course['Course']['image']; ?>">
 
                             <p><?php echo $course['Course']['decription']; ?></p>
                         </div>
@@ -138,8 +138,7 @@
                                                     <?php
                                                     echo $this->Html->link(
                                                             '<button class="btn btn-success btn-xs active" type="button">'
-                                                            . '<span><i class="fa fa-plus"></i> Đính kèm</span></button>',
-                                                            array('action'=>'upload','controller'=>'courses','manager'=>false,$course['Course']['id']), array('escape' => false,
+                                                            . '<span><i class="fa fa-plus"></i> Đính kèm</span></button>', array('action' => 'upload', 'controller' => 'courses', 'manager' => false, $course['Course']['id']), array('escape' => false,
                                                         'class' => 'add-button fancybox.ajax'));
                                                     ?>
 
@@ -159,11 +158,11 @@
                                                             <tr id='attachment_<?php echo $tailieu['id'] ?>'>
                                                                 <td><?php echo ++$stt ?></td>
                                                                 <td><?php echo $this->Html->link($tailieu['attachment'], array('manager' => false, 'action' => 'download', $tailieu['id']));
-                                                        ?></td>
+                                                            ?></td>
                                                                 <td>
                                                                     <?php
                                                                     //echo $this->Form->postLink('<button class="btn btn-mini btn-warning" type="button">xóa</button>', array('fields_manager' => false, 'controller' => 'attachments', 'action' => 'delete', $tailieu['Attachment']['id']), array('escape' => false), __('bạn chắc xóa file %s?', $tailieu['Attachment']['attachment']));
-                                                                    echo $this->Html->link('<button class="btn btn-mini btn-warning" type="button">xóa</button>',array('action'=>'delete','controller'=>'attachments','manager'=>false,$tailieu['id']), array('escape' => false, 'class' => 'delete-attachment-button'));
+                                                                    echo $this->Html->link('<button class="btn btn-mini btn-warning" type="button">xóa</button>', array('action' => 'delete', 'controller' => 'attachments', 'manager' => false, $tailieu['id']), array('escape' => false, 'class' => 'delete-attachment-button'));
                                                                     ?>
                                                                 </td>
                                                             </tr>
@@ -182,9 +181,17 @@
                 </div><!-- /.tab-content -->
             </div>
             <div class="btn-toolbar pull-right">
-                <?php echo $this->Html->link('IN DS học viên', array('manager'=>false,'controller'=>'courses','action'=>'print_student',$course['Course']['id']), array('class' => 'btn btn-info')); ?>
-                <?php echo $this->Html->link('SỬA', array('manager'=>true,'controller'=>'courses','action'=>'edit',$course['Course']['id']),array('class' => 'btn btn-info')); ?>
-                <?php echo $this->Html->link('HỦY', '#', array('class' => 'btn btn-warning')); ?>
+                <?php echo $this->Html->link('IN DS học viên', array('manager' => false, 'controller' => 'courses', 'action' => 'print_student', $course['Course']['id']), array('class' => 'btn btn-info')); ?>
+                <?php echo $this->Html->link('SỬA', array('manager' => true, 'controller' => 'courses', 'action' => 'edit', $course['Course']['id']), array('class' => 'btn btn-info')); ?>
+                <?php
+                if ($course['Course']['status'] != COURSE_CANCELLED)
+                    echo $this->Form->postLink('<span class="fa fa-ban">Hủy</span>', array('manager' => false, 'action' => 'huy', $course['Course']['id']), array('escape' => false, 'class' => 'btn btn-warning'), __('Bạn có chắc hủy khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
+                else {
+                    echo $this->Form->postLink('                                
+  <span class="fa fa-refresh">Khôi phục</span>', array('manager' => false, 'action' => 'uncancel', $course['Course']['id']), array('escape' => false,'class'=>'btn btn-info'), __('Bạn có chắc phục hồi khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
+
+                }
+                ?>
             </div>
         </div>
     </div>

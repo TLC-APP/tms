@@ -224,7 +224,7 @@
                                                 <!-- this row will not appear when printing -->
                                                 <div class="row no-print">
                                                     <div class="col-xs-12">
-                                                        <a href="<?php echo SUB_DIR;?>/manager/users/index"><button class="btn btn-info pull-right">Back</button></a>
+                                                        <a href="<?php echo SUB_DIR;?>/admin/users/index"><button class="btn btn-info pull-right">Back</button></a>
                                                     </div>
                                                 </div>
                                             </section>

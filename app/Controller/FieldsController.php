@@ -174,7 +174,10 @@ class FieldsController extends AppController {
                 return $this->redirect(array('action' => 'index'));
             }
         }
-        $manageUsers = $this->Field->ManageBy->find('list');
+        $managers=  $this->Field->ManageBy->getFieldsManagerIdArray();
+        //debug($managers);
+        $manageUsers = $this->Field->ManageBy->find('list',array('conditions'=>array('ManageBy.id'=>$managers)));
+        //debug($manageUsers);die;
         $this->set(compact('fields', 'manageUsers'));
     }
 

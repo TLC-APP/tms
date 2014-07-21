@@ -17,7 +17,7 @@
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="glyphicon glyphicon-user"></i>
-                        <span>Toàn Nguyễn <i class="caret"></i></span>
+                        <span><?php echo AuthComponent::user('name') ?> <i class="caret"></i></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -36,7 +36,7 @@
                                 <a href="<?php echo SUB_DIR;?>/student/users/profile/<?php echo AuthComponent::user('id')?>" class="btn btn-default btn-flat fancybox.ajax">Hồ sơ</a>
                             </div>
                             <div class="pull-right">
-                                <a href="<?php echo SUB_DIR;?>/manager/users/logout" class="btn btn-default btn-flat">Thoát</a>
+                                <a href="<?php echo SUB_DIR;?>/users/logout" class="btn btn-default btn-flat">Thoát</a>
                             </div>
                         </li>
                     </ul>

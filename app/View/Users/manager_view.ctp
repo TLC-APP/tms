@@ -29,7 +29,7 @@
                                             </tr>
                                             <?php
                                             $i = 1;
-                                            
+
                                             foreach ($user['TeachingCourse'] as $teachingCourse):
                                                 ?>
                                                 <tr>
@@ -66,7 +66,8 @@
                                                     <th>Ngày tạo</th>
                                                     <th>Ngày cập nhật</th>
                                                 </tr>
-                                                <?php $i = 1;
+                                                <?php
+                                                $i = 1;
                                                 foreach ($user['Group'] as $group):
                                                     ?>
                                                     <tr>
@@ -101,47 +102,78 @@
                                             <tr>
                                                 <th>STT</th>
                                                 <th>Tên khóa</th>
+                                                <th>Tình trạng khóa</th>
                                                 <th><?php echo __('Kết quả'); ?></th>
                                                 <th><?php echo __('Đã nhận CC'); ?></th>
                                                 <th><?php echo __('Ngày cấp CC'); ?></th>
                                                 <th><?php echo __('Số CC'); ?></th>
                                                 <th><?php echo __('Ngày đăng kí'); ?></th>
                                             </tr>
-                                            <?php $i = 1;
-                                            foreach ($user['StudentsCourse'] as $studentsCourse): ?>
+                                            <?php
+                                            //debug($user['StudentsCourse']);
+                                            $i = 1;
+                                            foreach ($user['StudentsCourse'] as $studentsCourse):
+                                                $status = "";
+                                                switch ($studentsCourse['Course']['status']) {
+                                                    case COURSE_CANCELLED:
+                                                        $status = 'Đã hủy';
+                                                        break;
+                                                    case COURSE_COMPLETED:
+                                                        $status = 'Đã hoàn thành';
+                                                        break;
+                                                    case COURSE_UNCOMPLETED:
+                                                        $status = 'Chưa hoàn thành';
+                                                        break;
+                                                    case COURSE_REGISTERING:
+                                                        $status = 'Đang đăng ký';
+                                                        break;
+
+                                                    default:
+                                                        break;
+                                                }
+                                                ?>
                                                 <tr>
                                                     <td><?php echo $i++; ?></td>
                                                     <td>
-        <?php echo $this->Html->link($studentsCourse['Course']['name'], array('manager' => true, 'controller' => 'courses', 'action' => 'view1', $studentsCourse['Course']['id']), array('class' => 'add-button fancybox.ajax')) ?>
+                                                        <?php echo $this->Html->link($studentsCourse['Course']['name'], array('manager' => true, 'controller' => 'courses', 'action' => 'view1', $studentsCourse['Course']['id']), array('class' => 'add-button fancybox.ajax')) ?>
                                                     </td>
+                                                    <td><?php echo $status; ?></td>
                                                     <td><?php
-                                                        if ($studentsCourse['is_passed'] == 1)
-                                                            echo 'Đạt';
-                                                        else
-                                                            echo 'Không đạt';
+                                                        if ($studentsCourse['Course']['status'] == COURSE_COMPLETED) {
+                                                            echo ($studentsCourse['is_passed']) ? 'Đạt' : 'Không đạt';
+                                                        }
                                                         ?></td>
-                                                    <td><?php
-                                                        if ($studentsCourse['is_recieved'] == 1)
-                                                            echo 'Đã nhận';
+                                                    <td>
+                                                        <?php
+                                                        if ($studentsCourse['is_recieved'])
+                                                            echo $this->Form->postLink('<button type="button" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-trash">Hủy nhận</span></button>', array('controller' => 'students_courses', 'action' => 'cancel_recieve', $studentsCourse['id']), array('escape' => false), __('Bạn có chắc hủy nhận bằng?'));
+                                                        ?>
+                                                        <?php
                                                         if ($studentsCourse['is_recieved'] == 0 && $studentsCourse['is_passed'] == 1)
-                                                            echo 'Chưa nhận';
-                                                        if ($studentsCourse['is_recieved'] == 0 && $studentsCourse['is_passed'] == 0)
-                                                            echo 'Không có chứng nhận';
+                                                            echo $this->Form->postLink('<button type="button" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-trash">Nhận</span></button>', array('controller' => 'students_courses', 'action' => 'recieve', $studentsCourse['id']), array('escape' => false), __('Bạn có chắc hủy nhận bằng?'));
                                                         ?></td>
                                                     <td><?php
-                                                        $certificated_date = new DateTime($studentsCourse['certificated_date']);
-                                                        echo $certificated_date->format('H:i') . ', ngày: ' . $certificated_date->format('d/m/Y');
+                                                        if ($studentsCourse['Course']['status'] == COURSE_COMPLETED) {
+                                                            $certificated_date = new DateTime($studentsCourse['certificated_date']);
+                                                            echo $certificated_date->format('H:i') . ', ngày: ' . $certificated_date->format('d/m/Y');
+                                                        }
                                                         ?></td>
-                                                    <td><?php echo $studentsCourse['certificated_number']; ?></td>
+                                                    <td><?php
+                                                        if ($studentsCourse['Course']['status'] == COURSE_COMPLETED) {
+                                                            echo $studentsCourse['certificated_number'];
+                                                        }
+                                                        ?></td>
                                                     <td><?php
                                                         $created = new DateTime($studentsCourse['created']);
                                                         echo $created->format('H:i') . ', ngày: ' . $created->format('d/m/Y');
                                                         ?></td>
 
                                                 </tr>
-                                        <?php endforeach; ?>
+                                            <?php endforeach; ?>
                                         </table>
-<?php endif; ?>
+                                    <?php endif; ?>
 
                                 </div>
                             </div>
@@ -187,7 +219,7 @@
 
                                                                 <?php if (!empty($user['HocHam']['name'])) { ?>
                                                                     Học hàm: <?php echo $user['HocHam']['name']; ?><br>
-<?php } ?>
+                                                                <?php } ?>
 
                                                                 Học vị: <?php echo $user['HocVi']['name']; ?><br>
 
@@ -197,7 +229,7 @@
 
                                                                 <?php if (!empty($user['User']['email'])) { ?>
                                                                     Email: <?php echo $user['User']['email']; ?>
-<?php } ?>
+                                                                <?php } ?>
 
                                                             </div><!-- /.box-body -->
                                                         </div><!-- /.box -->
@@ -224,7 +256,7 @@
                                                 <!-- this row will not appear when printing -->
                                                 <div class="row no-print">
                                                     <div class="col-xs-12">
-                                                        <a href="<?php echo SUB_DIR;?>/manager/users/index"><button class="btn btn-info pull-right">Back</button></a>
+                                                        <a href="<?php echo SUB_DIR; ?>/manager/users/index"><button class="btn btn-info pull-right">Back</button></a>
                                                     </div>
                                                 </div>
                                             </section>

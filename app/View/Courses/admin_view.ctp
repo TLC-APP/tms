@@ -186,7 +186,15 @@
             </div>
             <div class="btn-toolbar pull-right">
                 <?php echo $this->Html->link('SỬA', array('admin'=>true,'controller'=>'courses','action'=>'edit',$course['Course']['id']),array('class' => 'btn btn-info')); ?>
-                <?php echo $this->Html->link('HỦY', '#', array('class' => 'btn btn-warning')); ?>
+                <?php
+                if ($course['Course']['status'] != COURSE_CANCELLED)
+                    echo $this->Form->postLink('<span class="fa fa-ban">Hủy</span>', array('admin' => false, 'action' => 'huy', $course['Course']['id']), array('escape' => false, 'class' => 'btn btn-warning'), __('Bạn có chắc hủy khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
+                else {
+                    echo $this->Form->postLink('                                
+  <span class="fa fa-refresh">Khôi phục</span>', array('admin' => false, 'action' => 'uncancel', $course['Course']['id']), array('escape' => false,'class'=>'btn btn-info'), __('Bạn có chắc phục hồi khóa học # %s?', $course['Course']['name'] . ' - ' . $course['Chapter']['name']));
+
+                }
+                ?>
             </div>
         </div>
     </div>

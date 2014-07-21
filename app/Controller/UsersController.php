@@ -36,6 +36,7 @@ class UsersController extends AppController {
                         $this->User->id = $user['User']['id'];
                         $this->User->saveField('password', $password);
                         if ($this->Auth->login($user['User'])) {
+                            
                             $this->Session->setFlash('Đăng nhập thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'), 'auth');
                             return $this->redirect($this->Auth->redirectUrl());
                         } else {
@@ -446,7 +447,7 @@ class UsersController extends AppController {
         }
 
         $options = array('conditions' => array('User.' . $this->User->primaryKey => $id),
-            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'StudentsCourse' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date')))),);
+            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'StudentsCourse' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date', 'Course.status')))),);
         $this->set('user', $this->User->find('first', $options));
     }
 
@@ -558,7 +559,7 @@ class UsersController extends AppController {
         }
 
         $options = array('conditions' => array('User.' . $this->User->primaryKey => $id),
-            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'StudentsCourse' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date')))),);
+            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'StudentsCourse' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date', 'Course.status')))),);
         //debug($this->User->find('first', $options));die;
         $this->set('user', $this->User->find('first', $options));
     }

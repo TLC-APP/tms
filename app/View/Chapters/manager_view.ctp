@@ -31,7 +31,7 @@
                             echo $this->Html->link('<span class="glyphicon glyphicon-pencil"></span>', array('action' => 'edit', $chapter['Chapter']['id']), array('escape' => false,
                                 'class' => 'add-button btn btn-primary btn-xs fancybox.ajax', 'role' => 'button', 'div' => false));
                             ?>
-                            <?php echo $this->Form->postLink('<span class="fa fa-trash-o"></span>', array('fields_manager' => false, 'controller' => 'chapters', 'action' => 'delete', $chapter['Chapter']['id']), array('class' => 'btn btn-danger btn-xs', 'escape' => false), __('Bạn chắc xóa chuyên đề %s?', $chapter['Chapter']['name'])); ?>
+                            <?php echo $this->Form->postLink('<span class="fa fa-trash-o"></span>', array('manager' => true, 'controller' => 'chapters', 'action' => 'delete', $chapter['Chapter']['id']), array('class' => 'btn btn-danger btn-xs', 'escape' => false), __('Bạn chắc xóa chuyên đề %s?', $chapter['Chapter']['name'])); ?>
                         </div>
                     </div>
                 </div>

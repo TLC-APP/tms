@@ -35,7 +35,7 @@ class User extends AppModel {
             Course.is_published=1
             ",
         'uncompletedCourse' =>
-        "SELECT count(id) as User__completedCoruse 
+        "SELECT count(id) as User__completedCourse 
          FROM  courses as Course 
          where 
             Course.teacher_id=User.id and 
@@ -284,6 +284,14 @@ class User extends AppModel {
     public function getTeacherIdArray() {
         $teacher = $this->Group->find('all', array(
             'conditions' => array('Group.id' => $this->Group->getGroupIdByAlias('teacher')),
+            'contain' => array('User' => array('fields' => array('id'), 'Group' => array('fields' => array('id'))))
+        ));
+        return Set::classicExtract($teacher[0]['User'], '{n}.id');
+    }
+    
+    public function getFieldsManagerIdArray() {
+        $teacher = $this->Group->find('all', array(
+            'conditions' => array('Group.id' => $this->Group->getGroupIdByAlias('fields_manager')),
             'contain' => array('User' => array('fields' => array('id'), 'Group' => array('fields' => array('id'))))
         ));
         return Set::classicExtract($teacher[0]['User'], '{n}.id');
