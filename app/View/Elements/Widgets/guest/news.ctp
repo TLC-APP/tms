@@ -1,4 +1,11 @@
-<?php $messages = $this->requestAction(array('controller' => 'messages', 'action' => 'getLastMessage', 'guest')) ?>
+
+<?php
+if (AuthComponent::user('id')) {
+    $messages = $this->requestAction(array('controller' => 'messages', 'action' => 'getLastMessage', 'guest'));
+} else {
+    $messages = $this->requestAction(array('controller' => 'messages', 'action' => 'getLastMessage'));
+}
+?>
 <div class="panel panel-theme">
     <div class="panel-heading">
         <h3 class="panel-title"><i class=" glyphicon glyphicon-bullhorn"></i> Thông báo</h3>
@@ -6,14 +13,14 @@
     <div class="panel-body">
 
         <ul>       
-            <?php foreach ($messages as $message): ?>
+<?php foreach ($messages as $message): ?>
 
-                <li><a href="<?php echo SUB_DIR;?>/messages/xem_thong_bao/<?php echo $message['Message']['id'] ?>" class="add-button fancybox.ajax"><?php echo $message['Message']['title'] ?>
+                <li><a href="<?php echo SUB_DIR; ?>/messages/xem_thong_bao/<?php echo $message['Message']['id'] ?>" class="add-button fancybox.ajax"><?php echo $message['Message']['title'] ?>
                         <span class="badge"><?php
                             $date = new DateTime($message['Message']['created']);
                             echo $date->format('H:i:s, d-m-Y')
                             ?></span></a></li>
-            <?php endforeach; ?>
+<?php endforeach; ?>
         </ul>
 
     </div>

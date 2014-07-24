@@ -9,8 +9,7 @@
                 <th><?php echo $this->Paginator->sort('decription', 'Miêu tả'); ?></th>
                 <th><?php echo $this->Paginator->sort('created', 'Ngày tạo'); ?></th>
                 <th><?php echo $this->Paginator->sort('modified', 'Ngày sửa'); ?></th>
-                <th><?php echo $this->Paginator->sort('id'); ?></th>
-                <th class="actions">Menu</th>
+                <th class="actions">Thao tác</th>
             </tr>
             <?php foreach ($departments as $department): ?>
                 <tr>
@@ -22,7 +21,6 @@
                     <td><?php echo h($department['Department']['decription']); ?>&nbsp;</td>
                     <td><?php echo h($department['Department']['created']); ?>&nbsp;</td>
                     <td><?php echo h($department['Department']['modified']); ?>&nbsp;</td>
-                    <td><?php echo h($department['Department']['id']); ?>&nbsp;</td>
                     <td class="actions">
                         <?php echo $this->Html->link(' <span class="fa fa-edit"></span>', array('action' => 'edit', $department['Department']['id']), array('escape' => false)); ?>
                         <?php echo $this->Form->postLink('<span class="fa fa-trash-o"></span>', array('action' => 'delete', $department['Department']['id']), array('escape' => false), __('Are you sure you want to delete # %s?', $department['Department']['id'])); ?>

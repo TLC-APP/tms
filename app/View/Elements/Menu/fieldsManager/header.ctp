@@ -9,6 +9,8 @@
 <!-- fullCalendar -->
 <?php echo $this->Html->css('fullcalendar/fullcalendar'); ?>
 <!-- Theme style -->
+<?php echo $this->Html->css('select2'); ?>
+<?php echo $this->Html->css('select2-bootstrap'); ?>
 <?php echo $this->Html->css('AdminLTE'); ?>
 <!-- jQuery 2.0.2 -->
 
@@ -24,7 +26,7 @@
 
 <!-- AdminLTE App -->
 <?php echo $this->Html->script('AdminLTE/app') ?>
-
+<?php echo $this->Html->script('plugins/select2/select2'); ?>
 <?php
 //echo $this->Html->script('eldarion-ajax.min'); 
 echo $this->element('Common/fancybox');

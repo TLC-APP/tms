@@ -3,12 +3,12 @@
 App::uses('AppModel', 'Model');
 
 /**
- * StudentsCourse Model
+ * Attend Model
  *
  * @property Student $Student
  * @property Course $Course
  */
-class StudentsCourse extends AppModel {
+class Attend extends AppModel {
 
     /**
      * Display field
@@ -16,7 +16,7 @@ class StudentsCourse extends AppModel {
      * @var string
      */
     public $displayField = 'student_id';
-    public $table = 'students_courses';
+   
     public $actsAs = array('Containable');
 
     /**
@@ -92,9 +92,9 @@ class StudentsCourse extends AppModel {
     );
 
     public function getEnrolledCourses($user_id) {
-        $conditions = array('StudentsCourse.student_id' => $user_id);
-        $students_courses = $this->find('all', array('conditions' => $conditions, 'recursive' => -1));
-        $enrolled_courses_id_array = Set::classicExtract($students_courses, '{n}.StudentsCourse.course_id');
+        $conditions = array('Attend.student_id' => $user_id);
+        $attends = $this->find('all', array('conditions' => $conditions, 'recursive' => -1));
+        $enrolled_courses_id_array = Set::classicExtract($attends, '{n}.Attend.course_id');
         return $enrolled_courses_id_array;
     }
 

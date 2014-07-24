@@ -17,7 +17,7 @@
                             <td><?php echo $stt++; ?></td>
                             <td><?php echo $this->Html->link($course_register['Course']['name'], array('student' => true, 'controller' => 'courses', 'action' => 'view', $course_register['Course']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax')) ?></td>
                             <td>
-                                <?php echo $this->Html->link('<button class="btn btn-info btn-sm">Hủy</button>',array('student'=>false,'controller'=>'students_courses','action'=>'canceled',$course_register['Course']['id']),array('escape'=>false));?>
+                                <?php echo $this->Html->link('<button class="btn btn-info btn-sm">Hủy</button>',array('student'=>false,'controller'=>'attends','action'=>'canceled',$course_register['Course']['id']),array('escape'=>false));?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

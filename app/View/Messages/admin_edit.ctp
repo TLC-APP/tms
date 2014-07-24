@@ -23,7 +23,7 @@ $this->Html->addCrumb('Cập nhật thông báo');
         echo $this->Form->input('title', array('label' => 'Tiêu đề'));
         echo $this->Form->input('content', array('label' => 'Nội dung','required'=>false));
          echo $this->Form->input('category_id', array('label' => 'Nhóm người nhận'));
-        echo $this->Form->input('published', array('label' => 'Trạng thái'));
+        echo $this->Form->input('published', array('label' => 'Trạng thái','type'=>'checkbox'));
         ?>
 </fieldset>
 <div class="btn-toolbar" style="text-align: center;">

@@ -12,8 +12,8 @@
                 </ul>
                 <div class="tab-content">
                     <div id="tab_hoc_vien" class="tab-pane">
-                        <?php if ($course['Course']['status'] == COURSE_COMPLETED) echo $this->element('teacher/course/view/course_completed_students', array('students' => $course['StudentsCourse'])); ?>
-                        <?php if ($course['Course']['status'] == COURSE_REGISTERING) echo $this->element('teacher/course/view/course_registering_students', array('students' => $course['StudentsCourse'])); ?>
+                        <?php if ($course['Course']['status'] == COURSE_COMPLETED) echo $this->element('teacher/course/view/course_completed_students', array('students' => $course['Attend'])); ?>
+                        <?php if ($course['Course']['status'] == COURSE_REGISTERING) echo $this->element('teacher/course/view/course_registering_students', array('students' => $course['Attend'])); ?>
                     </div>
                     <div id="tab_1-1" class="tab-pane active">
                         <div class="noi_dung" >

@@ -34,3 +34,9 @@ $this->Html->addCrumb('Thêm khóa học');
 <?php echo $this->Html->link('Back', array('action' => 'index', 1), array('type' => 'button', 'class' => 'btn btn-primary')) ?>
 <?php echo $this->Form->end(); ?>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#CourseChapterId").select2();
+        $("#CourseTeacherId").select2()
+    });
+</script>

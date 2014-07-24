@@ -1,7 +1,7 @@
 <?php
 echo $this->element('Common/tinymce');
 $this->Html->addCrumb('Khóa học đăng đăng ký', '/manager/courses/index/1');
-$this->Html->addCrumb('Sửa khóa học '.$this->Form->value('name'));
+$this->Html->addCrumb('Sửa khóa học ' . $this->Form->value('name'));
 ?>
 <div class="col-lg-10 well">
     <?php
@@ -27,12 +27,18 @@ $this->Html->addCrumb('Sửa khóa học '.$this->Form->value('name'));
         echo $this->Form->input('max_enroll_number', array('label' => 'Số người tối đa'));
         //echo $this->Form->input('session_number', array('label' => 'Số buổi'));
         echo $this->Form->input('is_published', array('label' => 'Xuất bản'));
-        echo $this->Form->input('chung_chi_co_so', array('label' => 'Chứng nhận có số','type'=>'checkbox'));
-        echo $this->Form->input('enrolling_expiry_date', array('label' => 'Ngày hết hạn đăng ký: ', 'class' => 'input datetime','dateFormat' => 'DMY', 'monthNames' => false));
+        echo $this->Form->input('chung_chi_co_so', array('label' => 'Chứng nhận có số', 'type' => 'checkbox'));
+        echo $this->Form->input('enrolling_expiry_date', array('label' => 'Ngày hết hạn đăng ký: ', 'class' => 'input datetime', 'dateFormat' => 'DMY', 'monthNames' => false));
         echo $this->Form->input('decription', array('label' => 'Miêu tả'));
         ?>
     </fieldset>
     <?php echo $this->Form->button('Lưu', array('type' => 'submit', 'class' => 'btn btn-info')) ?>
-<?php echo $this->Html->link('Back', array('action' => 'index', 1), array('type' => 'button', 'class' => 'btn btn-primary')) ?>
-<?php echo $this->Form->end(); ?>
+    <?php echo $this->Html->link('Back', array('action' => 'index', 1), array('type' => 'button', 'class' => 'btn btn-primary')) ?>
+    <?php echo $this->Form->end(); ?>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#CourseChapterId").select2();
+        $("#CourseTeacherId").select2()
+    });
+</script>

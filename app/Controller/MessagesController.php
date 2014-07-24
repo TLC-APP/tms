@@ -18,12 +18,27 @@ class MessagesController extends AppController {
     public $components = array('Paginator', 'Session', 'TinymceElfinder.TinymceElfinder');
     public $helpers = array('TinymceElfinder.TinymceElfinder');
 
-    public function getLastMessage($group_alias = 'student') {
-        $group_id = $this->Message->CreatedUser->Group->getGroupIdByAlias($group_alias);
-        $conditions = array('Message.published' => 1, 'Message.category_id' => $group_id);
+    public function getLastMessage($group_alias = null) {
+
+        $group_ids = array($this->Message->User->Group->getGroupIdByAlias('guest'));
+        
+        $conditions = array('Message.published' => 1);
+        if ($this->Auth->loggedIn()) {
+            $group_ids = Set::merge($group_ids, $this->Message->User->getAllGroupId());
+
+            $or = array('Message.receive_user_id' => AuthComponent::user('id'));
+            if (!empty($group_ids)) {
+                $or = Set::merge($or, array('Message.category_id' => $group_ids));
+            }
+            $conditions = Set::merge($conditions, array(array('OR' => $or)));
+        } else {
+            $conditions = Set::merge($conditions, array('Message.category_id' => $group_ids));
+        }
+
         $contain = array('User' => array('fields' => array('id', 'name')));
 
         $messages = $this->Message->find('all', array('conditions' => $conditions, 'contain' => $contain, 'limit' => 5));
+        
         return $messages;
     }
 
@@ -72,7 +87,7 @@ class MessagesController extends AppController {
                 return $this->flash(__('The message has been saved.'), array('action' => 'index'));
             }
         }
-        $createdUsers = $this->Message->CreatedUser->find('list');
+        $createdUsers = $this->Message->User->find('list');
         $categories = $this->Message->Category->find('list');
         $this->set(compact('createdUsers', 'categories'));
     }
@@ -96,7 +111,7 @@ class MessagesController extends AppController {
             $options = array('conditions' => array('Message.' . $this->Message->primaryKey => $id));
             $this->request->data = $this->Message->find('first', $options);
         }
-        $createdUsers = $this->Message->CreatedUser->find('list');
+        $createdUsers = $this->Message->User->find('list');
         $categories = $this->Message->Category->find('list');
         $this->set(compact('createdUsers', 'categories'));
     }
@@ -115,11 +130,10 @@ class MessagesController extends AppController {
         }
         $this->request->onlyAllow('post', 'delete');
         if ($this->Message->delete()) {
-            $this->Session->setFlash('Đã xóa thông báo thành công','alert', array('plugin' => 'BoostCake','class'=>'alert-success'));
+            $this->Session->setFlash('Đã xóa thông báo thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
             $this->redirect($this->request->referer());
-            
         } else {
-            $this->Session->setFlash('Xóa thông báo không thành công','alert', array('plugin' => 'BoostCake','class'=>'alert-warning'));
+            $this->Session->setFlash('Xóa thông báo không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             $this->redirect($this->request->referer());
         }
     }
@@ -180,7 +194,10 @@ class MessagesController extends AppController {
     }
 
     public function manager_index() {
-        $this->Message->recursive = 0;
+        $this->Paginator->settings = array('contain' => array(
+                'User' => array('fields' => array('id', 'name')),
+                'ReceiveUser' => array('fields' => array('id', 'name')),
+                'Group'));
         $this->set('messages', $this->Paginator->paginate());
     }
 
@@ -188,6 +205,7 @@ class MessagesController extends AppController {
         $this->Message->recursive = 0;
         $this->set('messages', $this->Paginator->paginate());
     }
+
     /**
      * manager_view method
      *

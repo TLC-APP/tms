@@ -49,6 +49,7 @@
                         <th><?php echo $this->Paginator->sort('created_user_id', 'Người tạo'); ?></th>
                         <th><?php echo $this->Paginator->sort('created', 'Ngày tạo'); ?></th>
                         <th><?php echo $this->Paginator->sort('category_id', 'Nhóm người dùng'); ?></th>
+                        <th><?php echo $this->Paginator->sort('receive_user_id', 'Người nhận'); ?></th>
                         <th><?php echo $this->Paginator->sort('modified', 'Ngày cập nhật'); ?></th>
                         <th class="actions"><?php echo 'Thao tác'; ?></th>
                     </tr>
@@ -61,13 +62,16 @@
                             <td><?php echo $this->Html->link($message['Message']['title'], array('manager' => true, 'action' => 'view', $message['Message']['id'])); ?></td>
                             <td><?php echo $message['Message']['published']; ?></td>
                             <td>
-                                <?php echo $this->Html->link($message['CreatedUser']['name'], array('controller' => 'users', 'action' => 'view', $message['CreatedUser']['id'])); ?>
+                                <?php echo $this->Html->link($message['User']['name'], array('controller' => 'users', 'action' => 'view', $message['User']['id'])); ?>
                             </td>
                             <td><?php echo h($message['Message']['created']); ?></td>
 
                             <td><?php
                                  echo h($message['Group']['name']);
                                 ?>&nbsp;</td>
+                            <td>
+                                <?php echo $this->Html->link($message['ReceiveUser']['name'], array('controller' => 'users', 'action' => 'view', $message['ReceiveUser']['id'])); ?>
+                            </td>
 
                             <td><?php echo h($message['Message']['modified']); ?>&nbsp;</td>
                             <td class="actions">

@@ -63,8 +63,7 @@ class CoursesRoomsController extends AppController {
      */
     public function add() {
         if (!empty($this->request->data)) {
-            $this->request->data['CoursesRoom']['created_user_id'] = $this->Auth->user('id');
-            
+            $this->request->data['CoursesRoom']['created_user_id'] = $this->Auth->user('id');          
             
             if ($this->CoursesRoom->save($this->request->data)) {
                 $this->CoursesRoom->Room->id = $this->CoursesRoom->field('room_id');
@@ -287,7 +286,7 @@ class CoursesRoomsController extends AppController {
             'Course' => array('Chapter' => array('id', 'name'), 'Teacher' => array('id', 'name')),
             'Room' => array('id', 'name')
         );
-        $khoa_da_dang_ky = $this->CoursesRoom->Course->StudentsCourse->getEnrolledCourses($this->Auth->user('id'));
+        $khoa_da_dang_ky = $this->CoursesRoom->Course->Attend->getEnrolledCourses($this->Auth->user('id'));
         $today = new DateTime();
         $batdau = CakeTime::daysAsSql($today, $today, 'CoursesRoom.start');
         $conditions = array(array('Course.id' => $khoa_da_dang_ky), $batdau);

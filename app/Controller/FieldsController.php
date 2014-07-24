@@ -76,13 +76,14 @@ class FieldsController extends AppController {
                 return $this->redirect(array('action' => 'index'));
             }
         } else {
-            $options = array('conditions' => array('Field.' . $this->Field->primaryKey => $id),'recursive'=>-1);
+            $options = array('conditions' => array('Field.' . $this->Field->primaryKey => $id), 'recursive' => -1);
             $this->request->data = $this->Field->find('first', $options);
         }
-        $manageUsers = $this->Field->ManageBy->find('list');
+        $managers = $this->Field->ManageBy->getFieldsManagerIdArray();
+        $manageUsers = $this->Field->ManageBy->find('list', array('conditions' => array('ManageBy.id' => $managers)));
         $this->set(compact('manageUsers'));
     }
-    
+
     public function admin_edit($id = null) {
         if (!$this->Field->exists($id)) {
             throw new NotFoundException(__('Invalid field'));
@@ -93,10 +94,11 @@ class FieldsController extends AppController {
                 return $this->redirect(array('action' => 'index'));
             }
         } else {
-            $options = array('conditions' => array('Field.' . $this->Field->primaryKey => $id),'recursive'=>-1);
+            $options = array('conditions' => array('Field.' . $this->Field->primaryKey => $id), 'recursive' => -1);
             $this->request->data = $this->Field->find('first', $options);
         }
-        $manageUsers = $this->Field->ManageBy->find('list');
+        $managers=  $this->Field->ManageBy->getFieldsManagerIdArray();
+        $manageUsers = $this->Field->ManageBy->find('list',array('conditions'=>array('ManageBy.id'=>$managers)));
         $this->set(compact('manageUsers'));
     }
 
@@ -112,11 +114,11 @@ class FieldsController extends AppController {
         if (!$this->Field->exists()) {
             throw new NotFoundException(__('Invalid field'));
         }
-        
+
         $this->request->onlyAllow('post', 'delete');
-        $chapter_number=$this->Field->field('chapter_number');
-        if($chapter_number>0){
-            $this->Session->setFlash('Có '.$chapter_number.' chuyên đề thuộc lĩnh vực này! Bạn không thể xóa!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+        $chapter_number = $this->Field->field('chapter_number');
+        if ($chapter_number > 0) {
+            $this->Session->setFlash('Có ' . $chapter_number . ' chuyên đề thuộc lĩnh vực này! Bạn không thể xóa!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
             $this->redirect($this->request->referer());
         }
         if ($this->Field->delete()) {
@@ -127,16 +129,16 @@ class FieldsController extends AppController {
             return $this->redirect(array('action' => 'index'));
         }
     }
-    
-     public function admin_delete($id = null) {
+
+    public function admin_delete($id = null) {
         $this->Field->id = $id;
         if (!$this->Field->exists()) {
             throw new NotFoundException(__('Invalid field'));
         }
         $this->request->onlyAllow('post', 'delete');
-        $chapter_number=$this->Field->field('chapter_number');
-        if($chapter_number>0){
-            $this->Session->setFlash('Có '.$chapter_number.' chuyên đề thuộc lĩnh vực này! Bạn không thể xóa!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+        $chapter_number = $this->Field->field('chapter_number');
+        if ($chapter_number > 0) {
+            $this->Session->setFlash('Có ' . $chapter_number . ' chuyên đề thuộc lĩnh vực này! Bạn không thể xóa!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
             $this->redirect($this->request->referer());
         }
         if ($this->Field->delete()) {
@@ -160,11 +162,12 @@ class FieldsController extends AppController {
                 return $this->redirect(array('action' => 'index'));
             }
         }
-        $manageUsers = $this->Field->ManageBy->find('list');
+        $managers = $this->Field->ManageBy->getFieldsManagerIdArray();
+        $manageUsers = $this->Field->ManageBy->find('list', array('conditions' => array('ManageBy.id' => $managers)));
         $this->set(compact('fields', 'manageUsers'));
     }
-    
-     public function admin_add() {
+
+    public function admin_add() {
         $loginId = $this->Auth->user('id');
         if ($this->request->is('post')) {
             $this->Field->create();
@@ -174,9 +177,9 @@ class FieldsController extends AppController {
                 return $this->redirect(array('action' => 'index'));
             }
         }
-        $managers=  $this->Field->ManageBy->getFieldsManagerIdArray();
+        $managers = $this->Field->ManageBy->getFieldsManagerIdArray();
         //debug($managers);
-        $manageUsers = $this->Field->ManageBy->find('list',array('conditions'=>array('ManageBy.id'=>$managers)));
+        $manageUsers = $this->Field->ManageBy->find('list', array('conditions' => array('ManageBy.id' => $managers)));
         //debug($manageUsers);die;
         $this->set(compact('fields', 'manageUsers'));
     }
@@ -186,8 +189,8 @@ class FieldsController extends AppController {
         $this->Paginator->settings = array('contain' => $contain);
         $this->set('fields', $this->Paginator->paginate());
     }
-    
-     public function admin_index() {
+
+    public function admin_index() {
         $contain = array('CreatedUser' => array('fields' => array('id', 'name')), 'ManageBy' => array('fields' => array('id', 'name')));
         $this->Paginator->settings = array('contain' => $contain);
         $this->set('fields', $this->Paginator->paginate());

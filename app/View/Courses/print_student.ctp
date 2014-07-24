@@ -33,7 +33,7 @@ $this->PhpExcel->setRow(8);
 $this->PhpExcel->addTableHeader($colunms, array('font' => 'Times New Roman', 'bold' => true));
 // data 
 $stt = 1;
-foreach ($course['StudentsCourse'] as $student) {
+foreach ($course['Attend'] as $student) {
     $this->PhpExcel->addTableRow(array(
         $stt++,
         $student['Student']['name'],

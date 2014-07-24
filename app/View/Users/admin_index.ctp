@@ -46,9 +46,9 @@
                     <tr>
                         <th>STT</th>
                         <th><?php echo $this->Paginator->sort('name', 'Tên'); ?></th>
-                        <th><?php echo $this->Paginator->sort('username'); ?></th>
+                        <th><?php echo $this->Paginator->sort('Tên đăng nhập'); ?></th>
                         <th><?php echo $this->Paginator->sort('email'); ?></th>
-                        <th><?php echo $this->Paginator->sort('phone_number'); ?></th>
+                        <th><?php echo $this->Paginator->sort('Số điện thoại'); ?></th>
                         <th><?php echo $this->Paginator->sort('avatar'); ?></th>
                         <th><?php echo $this->Paginator->sort('activated', 'Đã kích hoạt'); ?></th>
                         <th><?php echo $this->Paginator->sort('last_login', 'Lần đăng nhập cuối'); ?></th>

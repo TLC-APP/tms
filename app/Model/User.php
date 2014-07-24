@@ -191,7 +191,7 @@ class User extends AppModel {
             'foreignKey' => 'teacher_id',
             'dependent' => false,
             'conditions' => '',
-            'fields' => array('id', 'name','decription' ),
+            'fields' => array('id', 'name', 'decription'),
             'order' => '',
             'limit' => '',
             'offset' => '',
@@ -199,8 +199,8 @@ class User extends AppModel {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
-        'StudentsCourse' => array(
-            'className' => 'StudentsCourse',
+        'Attend' => array(
+            'className' => 'Attend',
             'foreignKey' => 'student_id',
             'dependent' => true,
             'conditions' => '',
@@ -212,19 +212,19 @@ class User extends AppModel {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
-        /*'FieldManaged' => array(
-            'className' => 'Field',
-            'foreignKey' => 'manage_user_id',
-            'dependent' => false,
-            'conditions' => '',
-            'fields' => '',
-            'order' => '',
-            'limit' => '',
-            'offset' => '',
-            'exclusive' => '',
-            'finderQuery' => '',
-            'counterQuery' => ''
-        )*/
+            /* 'FieldManaged' => array(
+              'className' => 'Field',
+              'foreignKey' => 'manage_user_id',
+              'dependent' => false,
+              'conditions' => '',
+              'fields' => '',
+              'order' => '',
+              'limit' => '',
+              'offset' => '',
+              'exclusive' => '',
+              'finderQuery' => '',
+              'counterQuery' => ''
+              ) */
     );
     public $belongsTo = array(
         'HocHam' => array(
@@ -271,6 +271,15 @@ class User extends AppModel {
         )
     );
 
+    public function getAllGroupId() {
+        $user = $this->find('first', 
+                array('fields' => array('id'), 
+                    'contain' => array('Group' => array('fields' => array('id', 'alias'))), 
+                    'conditions' => array('User.id' => AuthComponent::user('id')))
+                );
+        return Set::classicExtract($user['Group'], '{n}.id');
+    }
+
     public function isAdmin() {
         $user = $this->find('first', array('fields' => array('id'), 'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'admin'))), 'conditions' => array('User.id' => AuthComponent::user('id'))));
         return count($user['Group']) > 0;
@@ -288,7 +297,7 @@ class User extends AppModel {
         ));
         return Set::classicExtract($teacher[0]['User'], '{n}.id');
     }
-    
+
     public function getFieldsManagerIdArray() {
         $teacher = $this->Group->find('all', array(
             'conditions' => array('Group.id' => $this->Group->getGroupIdByAlias('fields_manager')),

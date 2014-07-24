@@ -1,7 +1,7 @@
 <div class="container">
     <div class="box box-primary">
         <div class="box-header">
-            <h3 class="box-title">DANH SÁCH USER</h3>
+            <h3 class="box-title">DANH SÁCH NGƯỜI DÙNG</h3>
             <div id="commentStatus"></div>
             <?php
             echo $this->Form->create('User', array('default' => false, 'id' => 'UserSearchForm'));
@@ -9,7 +9,7 @@
             <div class="box-tools">
                 <div class="input-group">
                     <input type="text" 
-                           placeholder="Nhập tên user cần tìm" 
+                           placeholder="Nhập tên người dùng cần tìm" 
                            style="width: 300px;" 
                            class="form-control input-sm pull-right" 
                            name="name">
@@ -46,13 +46,13 @@
                     <tr>
                         <th>STT</th>
                         <th><?php echo $this->Paginator->sort('name', 'Tên'); ?></th>
-                        <th><?php echo $this->Paginator->sort('username'); ?></th>
+                        <th><?php echo $this->Paginator->sort('Tên đăng nhập'); ?></th>
                         <th><?php echo $this->Paginator->sort('email'); ?></th>
-                        <th><?php echo $this->Paginator->sort('phone_number'); ?></th>
+                        <th><?php echo $this->Paginator->sort('Số điện thoại'); ?></th>
                         <th><?php echo $this->Paginator->sort('avatar'); ?></th>
                         <th><?php echo $this->Paginator->sort('activated', 'Đã kích hoạt'); ?></th>
                         <th><?php echo $this->Paginator->sort('last_login', 'Lần đăng nhập cuối'); ?></th>
-                        <th class="actions">#</th>
+                        <th class="actions">Thao tác</th>
                     </tr>
                     <?php $stt = ($this->Paginator->param('page') - 1) * $this->Paginator->param('limit') + 1; ?>
                     <?php foreach ($users as $user): ?>

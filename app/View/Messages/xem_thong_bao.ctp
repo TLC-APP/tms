@@ -6,6 +6,6 @@
         <dd>
             <?php echo $message['Message']['content']; ?>
         </dd>
-        <dt>Người tạo: <?php echo $message['CreatedUser']['name']; ?></dt>
+        <dt>Người tạo: <?php echo $message['User']['name']; ?></dt>
     </dl>
 </div>

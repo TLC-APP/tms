@@ -87,8 +87,8 @@
 		<li><?php echo $this->Html->link(__('New User'), array('action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Courses'), array('controller' => 'courses', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Teaching Course'), array('controller' => 'courses', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Students Courses'), array('controller' => 'students_courses', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Students Course'), array('controller' => 'students_courses', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Students Courses'), array('controller' => 'attends', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Students Course'), array('controller' => 'attends', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Groups'), array('controller' => 'groups', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Group'), array('controller' => 'groups', 'action' => 'add')); ?> </li>
 	</ul>
@@ -152,7 +152,7 @@
 </div>
 <div class="related">
 	<h3><?php echo __('Related Students Courses'); ?></h3>
-	<?php if (!empty($user['StudentsCourse'])): ?>
+	<?php if (!empty($user['Attend'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php echo __('Student Id'); ?></th>
@@ -166,21 +166,21 @@
 		<th><?php echo __('Id'); ?></th>
 		<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
-	<?php foreach ($user['StudentsCourse'] as $studentsCourse): ?>
+	<?php foreach ($user['Attend'] as $attend): ?>
 		<tr>
-			<td><?php echo $studentsCourse['student_id']; ?></td>
-			<td><?php echo $studentsCourse['course_id']; ?></td>
-			<td><?php echo $studentsCourse['is_passed']; ?></td>
-			<td><?php echo $studentsCourse['is_recieved']; ?></td>
-			<td><?php echo $studentsCourse['certificated_date']; ?></td>
-			<td><?php echo $studentsCourse['certificated_number']; ?></td>
-			<td><?php echo $studentsCourse['created']; ?></td>
-			<td><?php echo $studentsCourse['modified']; ?></td>
-			<td><?php echo $studentsCourse['id']; ?></td>
+			<td><?php echo $attend['student_id']; ?></td>
+			<td><?php echo $attend['course_id']; ?></td>
+			<td><?php echo $attend['is_passed']; ?></td>
+			<td><?php echo $attend['is_recieved']; ?></td>
+			<td><?php echo $attend['certificated_date']; ?></td>
+			<td><?php echo $attend['certificated_number']; ?></td>
+			<td><?php echo $attend['created']; ?></td>
+			<td><?php echo $attend['modified']; ?></td>
+			<td><?php echo $attend['id']; ?></td>
 			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'students_courses', 'action' => 'view', $studentsCourse['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'students_courses', 'action' => 'edit', $studentsCourse['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'students_courses', 'action' => 'delete', $studentsCourse['id']), null, __('Are you sure you want to delete # %s?', $studentsCourse['id'])); ?>
+				<?php echo $this->Html->link(__('View'), array('controller' => 'attends', 'action' => 'view', $attend['id'])); ?>
+				<?php echo $this->Html->link(__('Edit'), array('controller' => 'attends', 'action' => 'edit', $attend['id'])); ?>
+				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'attends', 'action' => 'delete', $attend['id']), null, __('Are you sure you want to delete # %s?', $attend['id'])); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
@@ -189,7 +189,7 @@
 
 	<div class="actions">
 		<ul>
-			<li><?php echo $this->Html->link(__('New Students Course'), array('controller' => 'students_courses', 'action' => 'add')); ?> </li>
+			<li><?php echo $this->Html->link(__('New Students Course'), array('controller' => 'attends', 'action' => 'add')); ?> </li>
 		</ul>
 	</div>
 </div>

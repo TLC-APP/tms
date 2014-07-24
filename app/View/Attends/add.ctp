@@ -1,5 +1,5 @@
-<div class="studentsCourses form">
-<?php echo $this->Form->create('StudentsCourse'); ?>
+<div class="Attends form">
+<?php echo $this->Form->create('Attend'); ?>
 	<fieldset>
 		<legend><?php echo __('Add Students Course'); ?></legend>
 	<?php

@@ -180,7 +180,7 @@ class UsersController extends AppController {
         }
 
         $options = array('conditions' => array('User.' . $this->User->primaryKey => $id),
-            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'StudentsCourse' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date')))),);
+            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'Attend' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date')))),);
         //debug($this->User->find('first', $options));die;
         $this->set('user', $this->User->find('first', $options));
     }
@@ -240,7 +240,6 @@ class UsersController extends AppController {
             $departments = $this->User->Department->find('list');
             $hocHams = $this->User->HocHam->find('list');
             $hocVis = $this->User->HocVi->find('list');
-
             $this->set(compact('departments', 'hocVis', 'hocHams'));
             $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
             $this->request->data = $this->User->find('first', $options);
@@ -447,7 +446,7 @@ class UsersController extends AppController {
         }
 
         $options = array('conditions' => array('User.' . $this->User->primaryKey => $id),
-            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'StudentsCourse' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date', 'Course.status')))),);
+            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'Attend' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date', 'Course.status')))),);
         $this->set('user', $this->User->find('first', $options));
     }
 
@@ -492,7 +491,7 @@ class UsersController extends AppController {
         $hocHams = $this->User->HocHam->find('list');
         $departments = $this->User->Department->find('list');
         $hocVis = $this->User->HocVi->find('list');
-        $groups = $this->User->Group->find('list', array('conditions' => array('NOT' => array('Group.alias' => array('admin', 'manager')))));
+        $groups = $this->User->Group->find('list', array('conditions' => array('NOT' => array('Group.alias' => array('admin', 'manager','guest')))));
         $this->set(compact('hocHams', 'hocVis', 'groups', 'departments'));
     }
 
@@ -515,7 +514,7 @@ class UsersController extends AppController {
         $departments = $this->User->Department->find('list');
         $hocHams = $this->User->HocHam->find('list');
         $hocVis = $this->User->HocVi->find('list');
-        $groups = $this->User->Group->find('list', array('conditions' => array('NOT' => array('Group.alias' => array('admin', 'manager')))));
+        $groups = $this->User->Group->find('list', array('conditions' => array('NOT' => array('Group.alias' => array('admin', 'manager','guest')))));
         $this->set(compact('departments', 'hocVis', 'hocHams', 'groups'));
     }
 
@@ -538,8 +537,8 @@ class UsersController extends AppController {
         $hocHams = $this->User->HocHam->find('list');
         $hocVis = $this->User->HocVi->find('list');
         $groups = $this->User->Group->find('list');
-
-        $this->set(compact('groups', 'hocHams', 'hocVis'));
+        $departments=$this->User->Department->find('list');
+        $this->set(compact('groups', 'hocHams', 'hocVis','departments'));
     }
 
     public function admin_view($id) {
@@ -548,7 +547,7 @@ class UsersController extends AppController {
         }
 
         $options = array('conditions' => array('User.' . $this->User->primaryKey => $id),
-            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'StudentsCourse' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date')))),);
+            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'Attend' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date')))),);
         //debug($this->User->find('first', $options));die;
         $this->set('user', $this->User->find('first', $options));
     }
@@ -559,7 +558,7 @@ class UsersController extends AppController {
         }
 
         $options = array('conditions' => array('User.' . $this->User->primaryKey => $id),
-            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'StudentsCourse' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date', 'Course.status')))),);
+            'contain' => array('Group', 'HocHam', 'HocVi', 'TeachingCourse', 'Attend' => array('Course' => array('fields' => array('Course.id', 'Course.name', 'Course.enrolling_expiry_date', 'Course.status')))),);
         //debug($this->User->find('first', $options));die;
         $this->set('user', $this->User->find('first', $options));
     }

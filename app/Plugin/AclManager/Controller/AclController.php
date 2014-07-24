@@ -110,7 +110,7 @@ class AclController extends AclManagerAppController {
 
         $Aro = $this->{$model};
 
-        $this->Components->load('Paginator')->settings=array('contain'=>array('User'=>array('fields'=>array('id'),'UsersGroup')));
+        $this->Components->load('Paginator')->settings = array('contain' => array('User' => array('fields' => array('id'), 'UsersGroup')));
         $aros = $this->paginate($Aro->alias);
         //debug($aros);die;
         $permKeys = $this->_getKeys();
@@ -234,7 +234,7 @@ class AclController extends AclManagerAppController {
      * Sets the missing actions in the database
      */
     public function update_acos() {
-Configure::write('debug', 2);
+        Configure::write('debug', 2);
         $count = 0;
         $knownAcos = $this->_getAcos();
 
@@ -243,8 +243,8 @@ Configure::write('debug', 2);
         if (!$rootNode = $this->Acl->Aco->node($aco)) {
             $rootNode = $this->_buildAcoNode($aco, null);
             $count++;
-           
         }
+        
         $knownAcos = $this->_removeActionFromAcos($knownAcos, $aco);
 
         // Loop around each controller and its actions
@@ -264,20 +264,19 @@ Configure::write('debug', 2);
             if ($plugin && !$newNode = $this->Acl->Aco->node($aco)) {
                 $newNode = $this->_buildAcoNode($plugin, $parentNode);
                 $count++;
-                            
-
             }
+            
             $parentNode = $newNode;
             $knownAcos = $this->_removeActionFromAcos($knownAcos, $aco);
 
             // Controller
             $aco = $this->_action(array('controller' => $controller, 'plugin' => $plugin), '/:plugin/:controller');
+            
             if (!$newNode = $this->Acl->Aco->node($aco)) {
                 $newNode = $this->_buildAcoNode($controller, $parentNode);
                 $count++;
-                            
-
             }
+            
             $parentNode = $newNode;
             $knownAcos = $this->_removeActionFromAcos($knownAcos, $aco);
 
@@ -288,11 +287,14 @@ Configure::write('debug', 2);
                     'action' => $action,
                     'plugin' => $plugin
                 ));
+
                 if (!$node = $this->Acl->Aco->node($aco)) {
+
                     $this->_buildAcoNode($action, $parentNode);
-                    
+
                     $count++;
                 }
+                
                 $knownAcos = $this->_removeActionFromAcos($knownAcos, $aco);
             }
             //debug($newNode);

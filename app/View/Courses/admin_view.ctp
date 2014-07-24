@@ -17,9 +17,9 @@
                 <div class="tab-content">
                     <div id="tab_hoc_vien" class="tab-pane">
 
-                        <?php if ($course['Course']['status'] == COURSE_COMPLETED) echo $this->element('admin/course/view/course_completed_students', array('students' => $course['StudentsCourse'])); ?>
+                        <?php if ($course['Course']['status'] == COURSE_COMPLETED) echo $this->element('admin/course/view/course_completed_students', array('students' => $course['Attend'])); ?>
 
-                        <?php if ($course['Course']['status'] == COURSE_REGISTERING) echo $this->element('admin/course/view/course_registering_students', array('students' => $course['StudentsCourse'])); ?>
+                        <?php if ($course['Course']['status'] == COURSE_REGISTERING) echo $this->element('admin/course/view/course_registering_students', array('students' => $course['Attend'])); ?>
                         <?php echo $this->Html->link(' In danh sách', array('admin'=>false,'controller'=>'courses','action'=>'print_student',$course['Course']['id']), array('class' => 'btn btn-info fa fa-print')); ?>
                     </div><!-- /.tab-pane -->
  

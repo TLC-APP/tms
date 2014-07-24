@@ -7,6 +7,8 @@
 <?php echo $this->Html->css('font-awesome.min'); ?>
 <!-- fullCalendar -->
 <?php echo $this->Html->css('fullcalendar/fullcalendar'); ?>
+<?php echo $this->Html->css('select2'); ?>
+<?php echo $this->Html->css('select2-bootstrap'); ?>
 <!-- Theme style -->
 <?php echo $this->Html->css('AdminLTE'); ?>
 <!-- add new calendar event modal -->
@@ -23,6 +25,8 @@
 <?php echo $this->Html->script('AdminLTE/app') ?>
 
 <?php echo $this->Html->script('plugins/fullcalendar/fullcalendar.min') ?>
+
+<?php echo $this->Html->script('plugins/select2/select2'); ?>
 <?php
 //echo $this->Html->script('eldarion-ajax.min'); 
 echo $this->element('Common/fancybox');

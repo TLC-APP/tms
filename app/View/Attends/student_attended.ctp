@@ -54,15 +54,15 @@
                             echo $this->Html->link($course_attended['Course']['Teacher']['name'], array('student' => true, 'controller' => 'users', 'action' => 'view_teacher', $course_attended['Course']['Teacher']['id']), array('escape' => false, 'class' => 'add-button fancybox.ajax'))
                             ?></td>
                         <td><?php
-                            if ($course_attended['StudentsCourse']['is_passed'])
+                            if ($course_attended['Attend']['is_passed'])
                                 echo '<small class="label label-primary"> Đạt </small>';
                             else
                                 echo '<small class="label label-warning"> Không đạt </small>';
                             ?></td>
                         <td>
                             <?php
-                            if ($course_attended['StudentsCourse']['is_passed']) {
-                                if ($course_attended['StudentsCourse']['is_recieved'] == 1)
+                            if ($course_attended['Attend']['is_passed']) {
+                                if ($course_attended['Attend']['is_recieved'] == 1)
                                     echo '<small class="label label-primary"> Đã nhận </small>';
                                 else
                                     echo '<small class="label label-warning"> Chưa nhận </small>';

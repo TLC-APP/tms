@@ -14,10 +14,10 @@
                     <?php echo $this->Html->link('Trang chủ', array('controller' => 'dashboards', 'action' => 'student_home')); ?>
                    </li>
                 <li class="nav-item">
-                    <?php echo $this->Html->link('Khóa học đang tham dự', array('controller' => 'students_courses', 'action' => 'courses_studying')); ?>
+                    <?php echo $this->Html->link('Khóa học đang tham dự', array('controller' => 'attends', 'action' => 'courses_studying')); ?>
                 </li>
                 <li class="nav-item">
-                     <?php echo $this->Html->link('Khóa học đã tham dự', array('controller' => 'students_courses', 'action' => 'attended')); ?>
+                     <?php echo $this->Html->link('Khóa học đã tham dự', array('controller' => 'attends', 'action' => 'attended')); ?>
                   
                 </li>
             </ul>

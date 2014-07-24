@@ -5,7 +5,8 @@
             <tr>
                 <th>STT</th>
                 <th><?php echo $this->Paginator->sort('name', 'Tên lĩnh vực'); ?></th>
-                <th><?php echo $this->Paginator->sort('certificated_number_suffix'); ?></th>
+                <th>Đuôi chứng nhận</th>
+                <th>Chỉ số chứng chỉ hiện tại</th>
                 <th>Người quản lí</th>
                 <th>Thao tác</th>
             </tr>
@@ -16,6 +17,7 @@
                     <td><?php echo $i++; ?></td>
                     <td><?php echo h($field['Field']['name']); ?>&nbsp;</td>
                     <td><?php echo h($field['Field']['certificated_number_suffix']); ?>&nbsp;</td>
+                    <td><?php echo h($field['Field']['current_certificate_number']); ?>&nbsp;</td>
                     <td><?php echo h($field['ManageBy']['name']); ?>&nbsp;</td>
                     <td class="actions">
                         <?php echo $this->Html->link('<button type="button" class="btn btn-info">

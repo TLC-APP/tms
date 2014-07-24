@@ -1,3 +1,6 @@
+<?php echo $this->Html->css('select2'); ?>
+<?php echo $this->Html->css('select2-bootstrap'); ?>
+<?php echo $this->Html->script('plugins/select2/select2'); ?>
 <div class="container" style="margin-top: 50px;">
     <?php
     $this->Html->addCrumb('User', '/manager/teachers');
@@ -27,6 +30,10 @@
         echo $this->Form->input('hoc_ham_id', array('label' => 'Học hàm', 'empty' => '-- Chọn học hàm --',
             'after' => $this->Html->link('<span class="glyphicon glyphicon-plus"></span>Thêm mới', '/hoc_hams/add', array('escape' => false,
                 'class' => 'add-button btn btn-primary fancybox.ajax', 'role' => 'button', 'div' => false))));
+        echo $this->Form->input('department_id', array('label' => 'Đơn vị', 'empty' => '-- Chọn đơn vị --',
+            'after' => $this->Html->link('<span class="glyphicon glyphicon-plus"></span>Thêm mới', '/departments/add', array('escape' => false,
+                'class' => 'add-button btn btn-primary fancybox.ajax', 'role' => 'button', 'div' => false))));
+        
         echo $this->Form->input('hoc_vi_id', array('label' => 'Học vị', 'empty' => '-- Chọn học vị --','after' => $this->Html->link('<span class="glyphicon glyphicon-plus"></span>Thêm mới', '/hoc_vis/add', array('escape' => false, 'class' => 'add-button btn btn-primary fancybox.ajax', 'role' => 'button', 'div' => false))));
         echo $this->Form->input('email');
         echo $this->Form->input('birthday', array('class' => false, 'label' => 'Ngày sinh ', 'dateFormat' => 'DMY', 'monthNames' => false, 'minYear' => '1950'));
@@ -43,3 +50,9 @@
     </div>
 
 </div>
+<script>
+    $(document).ready(function() {
+        $("#UserDepartmentId").select2();
+
+    });
+</script>

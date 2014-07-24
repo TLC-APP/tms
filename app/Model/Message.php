@@ -14,8 +14,9 @@ class Message extends AppModel {
  * @var string
  */
 	public $displayField = 'title';
+        public $actsAs=array('Containable');
 
-/**
+        /**
  * Validation rules
  *
  * @var array
@@ -65,8 +66,8 @@ class Message extends AppModel {
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
+				'allowEmpty' => true,
+				'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
@@ -81,7 +82,7 @@ class Message extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'CreatedUser' => array(
+		'User' => array(
 			'className' => 'User',
 			'foreignKey' => 'created_user_id',
 			'conditions' => '',
@@ -91,6 +92,13 @@ class Message extends AppModel {
 		'Group' => array(
 			'className' => 'Group',
 			'foreignKey' => 'category_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+            'ReceiveUser' => array(
+			'className' => 'User',
+			'foreignKey' => 'receive_user_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

@@ -2,7 +2,6 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
-
         <!-- search form -->
         <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
@@ -26,7 +25,6 @@
                 <ul class="treeview-menu">
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm mới</span>', array('controller' => 'courses', 'action' => 'add', 'fields_manager' => true), array('escape' => false)); ?></li>
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đang đăng ký</span>', array('controller' => 'courses', 'action' => 'index', 'fields_manager' => true, COURSE_REGISTERING), array('escape' => false)); ?></li>
-                    <li> <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đủ điều kiện mở lớp</span>', array('controller' => 'courses', 'action' => 'index', 'fields_manager' => true, COURSE_OPENABLE), array('escape' => false)); ?></li>
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Chưa hoàn thành</span>', array('controller' => 'courses', 'action' => 'index', 'fields_manager' => true, COURSE_UNCOMPLETED), array('escape' => false)); ?></li>
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đã hoàn thành</span>', array('controller' => 'courses', 'action' => 'index', 'fields_manager' => true, COURSE_COMPLETED), array('escape' => false)); ?></li>
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đã hủy</span>', array('controller' => 'courses', 'action' => 'index', 'fields_manager' => true, COURSE_CANCELLED), array('escape' => false)); ?></li>
@@ -50,8 +48,8 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm mới</span>', array('action' => 'add'), array('escape' => false)); ?></li>
-                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Danh sách</span>', array('action' => 'index'), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm mới</span>', array('action' => 'add','controller' => 'users','fields_manager' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Danh sách</span>', array('action' => 'index','controller' => 'users','fields_manager' => true), array('escape' => false)); ?></li>
                 </ul>
             </li>
 

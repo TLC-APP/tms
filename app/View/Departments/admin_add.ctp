@@ -31,3 +31,9 @@ $this->Html->addCrumb('Thêm đơn vị mới');
     </div>
     <?php echo $this->Form->end(); ?>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#DepartmentParentId").select2();
+
+    });
+</script>

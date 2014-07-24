@@ -4,7 +4,7 @@
         <!-- search form -->
         <form action="<?php echo SUB_DIR;?>/admin/users/search" method="post" class="sidebar-form">
             <div class="input-group">
-                <input type="text" name="name" class="form-control" placeholder="Nhập tên user cần tìm..."/>
+                <input type="text" name="name" class="form-control" placeholder="Nhập tên người dùng cần tìm..."/>
                 <span class="input-group-btn">
                     <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
                 </span>
@@ -15,7 +15,7 @@
         <ul class="sidebar-menu">
             <li class="active">
                 <a href="<?php echo SUB_DIR;?>/admin/">
-                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                    <i class="fa fa-dashboard"></i> <span>Bảng điều khiển</span>
                 </a>
             </li>
             <li class="treeview">
@@ -25,11 +25,11 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm mới</span>', array('controller' => 'courses', 'action' => 'add', 'admin' => true), array('escape' => false)); ?></li>
-                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đang đăng kí</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_REGISTERING), array('escape' => false)); ?></li>
-                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Chưa hoàn thành</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_UNCOMPLETED), array('escape' => false)); ?></li>
-                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đã hoàn thành</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_COMPLETED), array('escape' => false)); ?></li>
-                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đã hủy</span>', array('controller' => 'courses', 'action' => 'index', 'admin' => true, COURSE_CANCELLED), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm mới</span>', array('controller' => 'courses','plugin'=>false, 'action' => 'add', 'admin' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đang đăng kí</span>', array('controller' => 'courses','plugin'=>false, 'action' => 'index', 'admin' => true, COURSE_REGISTERING), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Chưa hoàn thành</span>', array('controller' => 'courses','plugin'=>false, 'action' => 'index', 'admin' => true, COURSE_UNCOMPLETED), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đã hoàn thành</span>', array('controller' => 'courses','plugin'=>false, 'action' => 'index', 'admin' => true, COURSE_COMPLETED), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Đã hủy</span>', array('controller' => 'courses','plugin'=>false, 'action' => 'index', 'admin' => true, COURSE_CANCELLED), array('escape' => false)); ?></li>
 
                 </ul>
             </li>
@@ -41,7 +41,7 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i><span>Danh sách</span>', array('controller' => 'fields', 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
+                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i><span>Danh sách</span>', array('controller' => 'fields','plugin'=>false, 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
                     <li><a href="<?php echo SUB_DIR;?>/admin/fields/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
                 </ul>
             </li>
@@ -52,7 +52,7 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                      <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i><span>Danh sách</span>', array('controller' => 'chapters', 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
+                      <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i><span>Danh sách</span>', array('controller' => 'chapters','plugin'=>false, 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
                     <li><a href="<?php echo SUB_DIR;?>/admin/chapters/add"><i class="fa fa-angle-double-right"></i> Thêm mới</a></li>
                 </ul>
             </li>

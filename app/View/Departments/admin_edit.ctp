@@ -33,4 +33,8 @@ $this->Html->addCrumb('Cập nhật đơn vị');
     </div>
     <?php echo $this->Form->end(); ?>
 </div>
-
+<script>
+    $(document).ready(function() {
+        $("#DepartmentParentId").select2();
+    });
+</script>

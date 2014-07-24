@@ -16,7 +16,7 @@ $colunms = array(
 $this->PhpExcel->addTableHeader($colunms, array('font' => 'Times New Roman', 'bold' => true));
 // data 
 $stt = 1;
-foreach ($students_courses as $row) {
+foreach ($attends as $row) {
     $status = "";
     switch ($row['Course']['status']) {
         case COURSE_CANCELLED:
@@ -44,7 +44,7 @@ foreach ($students_courses as $row) {
         $row['Course']['Chapter']['Field']['name'],
         $row['Course']['created'],
         $status,
-        ($row['StudentsCourse']['is_passed']) ? 'Đạt' : 'Không đạt'
+        ($row['Attend']['is_passed']) ? 'Đạt' : 'Không đạt'
     ));
 }
 $this->PhpExcel->addTableFooter();

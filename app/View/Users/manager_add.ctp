@@ -1,4 +1,3 @@
-<div class="container" style="margin-top: 50px;">
     <?php
     $this->Html->addCrumb('User', '/manager/teachers');
     $this->Html->addCrumb('Thêm người dùng mới');
@@ -50,3 +49,9 @@
     </div>
 
 </div>
+<script>
+    $(document).ready(function() {
+        $("#UserDepartmentId").select2();
+
+    });
+</script>

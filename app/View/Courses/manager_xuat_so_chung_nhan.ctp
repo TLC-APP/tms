@@ -11,7 +11,7 @@ $this->PhpExcel->writeDataToCell(5, 'C', $course['Chapter']['name']);
 $this->PhpExcel->writeDataToCell(6, 'C', $course['Course']['name']);
 $this->PhpExcel->setRow(10);
 $stt = 1;
-foreach ($course['StudentsCourse'] as $student) {
+foreach ($course['Attend'] as $student) {
     $certificated_date = "";
     if (!empty($student['certificated_date'])) {
         $certificated_date = new DateTime($student['certificated_date']);

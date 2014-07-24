@@ -14,7 +14,7 @@
                     <?php foreach ($users as $user): ?>
                         <tr>
                             <th><?php echo $stt++ ?></th>
-                            <td><?php echo $this->Html->link($user['User']['name'],array('manager'=>true,'action'=>'view',$user['User']['id'])); ?>&nbsp;</td>
+                            <td><?php echo $this->Html->link($user['User']['name'],array('admin'=>true,'action'=>'view',$user['User']['id'])); ?>&nbsp;</td>
                             <td><?php echo h($user['User']['username']); ?>&nbsp;</td>
                             <td><?php echo h($user['User']['email']); ?>&nbsp;</td>
                             <td><?php echo h($user['User']['phone_number']); ?>&nbsp;</td>

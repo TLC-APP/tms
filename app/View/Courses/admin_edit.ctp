@@ -29,7 +29,7 @@ $this->Html->addCrumb('Sửa khóa học '.$this->Form->value('name'));
         echo $this->Form->input('is_published', array('label' => 'Xuất bản',
             'class'=>'iCheck-helper',
             ));
-        echo $this->Form->input('chung_chi_co_so', array('label' => 'Chứng nhận có số',
+        echo $this->Form->input('chung_chi_co_so', array('label' => 'Chứng nhận có số','type'=>'checkbox',
             'class'=>'iCheck-helper'));
         echo $this->Form->input('enrolling_expiry_date', array('label' => 'Ngày hết hạn đăng ký: ', 'class' => 'input datetime','dateFormat' => 'DMY', 'monthNames' => false));
         echo $this->Form->input('decription', array('label' => 'Miêu tả'));
@@ -41,3 +41,9 @@ $this->Html->addCrumb('Sửa khóa học '.$this->Form->value('name'));
 
 <?php echo $this->Form->end(); ?>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#CourseChapterId").select2();
+        $("#CourseTeacherId").select2();
+    });
+</script>

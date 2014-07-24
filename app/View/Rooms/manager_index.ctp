@@ -11,8 +11,8 @@
             <?php $i=1; foreach ($rooms as $room): ?>
                 <tr>
                     <td><?php echo $i++; ?></td>
-                    <td><?php echo h($room['Room']['name']); ?>&nbsp;</td>
-                    <td><?php echo $room['Room']['decription']; ?>&nbsp;</td>
+                    <td><?php echo $room['Room']['name']; ?>&nbsp;</td>
+                    <td><?php echo h($room['Room']['decription']); ?>&nbsp;</td>
                     <td class="actions">
                         
                          <?php echo $this->Html->link('<button type="button" class="btn btn-info">

@@ -17,7 +17,6 @@ echo $this->Html->css('jquery.minicolors', array('inline' => false));
                 <!-- the events -->
                 <div id='external-events'>  
                     <?php
-                    echo 'kakak';
                     foreach ($course['CoursesRoom'] as $buoi):
                         if (empty($buoi['start'])||empty($buoi['end'])) {
                             ?>

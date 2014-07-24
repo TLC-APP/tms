@@ -112,7 +112,6 @@
 
                 },
                 eventResize: function(event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
-
                     var start = ($.fullCalendar.formatDate(event.start, 'yyyy-MM-dd H:mm'));
                     var end = ($.fullCalendar.formatDate(event.end, 'yyyy-MM-dd H:mm'));
                     $.ajax({
@@ -121,16 +120,15 @@
                         data: {start: start, end: end}
                     }).error(function() {
                         bootstrap_alert("Thay đổi thời gian bắt đầu không thành công");
+                    }).done(function(data) {
+                        data = $.parseJSON(data);
+                        if (!data.status) {
+                            bootstrap_alert(data.message);
+                            revertFunc();
+                            return true;
+                        }
                     });
-                    /*
-                     $.ajax({
-                     type: "POST",
-                     url: '<?php //echo SUB_DIR      ?>/courses_rooms/eventResize/' + event.id,
-                     data: {minuteDelta: minuteDelta}
-                     }).error(function() {
-                     bootstrap_alert("Thay đổi thời gian kết thúc không thành công");
-                     });
-                     */
+
                 },
                 eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
 
@@ -143,27 +141,44 @@
                         data: {start: start, end: end}
                     }).error(function() {
                         bootstrap_alert("Thay đổi thời gian bắt đầu không thành công");
+                    }).done(function(data) {
+                        data = $.parseJSON(data);
+
+                        if (!data.status) {
+                            bootstrap_alert(data.message);
+                            revertFunc();
+                            return true;
+                        }
                     });
                 },
                 drop: function(date, allDay) {
-
+                    var drop_element = $(this);
                     var originalEventObject = $(this).data('eventObject');
                     var copiedEventObject = sao_chep_su_kien($(this), originalEventObject, date, allDay);
                     //console.log(copiedEventObject);return;
                     var start = $.fullCalendar.formatDate(copiedEventObject.start, 'yyyy-MM-dd H:mm');
                     var end = $.fullCalendar.formatDate(copiedEventObject.end, 'yyyy-MM-dd H:mm');
-                   
+
                     //Cập nhật dữ liệu thời gian
                     $.ajax({
                         type: "POST",
                         url: '<?php echo SUB_DIR ?>/courses_rooms/cap_nhat_buoi/' + copiedEventObject.id,
                         data: {start: start, end: end}
+                    }).error(function() {
+                        bootstrap_alert("Cập nhật thời gian bắt đầu không thành công");
                     })
-                            .error(function() {
-                                bootstrap_alert("Cập nhật thời gian bắt đầu không thành công");
+                            .done(function(data) {
+                                data = $.parseJSON(data);
+                                if (!data.status) {
+                                    bootstrap_alert(data.message);
+
+                                } else {
+                                    $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+                                    drop_element.remove();
+
+                                }
                             });
-                    $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-                    $(this).remove();
+
                 },
                 eventClick: function(calEvent, jsEvent, view) {
                     xu_ly_click_su_kien(calEvent, jsEvent, view);
@@ -427,7 +442,7 @@ if (!empty($buoi_dau_tien)) {
             if (type == 'warning')
                 $('#message').append('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><h4>Cảnh báo</h4>' + message + '</div>');
             else
-                $('#message').append('<div class="alert alert-block alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Info!</h4>' + message + '</div>');
+                $('#message').append('<div class="alert alert-block alert-info"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Thông báo!</h4>' + message + '</div>');
             alertTimeout(7000); //and here
         }
         function alertTimeout(wait) {

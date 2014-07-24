@@ -77,3 +77,9 @@ echo $this->Html->css('jquery.minicolors', array('inline' => false));
         </div><!-- /. box -->
     </div><!-- /.col -->
 </div><!-- /.row -->  
+<script>
+    $(document).ready(function() {
+        $("#room-event").select2();
+
+    });
+</script>

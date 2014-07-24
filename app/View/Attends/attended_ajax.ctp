@@ -25,14 +25,14 @@
             <td><?php echo $course_attended['Course']['Teacher']['name']; ?></td>
 
             <td><?php
-                if ($course_attended['StudentsCourse']['is_passed'] == 1)
+                if ($course_attended['Attend']['is_passed'] == 1)
                     echo "Đã có chứng nhận";
                 else
                     echo "Chưa có chứng nhận";
                 ?></td>
 
             <td><?php
-                if ($course_attended['StudentsCourse']['is_recieved'] == 1)
+                if ($course_attended['Attend']['is_recieved'] == 1)
                     echo "Đã cấp";
                 else
                     echo "Chưa cấp";

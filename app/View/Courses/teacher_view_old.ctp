@@ -13,11 +13,11 @@
                 <div class="tab-content">
                     <div id="tab_hoc_vien" class="tab-pane">
 
-                        <?php if ($course['Course']['status'] == COURSE_COMPLETED) echo $this->element('teacher/course/view/course_completed_students', array('students' => $course['StudentsCourse'])); ?>
+                        <?php if ($course['Course']['status'] == COURSE_COMPLETED) echo $this->element('teacher/course/view/course_completed_students', array('students' => $course['Attend'])); ?>
 
-                        <?php if ($course['Course']['status'] == COURSE_REGISTERING) echo $this->element('teacher/course/view/course_registering_students', array('students' => $course['StudentsCourse'])); ?>
+                        <?php if ($course['Course']['status'] == COURSE_REGISTERING) echo $this->element('teacher/course/view/course_registering_students', array('students' => $course['Attend'])); ?>
 
-                        <?php if ($course['Course']['status'] == COURSE_UNCOMPLETED) echo $this->element('teacher/course/view/course_uncompleted_students', array('students' => $course['StudentsCourse'])); ?>
+                        <?php if ($course['Course']['status'] == COURSE_UNCOMPLETED) echo $this->element('teacher/course/view/course_uncompleted_students', array('students' => $course['Attend'])); ?>
                         <div class="btn-toolbar pull-right">
                             <?php echo $this->Html->link('IN DS học viên', array('teacher' => false, 'controller' => 'courses', 'action' => 'print_student', $course['Course']['id']), array('class' => 'btn btn-info')); ?>
                         </div>

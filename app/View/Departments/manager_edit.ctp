@@ -17,3 +17,8 @@
 	</fieldset>
 <?php echo $this->Form->end('Cập nhật'); ?>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#DepartmentParentId").select2();
+    });
+</script>

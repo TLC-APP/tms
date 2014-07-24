@@ -160,7 +160,7 @@ class DepartmentsController extends AppController {
                 $this->Session->setFlash('Sửa không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             }
         } else {
-            $options = array('conditions' => array('Department.' . $this->Department->primaryKey => $id));
+            $options = array('conditions' => array('Department.' . $this->Department->primaryKey => $id), 'recursive' => 0);
             $this->request->data = $this->Department->find('first', $options);
         }
         $parents = $this->Department->ParentDepartment->find('list');

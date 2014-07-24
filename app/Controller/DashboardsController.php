@@ -8,7 +8,7 @@ App::uses('AppController', 'Controller');
  */
 class DashboardsController extends AppController {
 
-    public $uses = array('User', 'Group', 'Course', 'Chapter', 'StudentsCourse', 'CoursesRoom', 'Room');
+    public $uses = array('User', 'Group', 'Course', 'Chapter', 'Attend', 'CoursesRoom', 'Room');
 
     public function home() {
         if ($this->Auth->loggedIn()) {
@@ -25,11 +25,11 @@ class DashboardsController extends AppController {
             'User' => array('fields' => array('id', 'name')), //create user
             'Teacher' => array('fields' => array('id', 'name')), //Teacher
             'CoursesRoom' => array('Room' => array('id', 'name')),
-            'StudentsCourse', //Khoa hoc
+            'Attend', //Khoa hoc
             'Chapter' => array('fields' => array('id', 'name'))//Chuyen de
         );
         $loginId = $this->Auth->user('id');
-        $khoa_da_dang_ky = $this->StudentsCourse->getEnrolledCourses($loginId);
+        $khoa_da_dang_ky = $this->Attend->getEnrolledCourses($loginId);
         $khoa_toi_day = $this->Course->getTeachingCourse($loginId);
         $today = new DateTime();
         $not_in_course = Set::merge($khoa_da_dang_ky, $khoa_toi_day);
@@ -39,8 +39,8 @@ class DashboardsController extends AppController {
             'Course.is_published' => 1,
             'Course.status'=>COURSE_REGISTERING,
             'Course.max_enroll_number > (SELECT count(id) as Course__register_student_number 
-         FROM  students_courses as StudentsCourse 
-         where StudentsCourse.course_id=Course.id)'
+         FROM  attends as Attend 
+         where Attend.course_id=Course.id)'
         );
         $course_fields = array('id', 'name', 'chapter_id', 'max_enroll_number', 'enrolling_expiry_date', 'register_student_number', 'session_number');
         $courses = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain, 'fields' => $course_fields,));

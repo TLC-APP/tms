@@ -1,6 +1,6 @@
 
 <div clas="row">
-    <?php debug($students_courses); ?>
+
     <table class="table table-condensed table-hover">
         <thead>
             <tr>
@@ -16,7 +16,7 @@
         <tbody>
             <?php
             $stt = 1;
-            foreach ($students_courses as $row) :
+            foreach ($attends as $row) :
                 ?>
                 <?php
                 switch ($row['Course']['status']) {
@@ -46,7 +46,7 @@
                     <td><?php echo $row['Course']['Chapter']['Field']['name']; ?></td>
                     <td><?php echo $row['Course']['created']; ?></td>
                     <td><?php echo $status; ?></td>
-                    <td><?php echo $row['StudentsCourse']['is_passed']; ?></td>
+                    <td><?php echo $row['Attend']['is_passed']; ?></td>
 
                 </tr>
 <?php endforeach; ?>
@@ -59,7 +59,7 @@
     </table>
     <div style="text-align: right;">
         <?php
-        if (!empty($students_courses)) {
+        if (!empty($attends)) {
             echo $this->Html->link('Xuất báo cáo (excel)', array(1), array('class' => 'btn btn-success'));
         }
         ?>

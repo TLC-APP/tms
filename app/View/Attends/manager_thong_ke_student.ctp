@@ -14,7 +14,7 @@ echo $this->Html->script('jquery.form');
             'class' => 'form-control'
         ),
         'class' => 'form-inline',
-        'url' => array('controller' => 'students_courses', 'action' => 'thong_ke_student', 'manager' => true),
+        'url' => array('controller' => 'attends', 'action' => 'thong_ke_student', 'manager' => true),
         'id' => 'thong_ke_form'
     ));
     ?>
@@ -22,7 +22,7 @@ echo $this->Html->script('jquery.form');
         <legend>Thống kê người tham dự</legend>
         <?php
         echo $this->Form->input('Student.department_id', array('empty' => '-- Chọn đơn vị --'));
-        echo $this->Form->input('StudentsCourse.is_passed', array('type'=>'select','empty' => '-- Kết quả --','required'=>false,'options' => array( '1' => 'Đạt', '0' => 'Không đạt')));
+        echo $this->Form->input('Attend.is_passed', array('type'=>'select','empty' => '-- Kết quả --','required'=>false,'options' => array( '1' => 'Đạt', '0' => 'Không đạt')));
         echo $this->Form->input('field_id', array('empty' => '-- Chọn lĩnh vực --'));
         echo $this->Form->input('chapter_id', array('empty' => '-- Chọn chuyên đề --', 'required' => false));
         echo $this->Form->input('status', array('type' => 'select', 'options' => array(
@@ -76,7 +76,7 @@ echo $this->Html->script('jquery.form');
             e.preventDefault(); // prevent native submit
             $('#ket_qua').parent().append('<div class="overlay"></div><div class="loading-img"></div>');
             $(this).ajaxSubmit({
-                url: '<?php echo SUB_DIR; ?>/manager/students_courses/thong_ke_student',
+                url: '<?php echo SUB_DIR; ?>/manager/attends/thong_ke_student',
                 success: response
             });
             return false;
@@ -90,5 +90,12 @@ echo $this->Html->script('jquery.form');
             $('#ket_qua').html(responseText);
             return true;
         }
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $("#StudentDepartmentId").select2();
+        $("#CourseChapterId").select2();
+        $("#CourseTeacherId").select2();
     });
 </script>

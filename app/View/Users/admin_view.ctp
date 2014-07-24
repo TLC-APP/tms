@@ -96,7 +96,7 @@
                             <div class="row">
                                 <div class="related">
                                     <h3>Khóa đã tham gia</h3>
-                                    <?php if (!empty($user['StudentsCourse'])): ?>
+                                    <?php if (!empty($user['Attend'])): ?>
                                         <table class="table table-hover">
                                             <tr>
                                                 <th>STT</th>
@@ -108,33 +108,33 @@
                                                 <th><?php echo __('Ngày đăng kí'); ?></th>
                                             </tr>
                                             <?php $i = 1;
-                                            foreach ($user['StudentsCourse'] as $studentsCourse): ?>
+                                            foreach ($user['Attend'] as $attend): ?>
                                                 <tr>
                                                     <td><?php echo $i++; ?></td>
                                                     <td>
-        <?php echo $this->Html->link($studentsCourse['Course']['name'], array('manager' => true, 'controller' => 'courses', 'action' => 'view1', $studentsCourse['Course']['id']), array('class' => 'add-button fancybox.ajax')) ?>
+        <?php echo $this->Html->link($attend['Course']['name'], array('manager' => true, 'controller' => 'courses', 'action' => 'view1', $attend['Course']['id']), array('class' => 'add-button fancybox.ajax')) ?>
                                                     </td>
                                                     <td><?php
-                                                        if ($studentsCourse['is_passed'] == 1)
+                                                        if ($attend['is_passed'] == 1)
                                                             echo 'Đạt';
                                                         else
                                                             echo 'Không đạt';
                                                         ?></td>
                                                     <td><?php
-                                                        if ($studentsCourse['is_recieved'] == 1)
+                                                        if ($attend['is_recieved'] == 1)
                                                             echo 'Đã nhận';
-                                                        if ($studentsCourse['is_recieved'] == 0 && $studentsCourse['is_passed'] == 1)
+                                                        if ($attend['is_recieved'] == 0 && $attend['is_passed'] == 1)
                                                             echo 'Chưa nhận';
-                                                        if ($studentsCourse['is_recieved'] == 0 && $studentsCourse['is_passed'] == 0)
+                                                        if ($attend['is_recieved'] == 0 && $attend['is_passed'] == 0)
                                                             echo 'Không có chứng nhận';
                                                         ?></td>
                                                     <td><?php
-                                                        $certificated_date = new DateTime($studentsCourse['certificated_date']);
+                                                        $certificated_date = new DateTime($attend['certificated_date']);
                                                         echo $certificated_date->format('H:i') . ', ngày: ' . $certificated_date->format('d/m/Y');
                                                         ?></td>
-                                                    <td><?php echo $studentsCourse['certificated_number']; ?></td>
+                                                    <td><?php echo $attend['certificated_number']; ?></td>
                                                     <td><?php
-                                                        $created = new DateTime($studentsCourse['created']);
+                                                        $created = new DateTime($attend['created']);
                                                         echo $created->format('H:i') . ', ngày: ' . $created->format('d/m/Y');
                                                         ?></td>
 

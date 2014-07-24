@@ -39,7 +39,7 @@
                                 ?></td>
 
                             <td>
-                                <?php echo $this->Html->link('<span class="label label-success">Đăng ký</span>', array('student'=>false,'controller' => 'students_courses', 'action' => "register", $course['Course']['id']), array('escape' => false)); ?>
+                                <?php echo $this->Html->link('<span class="label label-success">Đăng ký</span>', array('student'=>false,'controller' => 'attends', 'action' => "register", $course['Course']['id']), array('escape' => false)); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

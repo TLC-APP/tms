@@ -64,8 +64,8 @@
 		<li><?php echo $this->Html->link(__('New User'), array('action' => 'add')); ?></li>
 		<li><?php echo $this->Html->link(__('List Courses'), array('controller' => 'courses', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Teaching Course'), array('controller' => 'courses', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Students Courses'), array('controller' => 'students_courses', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Students Course'), array('controller' => 'students_courses', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Students Courses'), array('controller' => 'attends', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Students Course'), array('controller' => 'attends', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Groups'), array('controller' => 'groups', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Group'), array('controller' => 'groups', 'action' => 'add')); ?> </li>
 	</ul>

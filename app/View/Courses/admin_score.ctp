@@ -28,7 +28,7 @@
                                 <tbody class="inputs">
 
                                     <?php
-                                    $students = $course['StudentsCourse'];
+                                    $students = $course['Attend'];
                                     $stt = 1;
 
                                     foreach ($students as $student):
@@ -68,7 +68,7 @@
                                 <tr>
                                     <td>Đạt</td>
                                     <td>                 
-                                        <?php echo $course['Course']['pass_number'] . '/' . count($course['StudentsCourse']); ?>
+                                        <?php echo $course['Course']['pass_number'] . '/' . count($course['Attend']); ?>
                                     </td>
                                 </tr>
 

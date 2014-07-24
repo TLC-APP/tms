@@ -39,3 +39,9 @@ $this->Html->addCrumb('Thêm khóa học');
     <?php echo $this->Form->button('Lưu', array('type' => 'submit', 'class' => 'btn btn-info')) ?>
 <?php echo $this->Form->end(); ?>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#CourseChapterId").select2();
+        $("#CourseTeacherId").select2();
+    });
+</script>

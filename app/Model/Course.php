@@ -18,12 +18,12 @@ class Course extends AppModel {
     public $displayField = 'name';
     public $virtualFields = array(
         'register_student_number' => "SELECT count(id) as Course__register_student_number 
-        FROM  students_courses as StudentsCourse 
-         where StudentsCourse.course_id=Course.id",
+        FROM  attends as Attend 
+         where Attend.course_id=Course.id",
         
         'pass_number' => 'SELECT count(id) as Course__pass_number
-        FROM  students_courses as StudentsCourse 
-         where StudentsCourse.course_id=Course.id and StudentsCourse.is_passed',
+        FROM  attends as Attend 
+         where Attend.course_id=Course.id and Attend.is_passed',
         
         'so_buoi' => 'SELECT count(id) as Course__so_buoi
         FROM  courses_rooms as CoursesRoom 
@@ -169,8 +169,8 @@ class Course extends AppModel {
      * @var array
      */
     public $hasMany = array(
-        'StudentsCourse' => array(
-            'className' => 'StudentsCourse',
+        'Attend' => array(
+            'className' => 'Attend',
             'foreignKey' => 'course_id',
             'dependent' => true,
             'conditions' => '',

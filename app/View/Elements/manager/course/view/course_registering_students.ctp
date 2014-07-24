@@ -24,7 +24,7 @@
             <td><?php echo $student['created']; ?></td>
             <td>
                 <?php
-                echo $this->Form->postLink('<span class="fa fa-trash-o"></span>', array('action' => 'delete', 'controller' => 'students_courses', $student['id']), array('escape' => false), __('Bạn có chắc hủy tham gia %s?', $student['Student']['name']));
+                //echo $this->Form->postLink('<span class="fa fa-trash-o"></span>', array('action' => 'delete', 'controller' => 'attends', $student['id']), array('escape' => false), __('Bạn có chắc hủy tham gia %s?', $student['Student']['name']));
                 ?>
             </td>
 

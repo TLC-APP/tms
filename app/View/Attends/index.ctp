@@ -1,4 +1,4 @@
-<div class="studentsCourses index">
+<div class="Attends index">
 	<h2><?php echo __('Students Courses'); ?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
@@ -13,25 +13,25 @@
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
-	<?php foreach ($studentsCourses as $studentsCourse): ?>
+	<?php foreach ($attends as $attend): ?>
 	<tr>
 		<td>
-			<?php echo $this->Html->link($studentsCourse['Student']['name'], array('controller' => 'users', 'action' => 'view', $studentsCourse['Student']['id'])); ?>
+			<?php echo $this->Html->link($attend['Student']['name'], array('controller' => 'users', 'action' => 'view', $attend['Student']['id'])); ?>
 		</td>
 		<td>
-			<?php echo $this->Html->link($studentsCourse['Course']['name'], array('controller' => 'courses', 'action' => 'view', $studentsCourse['Course']['id'])); ?>
+			<?php echo $this->Html->link($attend['Course']['name'], array('controller' => 'courses', 'action' => 'view', $attend['Course']['id'])); ?>
 		</td>
-		<td><?php echo h($studentsCourse['StudentsCourse']['is_passed']); ?>&nbsp;</td>
-		<td><?php echo h($studentsCourse['StudentsCourse']['is_recieved']); ?>&nbsp;</td>
-		<td><?php echo h($studentsCourse['StudentsCourse']['certificated_date']); ?>&nbsp;</td>
-		<td><?php echo h($studentsCourse['StudentsCourse']['certificated_number']); ?>&nbsp;</td>
-		<td><?php echo h($studentsCourse['StudentsCourse']['created']); ?>&nbsp;</td>
-		<td><?php echo h($studentsCourse['StudentsCourse']['modified']); ?>&nbsp;</td>
-		<td><?php echo h($studentsCourse['StudentsCourse']['id']); ?>&nbsp;</td>
+		<td><?php echo h($attend['Attend']['is_passed']); ?>&nbsp;</td>
+		<td><?php echo h($attend['Attend']['is_recieved']); ?>&nbsp;</td>
+		<td><?php echo h($attend['Attend']['certificated_date']); ?>&nbsp;</td>
+		<td><?php echo h($attend['Attend']['certificated_number']); ?>&nbsp;</td>
+		<td><?php echo h($attend['Attend']['created']); ?>&nbsp;</td>
+		<td><?php echo h($attend['Attend']['modified']); ?>&nbsp;</td>
+		<td><?php echo h($attend['Attend']['id']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $studentsCourse['StudentsCourse']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $studentsCourse['StudentsCourse']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $studentsCourse['StudentsCourse']['id']), null, __('Are you sure you want to delete # %s?', $studentsCourse['StudentsCourse']['id'])); ?>
+			<?php echo $this->Html->link(__('View'), array('action' => 'view', $attend['Attend']['id'])); ?>
+			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $attend['Attend']['id'])); ?>
+			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $attend['Attend']['id']), null, __('Are you sure you want to delete # %s?', $attend['Attend']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

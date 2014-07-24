@@ -6,7 +6,7 @@
         
         <form action="<?php echo SUB_DIR;?>/manager/users/search" method="post" class="sidebar-form">
             <div class="input-group">
-                <input type="text" name="name" class="form-control" placeholder="Nhập tên user cần tìm..."/>
+                <input type="text" name="name" class="form-control" placeholder="Nhập tên người dùng cần tìm..."/>
                 <span class="input-group-btn">
                     <button type='submit' name='seach' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
                 </span>
@@ -152,7 +152,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="<?php echo SUB_DIR;?>/manager/courses/thong_ke"><i class="fa fa-angle-double-right"></i> Khóa học</a></li>
-                    <li><a href="<?php echo SUB_DIR;?>/manager/students_courses/thong_ke_student"><i class="fa fa-angle-double-right"></i> Người tham dự</a></li>
+                    <li><a href="<?php echo SUB_DIR;?>/manager/attends/thong_ke_student"><i class="fa fa-angle-double-right"></i> Người tham dự</a></li>
                 </ul>
             </li>
         </ul>

@@ -1,6 +1,13 @@
+<meta charset="UTF-8">
+<title>Hệ thống quản lý Thông tin Tập huấn Giáo viên | Trang phục vụ quản lý lĩnh vực</title>
+<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+<!-- bootstrap 3.0.2 -->
+<?php echo $this->Html->css('select2'); ?>
+<?php echo $this->Html->css('select2-bootstrap'); ?>
+<?php echo $this->Html->script('plugins/select2/select2'); ?>
+
+
 <?php echo $this->Html->link('TMS', array('controller' => 'dashboards', 'action' => 'home','admin'=>false,'plugin'=>false), array('class' => 'logo')); ?>
-
-
 <!-- Header Navbar: style can be found in header.less -->
 <nav class="navbar navbar-static-top" role="navigation">
     <!-- Sidebar toggle button-->
@@ -27,7 +34,7 @@
                 <ul class="dropdown-menu">
                     <!-- User image -->
                     <li class="user-header bg-light-blue">
-                        <img src="img/avatar3.png" class="img-circle" alt="User Image" />
+                        <img src="<?php echo SUB_DIR;?>/files/user/avatar/<?php echo AuthComponent::user('avatar_path') . '/' . AuthComponent::user('avatar') ?>" class="img-circle" alt="User Image" />
                         <p>
                             <?php echo AuthComponent::user('name') ?>
                             <small><?php echo AuthComponent::user('email') ?></small>

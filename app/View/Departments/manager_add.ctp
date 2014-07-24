@@ -18,3 +18,9 @@
     <?php echo $this->Form->end('Lưu'); ?>
 </div>
 
+<script>
+    $(document).ready(function() {
+        $("#DepartmentParentId").select2();
+       
+    });
+</script>

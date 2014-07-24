@@ -1,3 +1,6 @@
+<?php echo $this->Html->css('select2'); ?>
+<?php echo $this->Html->css('select2-bootstrap'); ?>
+<?php echo $this->Html->script('plugins/select2/select2'); ?>
 <div class="container">
     <?php
     echo $this->Form->create('User', array(
@@ -35,3 +38,9 @@
     <?php echo $this->Form->button('Lưu', array('type' => 'submit', 'class' => 'btn btn-info')) ?>
     <?php echo $this->Form->end(); ?>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#UserDepartmentId").select2();
+
+    });
+</script>
