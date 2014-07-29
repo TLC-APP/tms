@@ -36,7 +36,7 @@ class UsersController extends AppController {
                         $this->User->id = $user['User']['id'];
                         $this->User->saveField('password', $password);
                         if ($this->Auth->login($user['User'])) {
-                            
+
                             $this->Session->setFlash('Đăng nhập thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'), 'auth');
                             return $this->redirect($this->Auth->redirectUrl());
                         } else {
@@ -124,9 +124,36 @@ class UsersController extends AppController {
     public function delete($id = null) {
         $this->User->id = $id;
         if (!$this->User->exists()) {
-            throw new NotFoundException(__('Invalid user'));
+            throw new NotFoundException('Không tìm thấy user này!');
         }
         $this->request->onlyAllow('post', 'delete');
+        $registeringCourse = $this->User->field('registeringCourse');
+        if ($registeringCourse > 0) {
+            $this->Session->setFlash('User là tập huấn viên của ' . $registeringCourse . ' khóa học đang đăng ký.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            $this->redirect($this->referer());
+        }
+
+        $uncompletedCourse = $this->User->field('uncompletedCourse');
+        if ($uncompletedCourse > 0) {
+            $this->Session->setFlash('User là tập huấn viên của ' . $registeringCourse . ' khóa học chưa hoàn thành.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            $this->redirect($this->referer());
+        }
+
+        $completedCourse = $this->User->field('completedCourse');
+
+        if ($completedCourse > 0) {
+            $this->Session->setFlash('User là tập huấn viên của ' . $completedCourse . ' khóa học hoàn thành.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            $this->redirect($this->referer());
+        }
+        if ($this->User->isAdmin($id)&&$id!=Configure::read('MASTER_USERNAME')) {
+            $this->Session->setFlash('User là ADMIN của hệ thống.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            $this->redirect($this->referer());
+        }
+        
+        if ($this->Auth->user('id')==$id) {
+            $this->Session->setFlash('Bạn không thể tự xóa chính mình.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            $this->redirect($this->referer());
+        }
         if ($this->User->delete()) {
             $this->Session->setFlash('Đã xóa', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
         } else {
@@ -491,7 +518,7 @@ class UsersController extends AppController {
         $hocHams = $this->User->HocHam->find('list');
         $departments = $this->User->Department->find('list');
         $hocVis = $this->User->HocVi->find('list');
-        $groups = $this->User->Group->find('list', array('conditions' => array('NOT' => array('Group.alias' => array('admin', 'manager','guest')))));
+        $groups = $this->User->Group->find('list', array('conditions' => array('NOT' => array('Group.alias' => array('admin', 'manager', 'guest')))));
         $this->set(compact('hocHams', 'hocVis', 'groups', 'departments'));
     }
 
@@ -514,7 +541,7 @@ class UsersController extends AppController {
         $departments = $this->User->Department->find('list');
         $hocHams = $this->User->HocHam->find('list');
         $hocVis = $this->User->HocVi->find('list');
-        $groups = $this->User->Group->find('list', array('conditions' => array('NOT' => array('Group.alias' => array('admin', 'manager','guest')))));
+        $groups = $this->User->Group->find('list', array('conditions' => array('NOT' => array('Group.alias' => array('admin', 'manager', 'guest')))));
         $this->set(compact('departments', 'hocVis', 'hocHams', 'groups'));
     }
 
@@ -537,8 +564,8 @@ class UsersController extends AppController {
         $hocHams = $this->User->HocHam->find('list');
         $hocVis = $this->User->HocVi->find('list');
         $groups = $this->User->Group->find('list');
-        $departments=$this->User->Department->find('list');
-        $this->set(compact('groups', 'hocHams', 'hocVis','departments'));
+        $departments = $this->User->Department->find('list');
+        $this->set(compact('groups', 'hocHams', 'hocVis', 'departments'));
     }
 
     public function admin_view($id) {

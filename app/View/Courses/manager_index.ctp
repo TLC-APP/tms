@@ -51,29 +51,34 @@ if (isset($status)) {
                         <th><?php echo $stt++; ?></th>
 
                         <td>
-                            <?php
-                            echo $this->Html->link($course['Course']['name'], array('manager' => true, 'controller' => 'courses', 'action' => 'view', $course['Course']['id']));
-                            $register_student_number = $course['Course']['register_student_number'];
-                            if ($course['Course']['max_enroll_number'] > 0) {
-                                $percent = round(($register_student_number * 100) / $course['Course']['max_enroll_number']);
-                            } else {
-                                $percent = 0;
-                            }
-                            ?>
+    <?php
+    echo $this->Html->link($course['Course']['name'], array('manager' => true, 'controller' => 'courses', 'action' => 'view', $course['Course']['id']));
+    $now = new DateTime();
+    $expired_date = new DateTime($course['Course']['enrolling_expiry_date']);
+    if ($expired_date < $now&&$course['Course']['status']==COURSE_REGISTERING) {
+        echo ' <small class="label label-danger"><i class="fa fa-clock-o"></i> Hết hạn </small>';
+    }
+    $register_student_number = $course['Course']['register_student_number'];
+    if ($course['Course']['max_enroll_number'] > 0) {
+        $percent = round(($register_student_number * 100) / $course['Course']['max_enroll_number']);
+    } else {
+        $percent = 0;
+    }
+    ?>
                             <?php if ($status != COURSE_COMPLETED): ?>
                                 <div class="progress progress-bar-yellow progress-striped">
                                     <div style="width: <?php echo $percent; ?>%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<?php echo $percent; ?>" role="progressbar" class="progress-bar progress-bar-success">
-                                        <?php echo $register_student_number . '/' . $course['Course']['max_enroll_number']; ?>
+        <?php echo $register_student_number . '/' . $course['Course']['max_enroll_number']; ?>
 
                                     </div>
                                 </div>
-                            <?php endif; ?>
+    <?php endif; ?>
 
                         <td>
-                            <?php echo $this->Html->link($course['Chapter']['name'], array('controller' => 'chapters', 'action' => 'view', $course['Chapter']['id'])); ?>
+    <?php echo $this->Html->link($course['Chapter']['name'], array('controller' => 'chapters', 'action' => 'view', $course['Chapter']['id'])); ?>
                         </td>
                         <td>
-                            <?php echo $this->Html->link($course['Teacher']['name'], array('controller' => 'users', 'action' => 'view', $course['Teacher']['id'])); ?>
+    <?php echo $this->Html->link($course['Teacher']['name'], array('controller' => 'users', 'action' => 'view', $course['Teacher']['id'])); ?>
                         </td>
                         <td><?php echo h($course['Course']['max_enroll_number']); ?>&nbsp;</td>
                         <td><?php echo h($course['Course']['register_student_number']); ?>&nbsp;</td>
@@ -84,9 +89,9 @@ if (isset($status)) {
 
                         <td class="tools">
 
-                            <?php echo $this->Html->link('
+    <?php echo $this->Html->link('
   <span class="fa fa-edit"></span>', array('action' => 'edit', $course['Course']['id']), array('escape' => false));
-                            ?>
+    ?>
                             <?php
                             if (isset($status) && $status == COURSE_COMPLETED) {
                                 echo $this->Html->link('<span> <i class="glyphicon glyphicon-tower"></i>    </span>', array('manager' => true, 'action' => 'score', $course['Course']['id']), array('escape' => false));
@@ -123,22 +128,22 @@ if (isset($status)) {
 
                         </td>
                     </tr>
-                <?php endforeach; ?>
+<?php endforeach; ?>
             </table>
             <p>
+<?php
+echo $this->Paginator->counter(array(
+    'format' => __('Trang {:page} của {:pages} trang, hiển thị {:current} của {:count} tất cả, bắt đầu từ {:start}, đến {:end}')
+));
+?>	</p>
                 <?php
-                echo $this->Paginator->counter(array(
-                    'format' => __('Trang {:page} của {:pages} trang, hiển thị {:current} của {:count} tất cả, bắt đầu từ {:start}, đến {:end}')
+                echo $this->Paginator->pagination(array(
+                    'ul' => 'pagination'
                 ));
-                ?>	</p>
-                <?php
-            echo $this->Paginator->pagination(array(
-                'ul' => 'pagination'
-            ));
-            ?>
+                ?>
         </div>
         <div class="box-footer" style="text-align: right;">
-            <?php echo $this->Html->link('Thêm mới', array('action' => 'add'), array('class' => 'btn btn-success')); ?>
+<?php echo $this->Html->link('Thêm mới', array('action' => 'add'), array('class' => 'btn btn-success')); ?>
 
         </div>
     </div>

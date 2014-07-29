@@ -8,7 +8,10 @@ class AppController extends Controller {
         'Session', 'RequestHandler',
         //'DebugKit.Toolbar',
         'Paginator',
-        'Acl',
+        'Acl' => array('habtm' => array(
+                'userModel' => 'Users.User',
+                'groupAlias' => 'Group'
+            )),
         'Auth' => array(
             'authorize' => array(
                 'Controller',
@@ -39,13 +42,12 @@ class AppController extends Controller {
 
             $this->Auth->allow($this->request->action);
         }
-        if (!empty($this->params['prefix'])) {
-            $this->layout = $this->params['prefix'];
-        }
+
         if ($this->Auth->loggedIn()) {
+
             if (!$this->Auth->user('activated')) {
                 $this->Session->setFlash('Tài khoản đã bị khóa!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'), 'auth');
-               return $this->redirect($this->Auth->logout());
+                return $this->redirect($this->Auth->logout());
             }
             $this->User->id = $this->Auth->user('id');
             $department_id = ($this->User->field('User.department_id'));
@@ -86,17 +88,27 @@ class AppController extends Controller {
         if (!empty($this->params['prefix']) && !$this->request->is('ajax')) {
             $this->layout = $this->params['prefix'];
         }
-        if ($this->Auth->loggedIn() && ($this->User->isAdmin() || $this->User->isManager())) {
+        
+        if ($this->Auth->loggedIn() && ($this->User->isAdmin() || $this->User->isManager())&&($this->request->action!='manager_expired_courses'&&$this->request->action!='admin_expired_courses')) {
             $this->check_expire_course();
         }
     }
 
     public function isAuthorized($user) {
-        return true;
+        //return true;
+        $acl_check = false;
+        try {
+            $acl_check = $this->Acl->check(array('User' => array('id' => $user['id'])),$this->request->action);
+        } catch (Exception $exc) {
+            return false;
+        }
 
-        if ($this->Auth->loggedIn() && $this->Acl->check(array('User' => array('id' => $this->Auth->user('id'))), $this->action)) {
+
+        if ($this->Auth->loggedIn() && $acl_check) {
             return true;
         }
+
+
         return false;
     }
 
@@ -125,7 +137,7 @@ class AppController extends Controller {
         $expired_courses = $this->Course->getCoursesExpired();
         $prefix = 'manager';
         if (!empty($expired_courses)) {
-            $this->Session->setFlash('Có khóa học đã hết hạn đăng ký <a href="' . Router::url('/', true) . $prefix . '/courses/expired_courses"> chi tiết</a>', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning', 'escape' => false));
+            $this->Session->setFlash('Có '.count($expired_courses).' khóa học đã hết hạn đăng ký <a href="' . Router::url('/', true) . $prefix . '/courses/expired_courses"> chi tiết</a>', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning', 'escape' => false));
         }
     }
 

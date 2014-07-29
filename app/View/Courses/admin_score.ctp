@@ -9,57 +9,66 @@
                 </ul>
                 <div class="tab-content ">
                     <div id="tab_hoc_vien" class="tab-pane active">
-                        
-                            <?php echo $this->Form->create(null,
-                                    array('url'=>array('controller'=>'courses','action'=>'update_score',$course['Course']['id'])));?>
-                            <table class="table table-hover">
-                                <thead>
-                                <th>#</th>
-                                <th>Họ tên</th>
-                                <th>Ngày đăng ký</th>
-                                <th><div class="selectallinput">
-                                    <label for="select-all">Đạt</label>
-                                    <input type="checkbox" id="select-all">
-                                </div></th>
-                                <th>Số chứng nhận</th>
-                                <th>Ngày cấp</th>
-                                <th>Đã nhận</th>
-                                </thead>
-                                <tbody class="inputs">
 
-                                    <?php
-                                    $students = $course['Attend'];
-                                    $stt = 1;
+                        <?php echo $this->Form->create(null, array('url' => array('controller' => 'courses', 'action' => 'update_score', $course['Course']['id'])));
+                        ?>
+                        <table class="table table-hover">
+                            <thead>
+                            <th>#</th>
+                            <th>Họ tên</th>
+                            <th>Ngày đăng ký</th>
+                            <th><div class="selectallinput">
+                                <label for="select-all">Đạt</label>
+                                <input type="checkbox" id="select-all">
+                            </div></th>
+                            <th>Số chứng nhận</th>
+                            <th>Ngày cấp</th>
+                            <th>Đã nhận</th>
+                            </thead>
+                            <tbody class="inputs" id="check_zone">
 
-                                    foreach ($students as $student):
-                                        ?>
-                                        <tr>
-                                            <td><?php echo $stt++; ?></td>
-                                            <td><?php echo $student['Student']['name']; ?></td>
-                                            <td><?php echo $student['created']; ?></td>
-                                            <td>
-                                                <input type="checkbox" name="pass_students[]" value="<?php echo $student['Student']['id'] ?>"
-                                                       <?php 
-                                                       if ($student['is_passed']) 
-                                                           echo 'checked="checked"><input type="hidden" name="fail_students[]" value="'.$student['Student']['id'].'">' ;
-                                                       ?>
-                                                
-                                            </td>
-                                            <td><?php echo $student['certificated_number']; ?></td>
-                                            
-                                            <td><?php 
-                                            $certificated_date=new DateTime($student['certificated_date']);
-                                            echo $certificated_date->format('d.m.Y'); ?></td>
-                                            <td><?php echo $student['is_recieved']; ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
+                                <?php
+                                $students = $course['Attend'];
+                                $stt = 1;
 
-                                </tbody>
-                            </table>
-                            <div class="btn-toolbar pull-right">
-                                <?php echo $this->Form->end('Lưu'); ?>
-                                <?php echo $this->Html->link('Xuất excel',array('manager'=>true,'action'=>'xuat_so_chung_nhan',$course['Course']['id']),array('class'=>'btn btn-info'));?>
-                            </div>
+                                foreach ($students as $student):
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $stt++; ?></td>
+                                        <td><?php echo $student['Student']['name']; ?></td>
+                                        <td><?php echo $student['created']; ?></td>
+                                        <td>
+                                            <input type="checkbox" class ="pass" name="pass_students[]" value="<?php echo $student['Student']['id'] ?>"
+                                            <?php
+                                            if ($student['is_passed']) {
+                                                echo 'checked="checked">';
+                                                echo ' <input class= "fails" type="hidden" name="fail_students[]" value="0">';
+                                            } else {
+                                                echo '>';
+                                                echo ' <input class= "fails" type="hidden" name="fail_students[]" value="' . $student['Student']['id'] . '">';
+                                            }
+                                            ?>
+
+                                        </td>
+                                        <td><?php echo $student['certificated_number']; ?></td>
+
+                                        <td>
+                                            <?php
+                                            if (!empty($student['certificated_date'])) {
+                                                $certificated_date = new DateTime($student['certificated_date']);
+                                                echo $certificated_date->format('d.m.Y');
+                                            }
+                                            ?></td>
+                                        <td><?php echo $student['is_recieved']; ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+
+                            </tbody>
+                        </table>
+                        <div class="btn-toolbar pull-right">
+                            <?php echo $this->Form->end('Lưu'); ?>
+                            <?php echo $this->Html->link('Xuất excel', array('manager' => true, 'action' => 'xuat_so_chung_nhan', $course['Course']['id']), array('class' => 'btn btn-info')); ?>
+                        </div>
                         </form>
                     </div><!-- /.tab-pane -->
                     <div id="thongtin" class="tab-pane">
@@ -166,5 +175,17 @@
         var wrapperInputs = $('.inputs');
 
         selectAll(wrapperAll, wrapperInputs);
+        $("#check_zone .pass").click(function() {
+            
+            var next=$(this).next();
+            if($(this).attr('checked')=='checked'){
+                this.value=next.attr('value');
+                next.attr('value',0);
+            }else{
+                next.attr('value',this.value);
+                this.value=0;
+            }
+
+        });
     });
 </script>

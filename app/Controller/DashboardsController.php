@@ -13,9 +13,9 @@ class DashboardsController extends AppController {
     public function home() {
         if ($this->Auth->loggedIn()) {
             $user = $this->User->find('first', array('contain' => array('Group'), 'conditions' => array('User.id' => $this->Auth->user('id'))));
-            /* if (count($user['Group']) == 1) {
-              $this->redirect("/{$user['Group'][0]['alias']}/dashboards/home");
-              } */
+            if (count($user['Group']) == 1) {
+                $this->redirect("/{$user['Group'][0]['alias']}/dashboards/home");
+            }
             $this->set('users', $user);
         }
     }
@@ -37,7 +37,7 @@ class DashboardsController extends AppController {
             'NOT' => array('Course.id' => $not_in_course),
             'Course.enrolling_expiry_date >=' => $today->format('Y-m-d H:i:s'),
             'Course.is_published' => 1,
-            'Course.status'=>COURSE_REGISTERING,
+            'Course.status' => COURSE_REGISTERING,
             'Course.max_enroll_number > (SELECT count(id) as Course__register_student_number 
          FROM  attends as Attend 
          where Attend.course_id=Course.id)'
@@ -50,11 +50,13 @@ class DashboardsController extends AppController {
     }
 
     public function teacher_home() {
-
+        
     }
 
     public function manager_home() {
-
+        
+        $this->redirect(array('controller' => 'courses', 'action' => 'index', COURSE_REGISTERING));
+        
     }
 
     public function fields_manager_home() {
@@ -62,10 +64,11 @@ class DashboardsController extends AppController {
     }
 
     public function boss_home() {
-
+        
     }
 
     public function admin_home() {
+        $this->redirect(array('controller' => 'courses', 'action' => 'index', COURSE_REGISTERING));
     }
 
     public function loggedInMenu() {

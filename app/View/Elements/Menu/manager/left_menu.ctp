@@ -16,7 +16,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li>
-                <?php echo $this->Html->link('<i class="fa fa-dashboard"></i> <span>Bàn làm việc</span>', array('manager' => true, 'controller' => 'dashboards', 'action' => 'home'), array('escape' => false));
+                <?php //echo $this->Html->link('<i class="fa fa-dashboard"></i> <span>Bàn làm việc</span>', array('manager' => true, 'controller' => 'dashboards', 'action' => 'home'), array('escape' => false));
                 ?>
 
             </li>
@@ -40,6 +40,7 @@
                     </li>
                     <li>                    
                         <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Đã hoàn thành', array('manager' => true, 'controller' => 'courses', 'action' => 'index', COURSE_COMPLETED), array('escape' => false)); ?>
+                    
                     </li>
                     <li>                    
                         <?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i>Đã hủy', array('manager' => true, 'controller' => 'courses', 'action' => 'index', COURSE_CANCELLED), array('escape' => false)); ?>

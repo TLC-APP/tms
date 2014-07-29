@@ -1,11 +1,15 @@
-<div class="col-md-8">
+<div class="news-wrapper col-md-8 col-sm-7">
     <!-- WIDGET CÁC KHÓA HỌC CÓ THỂ ĐĂNG KÝ-->
     <?php $courses = $this->requestAction(array('guest' => true, 'controller' => 'courses', 'action' => 'cothedangki')) ?>
-    <?php echo $this->element('Widgets/guest/registering_courses', array('courses' => $courses)); ?>
+    <?php
+    if (!empty($courses)) {
+        echo $this->element('Widgets/guest/registering_courses', array('courses' => $courses));
+    }
+    ?>
 
     <!-- WIDGET Thời khóa biểu hôm nay-->
-    <?php $courses_today = $this->requestAction(array('guest' => true, 'controller' => 'courses_rooms', 'action' => 'guest_lich_homnay')) ?>
-    <?php echo $this->element('Widgets/guest/today_schedule',array('courses_today' => $courses_today)); ?>
+<?php $courses_today = $this->requestAction(array('guest' => true, 'controller' => 'courses_rooms', 'action' => 'guest_lich_homnay')) ?>
+<?php echo $this->element('Widgets/guest/today_schedule', array('courses_today' => $courses_today)); ?>
 </div>
 <div class="col-md-4">
     <!--WIDGET TIN TỨC - THÔNG BÁO-->

@@ -45,10 +45,7 @@
                         </div>
                         <div class="desc">
                             <h4><small><a href="#"><?php echo $course_completed['Course']['name'] ?></a></small></h4>
-                            <p><?php
-                                echo $this->Text->truncate($course_completed['Course']['decription'], 250, array('ellipsis' => '...',
-                                    'exact' => true));
-                                ?></p>
+                            
                         </div>
                     </div>
                 <?php endforeach; ?>

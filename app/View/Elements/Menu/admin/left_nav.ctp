@@ -13,11 +13,7 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-            <li class="active">
-                <a href="<?php echo SUB_DIR;?>/admin/">
-                    <i class="fa fa-dashboard"></i> <span>Bảng điều khiển</span>
-                </a>
-            </li>
+            
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i>
@@ -99,6 +95,15 @@
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm người dùng</span>', array('controller' => 'users', 'action' => 'add', 'admin' => true), array('escape' => false)); ?></li>
                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm nhóm</span>', array('controller' => 'groups', 'action' => 'add', 'admin' => true), array('escape' => false)); ?></li>
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Danh sách nhóm</span>', array('plugin'=>'acl_manager','controller' => 'groups', 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
+                </ul>
+            </li>
+            
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-user"></i> <span>Phân quyền</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Cập nhật AROS</span>', array('plugin'=>'acl_manager','controller' => 'acl', 'action' => 'update_aros', 'admin' => true), array('escape' => false)); ?></li>
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Cập nhật ACOS</span>', array('plugin'=>'acl_manager','controller' => 'acl', 'action' => 'update_acos', 'admin' => true), array('escape' => false)); ?></li>
                     <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Xóa ACOS/AROS</span>', array('plugin'=>'acl_manager','controller' => 'acl', 'action' => 'drop', 'admin' => true), array('escape' => false)); ?></li>
@@ -129,11 +134,10 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Theo đơn vị</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Theo lĩnh vực</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Theo chuyên đề</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Tập huấn viên</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i> Khoảng thời gian</a></li>
+                    
+                    <li><a href="<?php echo SUB_DIR;?>/admin/courses/thong_ke"><i class="fa fa-angle-double-right"></i> Khóa học</a></li>
+                    <li><a href="<?php echo SUB_DIR;?>/admin/attends/thong_ke_student"><i class="fa fa-angle-double-right"></i> Người tham dự</a></li>
+                
                 </ul>
             </li>
         </ul>

@@ -31,24 +31,74 @@ class CoursesController extends AppController {
     }
 
     public function admin_thong_ke() {
-        if (!empty($this->request->data)) {
-            if (!empty($this->request->data['Course']['begin']) && !empty($this->request->data['Course']['end'])) {
-                $begin = new DateTime();
-                if ($begin->setDate($this->request->data['Course']['begin']['year'], $this->request->data['Course']['begin']['month'], $this->request->data['Course']['begin']['day'])) {
-                    
+        Configure::write('debug', 0);
+        $conditions = array();
+        $contain = array(
+            'Chapter' => array(
+                'fields' => array('id', 'name', 'field_id'),
+                'Field' => array('fields' => array('id', 'name'))
+            ),
+            'Teacher' => array('fields' => array('id', 'name')));
+        if ($export) {
+            $conditions = $this->Session->read('thong_ke_conditions');
+            $courses = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain, 'fields' => array('id', 'name', 'chapter_id', 'register_student_number', 'pass_number', 'so_buoi', 'created', 'status', 'is_published', 'max_enroll_number')));
+            $this->set('courses', $courses);
+            $this->render('xuat_thong_ke_course');
+        } else {
+            if (!empty($this->request->data)) {
+                if (!empty($this->request->data['Course']['begin']) && !empty($this->request->data['Course']['end'])) {
+                    $begin = new DateTime();
+                    if ($begin->setDate($this->request->data['Course']['begin']['year'], $this->request->data['Course']['begin']['month'], $this->request->data['Course']['begin']['day'])) {
+                        $conditions = Set::merge($conditions, array('Course.created >=' => $begin->format('Y-m-d 00:00:00')));
+                        $end = new DateTime();
+                        if ($end->setDate($this->request->data['Course']['end']['year'], $this->request->data['Course']['end']['month'], $this->request->data['Course']['end']['day'])) {
+                            if ($begin > $end) {
+                                return $this->Session->setFlash('Khoảng thống kê không hợp lệ, từ < đến', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                            } else {
+                                $conditions = Set::merge($conditions, array('Course.created <=' => $end->format('Y-m-d 00:00:00')));
+                            }
+                        }
+                    } else {
+
+                        $end = new DateTime();
+                        if ($end->setDate($this->request->data['Course']['end']['year'], $this->request->data['Course']['end']['month'], $this->request->data['Course']['end']['day'])) {
+
+                            $conditions = Set::merge($conditions, array('Course.created <=' => $end->format('Y-m-d 00:00:00')));
+                        }
+                    }
                 }
-                $end = new DateTime();
-                $begin->setDate($this->request->data['Course']['end']['year'], $this->request->data['Course']['end']['month'], $this->request->data['Course']['end']['day']);
-                if ($begin >= $end) {
-                    $this->Session->setFlash('Ngày thống kê không hợp lệ, từ < đến', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
-                    return $this->redirect($this->referer());
+
+                if (!empty($this->request->data['Course']['chapter_id'])) {
+                    $conditions = Set::merge($conditions, array('Course.chapter_id' => $this->request->data['Course']['chapter_id']));
                 } else {
-                    $this->Session->setFlash('kaka');
+                    if (!empty($this->request->data['Course']['field_id'])) {
+                        $chapter_id_array = $this->Course->Chapter->getChapterByField_id($this->request->data['Course']['field_id']);
+                        $conditions = Set::merge($conditions, array('Course.chapter_id' => $chapter_id_array));
+                    }
+                }
+                if (!empty($this->request->data['Course']['status'])) {
+                    $conditions = Set::merge($conditions, array('Course.status' => $this->request->data['Course']['status']));
+                }
+
+                if (!empty($this->request->data['Course']['teacher_id'])) {
+                    $conditions = Set::merge($conditions, array('Course.teacher_id' => $this->request->data['Course']['teacher_id']));
+                }
+                if ($this->Session->check('thong_ke_conditions')) {
+                    $this->Session->delete('thong_ke_conditions');
+                }
+                $this->Session->write('thong_ke_conditions', $conditions);
+
+                $this->Paginator->settings = array('conditions' => $conditions);
+                $this->set('courses', $this->Paginator->paginate());
+                if ($this->request->is('ajax')) {
+                    $this->render('ket_qua_thong_ke');
                 }
             }
         }
         $fields = $this->Course->Chapter->Field->find('list');
-        $teachers = $this->Course->Teacher->find('list');
+        $teacher_id_array = $this->Course->Teacher->getTeacherIdArray();
+
+        $teachers = $this->Course->Teacher->find('list', array('conditions' => array('Teacher.id' => $teacher_id_array)));
         $this->set(compact('fields', 'teachers'));
     }
 
@@ -298,7 +348,7 @@ class CoursesController extends AppController {
          FROM  attends as Attend 
          where Attend.course_id=Course.id)'
         );
-        $course_fields = array('id', 'name', 'chapter_id', 'max_enroll_number', 'enrolling_expiry_date', 'register_student_number', 'session_number');
+        $course_fields = array('id', 'name', 'decription', 'image_path', 'image', 'chapter_id', 'max_enroll_number', 'enrolling_expiry_date', 'register_student_number', 'session_number');
         $courses_register = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain, 'fields' => $course_fields,));
         return $courses_register;
     }
@@ -346,23 +396,26 @@ class CoursesController extends AppController {
                     $this->redirect($this->request->referer());
                 }
             }
+            $message_model = new Message();
             /* Gửi thông báo cho Tập huấn viên */
             $teacher_id = $this->Course->field('teacher_id');
 
-            $teacher = $this->Course->Teacher->find('first', array('conditions' => array('Teacher.id' => $teacher_id), 'recursive' => -1, 'fields' => array('id', 'name')));
-            $message = 'Xin chào ' . $teacher['Teacher']['name'] . '! ' . $content;
-            $data = array(
-                'title' => $subject,
-                'content' => $message,
-                'created_user_id' => AuthComponent::user('id'),
-                'receive_user_id' => $teacher['Teacher']['id'],
-                'category_id' => NULL
-            );
-            $message_model->create();
+            if ($this->Course->Teacher->exists($teacher_id)) {
+                $teacher = $this->Course->Teacher->find('first', array('conditions' => array('Teacher.id' => $teacher_id), 'recursive' => -1, 'fields' => array('id', 'name')));
+                $message = 'Xin chào ' . $teacher['Teacher']['name'] . '! ' . $content;
+                $data = array(
+                    'title' => $subject,
+                    'content' => $message,
+                    'created_user_id' => AuthComponent::user('id'),
+                    'receive_user_id' => $teacher['Teacher']['id'],
+                    'category_id' => NULL
+                );
+                $message_model->create();
 
-            if (!$message_model->save($data)) {
-                $this->Session->setFlash('Gửi thông báo HỦY KHÓA HỌC cho tập huấn viên không thành công');
-                $this->redirect($this->request->referer());
+                if (!$message_model->save($data)) {
+                    $this->Session->setFlash('Gửi thông báo HỦY KHÓA HỌC cho tập huấn viên không thành công');
+                    $this->redirect($this->request->referer());
+                }
             }
         } else {
             $this->Session->setFlash('Hủy không thành công', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
@@ -729,11 +782,12 @@ class CoursesController extends AppController {
 
         if (!empty($this->request->data['pass_students'])) {
             $pass_students = $this->request->data['pass_students'];
-            $certificated_start_number = $this->Course->Chapter->Field->field('current_certificate_number');
+            $last_cert = $this->Course->Attend->find('first', array('recursive' => -1, 'order' => array('created' => 'DESC'), 'conditions' => array('Attend.certificated_number is not null')));
 
+            $explode = ( explode('/', $last_cert['Attend']['certificated_number']));
+            $certificated_start_number = $explode[0];
             if (empty($certificated_start_number)) {
-                $this->Session->setFlash('Vui lòng liên hệ admin để cập nhật số chứng chỉ nhé!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
-                return $this->redirect(array('manager' => true, 'action' => 'score', $course_id));
+                $certificated_start_number = 1;
             }
             $certificated_number_suffix = $this->Course->Chapter->Field->field('Field.certificated_number_suffix');
 
@@ -741,13 +795,15 @@ class CoursesController extends AppController {
             $chung_chi_co_so = $this->Course->field('Course.chung_chi_co_so');
 
             foreach ($pass_students as $key => $value) {
+
+                $certificated_number = $certificated_start_number + 1;
                 if ($certificated_start_number < 10) {
-                    $certificated_number = '0' . ( ++$certificated_start_number);
+                    $certificated_number = '0' . $certificated_start_number;
                 }
-                $certificated_number = "'" . $certificated_number . $certificated_number_suffix . "'";
+                $full_certificated_number = "'" . $certificated_number . $certificated_number_suffix . "'";
                 $data = array(
                     'Attend.is_passed' => 1,
-                    'Attend.certificated_number' => $certificated_number,
+                    'Attend.certificated_number' => $full_certificated_number,
                     'Attend.certificated_date' => '"' . date('Y-m-d H:i:s', strtotime('now')) . '"'
                 );
                 if (!$chung_chi_co_so) {
@@ -756,18 +812,19 @@ class CoursesController extends AppController {
                         'Attend.certificated_date' => '"' . date('Y-m-d H:i:s', strtotime('now')) . '"'
                     );
                 }
-                if ($this->Course->Attend->update(
-                                $data, array('Attend.student_id' => $value, 'Attend.course_id' => $course_id))) {
-                    $this->Course->Chapter->Field->saveField('current_certificate_number', $certificated_start_number);
-                    //$this->Session->setFlash('Đã cập nhật kết quả thành công bảng điểm!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
-                } else {
-                    $this->Session->setFlash('Cập nhật kết quả không thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                if ($this->Course->Attend->updateAll(
+                                $data, array('Attend.student_id' => $value, 'Attend.course_id' => $course_id, 'Attend.certificated_number is null'))) {
+                    //$this->Course->Chapter->Field->saveField('current_certificate_number', $certificated_start_number);
                 }
             }
         }
         if (!empty($this->request->data['fail_students'])) {
+
+
             $fail_students = $this->request->data['fail_students'];
-            if ($this->Course->Attend->updateAll(array('Attend.is_passed' => 0), array('Attend.student_id' => $fail_students, 'Attend.course_id' => $course_id))) {
+
+
+            if ($this->Course->Attend->updateAll(array('Attend.is_passed' => 0, 'Attend.is_recieved' => 0, 'Attend.recieve_date' => NULL, 'Attend.certificated_date' => NULL, 'Attend.certificated_number' => NULL), array('Attend.student_id' => $fail_students, 'Attend.course_id' => $course_id))) {
                 $this->Session->setFlash('Đã cập nhật kết quả thành công bảng điểm!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
             } else {
                 $this->Session->setFlash('Cập nhật kết quả không thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));

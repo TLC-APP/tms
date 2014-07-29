@@ -38,10 +38,10 @@
                                                         <?php echo $this->Html->link($teachingCourse['name'], array('manager' => true, 'controller' => 'courses', 'action' => 'view1', $teachingCourse['id']), array('class' => 'add-button fancybox.ajax')) ?>
                                                     </td>
                                                     <td class="actions">
-                                                        <?php /*echo $this->Html->link('<button type="button" class="btn btn-info">
-<span class="glyphicon glyphicon-edit"></span></button>', array('action' => 'edit', 'controller' => 'courses', $teachingCourse['id']), array('escape' => false)); */?>
-                                                        <?php /*echo $this->Form->postLink('<button type="button" class="btn btn-warning">
-<span class="glyphicon glyphicon-trash"></span></button>', array('action' => 'delete', 'controller' => 'courses', $teachingCourse['id']), array('escape' => false), __('Bạn có chắc xóa khóa học không?', $teachingCourse['name'])); */?>
+                                                        <?php /* echo $this->Html->link('<button type="button" class="btn btn-info">
+                                                          <span class="glyphicon glyphicon-edit"></span></button>', array('action' => 'edit', 'controller' => 'courses', $teachingCourse['id']), array('escape' => false)); */ ?>
+                                                        <?php /* echo $this->Form->postLink('<button type="button" class="btn btn-warning">
+                                                          <span class="glyphicon glyphicon-trash"></span></button>', array('action' => 'delete', 'controller' => 'courses', $teachingCourse['id']), array('escape' => false), __('Bạn có chắc xóa khóa học không?', $teachingCourse['name'])); */ ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -155,21 +155,25 @@
                                                             echo $this->Form->postLink('<button type="button" class="btn btn-warning">Nhận</button>', array('controller' => 'attends', 'action' => 'recieve', $attend['id']), array('escape' => false), __('Người này chắc nhận bằng?'));
                                                         ?></td>
                                                     <td><?php
-                                                        if ($attend['Course']['status'] == COURSE_COMPLETED) {
-                                                            $certificated_date = new DateTime($attend['certificated_date']);
-                                                            echo $certificated_date->format('H:i') . ', ngày: ' . $certificated_date->format('d/m/Y');
-                                                        }
+                                                        if (!empty($attend['is_recieved']))
+                                                            echo $attend['recieve_date'];
                                                         ?></td>
                                                     <td>
                                                         <?php
-                                                        if ($attend['is_recieved'])
-                                                            echo $attend['recieve_date'];
+                                                        if ($attend['Course']['status'] == COURSE_COMPLETED) {
+                                                            if (!empty($attend['certificated_date'])) {
+                                                                $certificated_date = new DateTime($attend['certificated_date']);
+
+                                                                echo $certificated_date->format('H:i') . ', ngày: ' . $certificated_date->format('d/m/Y');
+                                                            }
+                                                        }
                                                         ?>
+
                                                     </td>
                                                     <td><?php
-                                                if ($attend['Course']['status'] == COURSE_COMPLETED) {
-                                                    echo $attend['certificated_number'];
-                                                }
+                                                        if ($attend['Course']['status'] == COURSE_COMPLETED) {
+                                                            echo $attend['certificated_number'];
+                                                        }
                                                         ?></td>
                                                     <td><?php
                                                         $created = new DateTime($attend['created']);
@@ -178,9 +182,9 @@
 
 
                                                 </tr>
-    <?php endforeach; ?>
+                                            <?php endforeach; ?>
                                         </table>
-                                        <?php endif; ?>
+                                    <?php endif; ?>
 
                                 </div>
                             </div>
@@ -200,9 +204,9 @@
                                                         <h2 class="page-header">
                                                             <i class="fa fa-globe"></i> Thông tin người dùng: <?php echo $user['User']['name']; ?>
                                                             <small class="pull-right">Ngày tạo: <?php
-                                        $created = new DateTime($user['User']['created']);
-                                        echo $created->format('h:i') . ', ' . $created->format('d/m/Y');
-                                        ?></small>
+                                                                $created = new DateTime($user['User']['created']);
+                                                                echo $created->format('h:i') . ', ' . $created->format('d/m/Y');
+                                                                ?></small>
                                                         </h2>                            
                                                     </div><!-- /.col -->
                                                 </div>
@@ -219,7 +223,7 @@
                                                                 Ngày sinh: <?php
                                                                 $birthday = new DateTime($user['User']['birthday']);
                                                                 echo $birthday->format('d/m/Y');
-                                        ?><br>
+                                                                ?><br>
                                                                 <?php if (!empty($user['User']['birthplace'])) { ?>
                                                                     Nơi sinh: <?php echo $user['User']['birthplace']; ?><br>
                                                                 <?php } ?>
@@ -230,7 +234,7 @@
 
                                                                 Học vị: <?php echo $user['HocVi']['name']; ?><br>
 
-<?php if (!empty($user['User']['phone_number'])) { ?>
+                                                                <?php if (!empty($user['User']['phone_number'])) { ?>
                                                                     Số điện thoại: <?php echo $user['User']['phone_number']; ?><br>
                                                                 <?php } ?>
 

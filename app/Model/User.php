@@ -272,16 +272,19 @@ class User extends AppModel {
     );
 
     public function getAllGroupId() {
-        $user = $this->find('first', 
-                array('fields' => array('id'), 
-                    'contain' => array('Group' => array('fields' => array('id', 'alias'))), 
-                    'conditions' => array('User.id' => AuthComponent::user('id')))
-                );
+        $user = $this->find('first', array('fields' => array('id'),
+            'contain' => array('Group' => array('fields' => array('id', 'alias'))),
+            'conditions' => array('User.id' => AuthComponent::user('id')))
+        );
         return Set::classicExtract($user['Group'], '{n}.id');
     }
 
-    public function isAdmin() {
-        $user = $this->find('first', array('fields' => array('id'), 'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'admin'))), 'conditions' => array('User.id' => AuthComponent::user('id'))));
+    public function isAdmin($id = null) {
+        if (!$id) {
+            $user = $this->find('first', array('fields' => array('id'), 'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'admin'))), 'conditions' => array('User.id' => AuthComponent::user('id'))));
+        } else {
+            $user = $this->find('first', array('fields' => array('id'), 'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'admin'))), 'conditions' => array('User.id' => $id)));
+        }
         return count($user['Group']) > 0;
     }
 
