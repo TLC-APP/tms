@@ -46,7 +46,7 @@ Configure::write('SEND_MAIL_WHEN_HAS_CERT', 0);
 Configure::write('MASTER_USERNAME', 24);
 
 if (!defined("SUB_DIR")) {
-    define("SUB_DIR", '/thgv');
+    define("SUB_DIR", '');
 }
 
 if (!defined("EMAIL_FROM_ADDRESS")) {

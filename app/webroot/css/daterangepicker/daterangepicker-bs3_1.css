@@ -1,12 +1,12 @@
 /*!
-* Stylesheet for the Date Range Picker, for use with Bootstrap 3.x
-*
-* Copyright 2013 Dan Grossman ( http://www.dangrossman.info )
-* Licensed under the Apache License v2.0
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Built for http://www.improvely.com
-*/
+ * Stylesheet for the Date Range Picker, for use with Bootstrap 3.x
+ *
+ * Copyright 2013 Dan Grossman ( http://www.dangrossman.info )
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Built for http://www.improvely.com
+ */
 
  .daterangepicker.dropdown-menu {
   max-width: none;
@@ -41,14 +41,6 @@
   max-width: 270px;
 }
 
-.daterangepicker.show-calendar .calendar {
-    display: block;
-}
-
-.daterangepicker .calendar.single .calendar-date {
-  border: none;
-}
-
 .daterangepicker .calendar th, .daterangepicker .calendar td {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   white-space: nowrap;
@@ -56,8 +48,7 @@
   min-width: 32px;
 }
 
-.daterangepicker .daterangepicker_start_input label,
-.daterangepicker .daterangepicker_end_input label {
+.daterangepicker .ranges label {
   color: #333;
   display: block;
   font-size: 11px;
@@ -75,6 +66,7 @@
 }
 
 .daterangepicker .ranges .input-mini {
+  background-color: #eee;
   border: 1px solid #ccc;
   border-radius: 4px;
   color: #555;
@@ -219,24 +211,6 @@
   border-radius: 0;
 }
 
-.daterangepicker td.available + td.start-date {
-  -webkit-border-radius: 4px 0 0 4px;
-  -moz-border-radius: 4px 0 0 4px;
-  border-radius: 4px 0 0 4px;
-}
-
-.daterangepicker td.in-range + td.end-date{
-  -webkit-border-radius: 0 4px 4px 0;
-  -moz-border-radius: 0 4px 4px 0;
-  border-radius: 0 4px 4px 0;
-}
-
-.daterangepicker td.start-date.end-date{
-  -webkit-border-radius: 4px !important;
-  -moz-border-radius: 4px !important;
-  border-radius: 4px !important;
-}
-
 .daterangepicker td.active, .daterangepicker td.active:hover {
   background-color: #357ebd;
   border-color: #3071a9;
@@ -268,17 +242,4 @@
 .daterangepicker select.hourselect, .daterangepicker select.minuteselect, .daterangepicker select.ampmselect {
   width: 50px;
   margin-bottom: 0;
-}
-
-.daterangepicker_start_input {
-  float: left;
-}
-
-.daterangepicker_end_input {
-  float: left;
-  padding-left: 11px
-}
-
-.daterangepicker th.month {
-  width: auto;
 }

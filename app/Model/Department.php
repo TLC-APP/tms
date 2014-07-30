@@ -62,6 +62,13 @@ class Department extends AppModel {
             'conditions' => '',
             'fields' => '',
             'order' => ''
+        ),
+        'TruongDonVi' => array(
+            'className' => 'User',
+            'foreignKey' => 'truong_don_vi_id',
+            'conditions' => '',
+            'fields' => array('TruongDonVi.id','TruongDonVi.name'),
+            'order' => array('TruongDonVi.name'=>'ASC')
         )
     );
 

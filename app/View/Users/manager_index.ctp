@@ -64,7 +64,9 @@
                             <td><?php echo h($user['User']['phone_number']); ?>&nbsp;</td>
                             <td><?php echo h($user['User']['avatar']); ?>&nbsp;</td>
                             <td><?php echo h($user['User']['activated']); ?>&nbsp;</td>
-                            <td><?php echo h($user['User']['last_login']); ?>&nbsp;</td>
+                            <td><?php $last_login=new DateTime($user['User']['last_login']);
+                            echo $last_login->format('H:i').', ngày: '.$last_login->format('d/m/Y');
+                            ?>&nbsp;</td>
                             <td class="actions">
 
                                 <?php echo $this->Html->link('<button type="button" class="btn btn-info">

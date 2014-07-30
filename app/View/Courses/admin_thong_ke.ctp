@@ -33,7 +33,7 @@ echo $this->Html->script('jquery.form');
         echo $this->Form->input('end', array('label' => 'Đến ', 'type' => 'date', 'dateFormat' => 'DMY', 'monthNames' => false, 'empty' => true, 'minYear' => 2010));
         ?>
     </fieldset>
-    <?php echo $this->Form->submit('Thực hiện', array('div' => 'form-group','class'=>"btn btn-info")); ?>
+    <?php echo $this->Form->submit('Thực hiện', array('div' => 'form-group', 'class' => "btn btn-info")); ?>
     <?php echo $this->Form->end(); ?>
 </div>
 <script>

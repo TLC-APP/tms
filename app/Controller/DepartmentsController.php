@@ -61,7 +61,7 @@ class DepartmentsController extends AppController {
     public function admin_index() {
         $this->Department->recursive = 0;
         $this->set('departments', $this->Paginator->paginate());
-        $data = $this->Department->generateTreeList();
+        //$data = $this->Department->generateTreeList();
     }
 
     /**
@@ -75,7 +75,7 @@ class DepartmentsController extends AppController {
         if (!$this->Department->exists($id)) {
             throw new NotFoundException(__('Invalid department'));
         }
-        $options = array('conditions' => array('Department.' . $this->Department->primaryKey => $id));
+        $options = array('fields'=>array('id','name','parent_id','truong_don_vi_id'),'conditions' => array('Department.' . $this->Department->primaryKey => $id));
         $this->set('department', $this->Department->find('first', $options));
     }
 
@@ -103,7 +103,8 @@ class DepartmentsController extends AppController {
             }
         }
         $parents = $this->Department->ParentDepartment->find('list');
-        $this->set(compact('parents'));
+        $truongDonVis=$this->Department->TruongDonVi->find('list');
+        $this->set(compact('parents','truongDonVis'));
     }
 
     public function admin_add() {
@@ -144,7 +145,8 @@ class DepartmentsController extends AppController {
             $this->request->data = $this->Department->find('first', $options);
         }
         $parents = $this->Department->ParentDepartment->find('list');
-        $this->set(compact('parents'));
+        $truongDonVis=$this->Department->TruongDonVi->find('list');
+        $this->set(compact('parents','truongDonVis'));
     }
 
     public function admin_edit($id = null) {

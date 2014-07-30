@@ -8,7 +8,7 @@ App::uses('AppController', 'Controller');
  */
 class DashboardsController extends AppController {
 
-    public $uses = array('User', 'Group', 'Course', 'Chapter', 'Attend', 'CoursesRoom', 'Room');
+    public $uses = array('User', 'Group', 'Course', 'Chapter', 'Attend', 'CoursesRoom', 'Room', 'Department', 'Field');
 
     public function home() {
         if ($this->Auth->loggedIn()) {
@@ -53,10 +53,30 @@ class DashboardsController extends AppController {
         
     }
 
+    public function truongdonvi_home() {
+        $donVis = $this->Department->find('all', array('recursive' => -1, 'conditions' => array('Department.truong_don_vi_id' => $this->Auth->user('id'))));
+        $parent_node_id = Set::classicExtract($donVis, '{n}.Department.id');
+        $children_node_id = array();
+        for ($i = 0; $i < count($parent_node_id); $i++) {
+            $children = $this->Department->children($parent_node_id[$i]);
+            $children = Set::classicExtract($children, '{n}.Department.id');
+            $children_node_id = Set::merge($children_node_id, $children);
+        }
+        $parent_node_id = Set::merge($parent_node_id, $children_node_id);
+        
+        $donVis = $this->Department->generateTreeList(
+                array('Department.id' => $parent_node_id), null, null, '----- '
+        );
+
+
+        $fields = $this->Field->find('list');
+        $teachers = $this->User->find('list', array('conditions' => array('User.id' => $this->User->getTeacherIdArray())));
+        $this->set(compact('donVis', 'fields', 'teachers'));
+    }
+
     public function manager_home() {
-        
+
         $this->redirect(array('controller' => 'courses', 'action' => 'index', COURSE_REGISTERING));
-        
     }
 
     public function fields_manager_home() {
@@ -131,6 +151,10 @@ class DashboardsController extends AppController {
             $this->set('courses_completed', $courses_completed);
         }
         $this->set(compact('fields'));
+    }
+
+    public function index() {
+        
     }
 
 }

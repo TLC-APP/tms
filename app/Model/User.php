@@ -212,19 +212,19 @@ class User extends AppModel {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
-            /* 'FieldManaged' => array(
-              'className' => 'Field',
-              'foreignKey' => 'manage_user_id',
+            'QuanLyDonVi' => array(
+              'className' => 'Department',
+              'foreignKey' => 'truong_don_vi_id',
               'dependent' => false,
               'conditions' => '',
-              'fields' => '',
+              'fields' => array('id','name'),
               'order' => '',
               'limit' => '',
               'offset' => '',
               'exclusive' => '',
               'finderQuery' => '',
               'counterQuery' => ''
-              ) */
+              )
     );
     public $belongsTo = array(
         'HocHam' => array(
@@ -283,8 +283,12 @@ class User extends AppModel {
         if (!$id) {
             $user = $this->find('first', array('fields' => array('id'), 'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'admin'))), 'conditions' => array('User.id' => AuthComponent::user('id'))));
         } else {
-            $user = $this->find('first', array('fields' => array('id'), 'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'admin'))), 'conditions' => array('User.id' => $id)));
+            $user = $this->find('first', array(
+                'fields' => array('id'), 
+                'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'admin'))), 
+                'conditions' => array('User.id' => $id)));
         }
+        
         return count($user['Group']) > 0;
     }
 

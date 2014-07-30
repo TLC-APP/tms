@@ -13,9 +13,9 @@ class UsersController extends AppController {
     public function login() {
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
-
                 $this->Session->setFlash('Đăng nhập thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'), 'auth');
-
+                $this->User->id=$this->Auth->user('id');
+                $this->User->saveField('User.last_login', date("Y-m-d H:i:s"));
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
                 //$this->Session->setFlash('Tài khoản không đúng!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'), 'auth');
@@ -38,6 +38,8 @@ class UsersController extends AppController {
                         if ($this->Auth->login($user['User'])) {
 
                             $this->Session->setFlash('Đăng nhập thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'), 'auth');
+                            $this->User->id=$this->Auth->user('id');
+                            $this->User->saveField('last_login', date("Y-m-d H:i:s"));
                             return $this->redirect($this->Auth->redirectUrl());
                         } else {
                             $this->Session->setFlash('Cập nhật tài khoản thành không thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
@@ -135,7 +137,7 @@ class UsersController extends AppController {
 
         $uncompletedCourse = $this->User->field('uncompletedCourse');
         if ($uncompletedCourse > 0) {
-            $this->Session->setFlash('User là tập huấn viên của ' . $registeringCourse . ' khóa học chưa hoàn thành.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+            $this->Session->setFlash('User là tập huấn viên của ' . $uncompletedCourse . ' khóa học chưa hoàn thành.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             $this->redirect($this->referer());
         }
 
@@ -363,8 +365,8 @@ class UsersController extends AppController {
 
             $this->User->set($this->data);
             if ($this->User->RegisterValidate()) {
-                if (!isset($this->data['User']['user_group_id'])) {
-                    $this->request->data['Group']['Group'][0] = $this->User->Group->getGroupIdByAlias('teacher');
+                if (empty($this->request->data['Group']['Group'])) {
+                    $this->request->data['Group']['Group'][0] = $this->User->Group->getGroupIdByAlias('student');
                 }
                 if (!EMAIL_VERIFICATION) {
                     $this->request->data['User']['email_verified'] = 1;
