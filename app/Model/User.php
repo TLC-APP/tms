@@ -212,19 +212,19 @@ class User extends AppModel {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
-            'QuanLyDonVi' => array(
-              'className' => 'Department',
-              'foreignKey' => 'truong_don_vi_id',
-              'dependent' => false,
-              'conditions' => '',
-              'fields' => array('id','name'),
-              'order' => '',
-              'limit' => '',
-              'offset' => '',
-              'exclusive' => '',
-              'finderQuery' => '',
-              'counterQuery' => ''
-              )
+        'QuanLyDonVi' => array(
+            'className' => 'Department',
+            'foreignKey' => 'truong_don_vi_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => array('id', 'name'),
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        )
     );
     public $belongsTo = array(
         'HocHam' => array(
@@ -284,11 +284,11 @@ class User extends AppModel {
             $user = $this->find('first', array('fields' => array('id'), 'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'admin'))), 'conditions' => array('User.id' => AuthComponent::user('id'))));
         } else {
             $user = $this->find('first', array(
-                'fields' => array('id'), 
-                'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'admin'))), 
+                'fields' => array('id'),
+                'contain' => array('Group' => array('fields' => array('id', 'alias'), 'conditions' => array('Group.alias' => 'admin'))),
                 'conditions' => array('User.id' => $id)));
         }
-        
+
         return count($user['Group']) > 0;
     }
 
@@ -311,6 +311,19 @@ class User extends AppModel {
             'contain' => array('User' => array('fields' => array('id'), 'Group' => array('fields' => array('id'))))
         ));
         return Set::classicExtract($teacher[0]['User'], '{n}.id');
+    }
+
+    public function getUserIdByDepartmentId($department_id = null, $model = 'User') {
+        $users = array();
+        if ($department_id) {
+            $department_ids = array($department_id);
+            $children = $this->Department->children($department_id);
+            $children = Set::classicExtract($children, '{n}.Department.id');
+            $department_ids = Set::merge($department_ids, $children);
+            $users = $this->find('all', array('conditions' => array('department_id' => $department_ids), 'fields' => array('id', 'name', 'department_id'), 'recursive' => -1));
+            $users = Set::classicExtract($users, '{n}.' . $model . '.id');
+        }
+        return $users;
     }
 
 }

@@ -12,7 +12,7 @@
     <tbody>
         <tr data-toggle="collapse" data-target=".demo1" class="accordion-toggle">
             <td>1</td>
-            <td>05 May 2013</td>
+            <td>Dòng 1</td>
             <td>Credit Account</td>
             <td class="text-success">$150.00</td>
             <td class="text-error"></td>
@@ -20,27 +20,27 @@
         </tr>
         <tr>
             <td class="hiddenRow">
-                <div class="accordian-body collapse demo1">Demo1</div>
+                <div class="accordian-body collapse demo1">dòng 1</div>
             </td>
             <td class="hiddenRow">
-                <div class="accordian-body collapse demo1">Demo1</div>
+                <div class="accordian-body collapse demo1">dòng 2</div>
             </td>
             <td class="hiddenRow">
-                <div class="accordian-body collapse demo1">Demo1</div>
+                <div class="accordian-body collapse demo1">dòng 3</div>
             </td>
             <td class="hiddenRow">
-                <div class="accordian-body collapse demo1">Demo1</div>
+                <div class="accordian-body collapse demo1">dòng4</div>
             </td>
             <td class="hiddenRow">
-                <div class="accordian-body collapse demo1">Demo1</div>
+                <div class="accordian-body collapse demo1">dòng 5</div>
             </td>
             <td class="hiddenRow">
-                <div class="accordian-body collapse demo1">Demo1</div>
+                <div class="accordian-body collapse demo1">dòng 6</div>
             </td>
         </tr>
         <tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
             <td>2</td>
-            <td>05 May 2013</td>
+            <td>Dòng 2</td>
             <td>Credit Account</td>
             <td class="text-success">$11.00</td>
             <td class="text-error"></td>

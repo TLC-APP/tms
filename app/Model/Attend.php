@@ -16,7 +16,6 @@ class Attend extends AppModel {
      * @var string
      */
     public $displayField = 'student_id';
-   
     public $actsAs = array('Containable');
 
     /**
@@ -96,6 +95,21 @@ class Attend extends AppModel {
         $attends = $this->find('all', array('conditions' => $conditions, 'recursive' => -1));
         $enrolled_courses_id_array = Set::classicExtract($attends, '{n}.Attend.course_id');
         return $enrolled_courses_id_array;
+    }
+
+    /* Ham lay danh sach id user tham gia khoa hoc dua vao id cua don vi */
+
+    public function getEnrolledCoursesByDepartment($department_id = null) {
+        $results = array();
+        if ($department_id) {
+            $users = $this->Student->getUserIdByDepartmentId($department_id,'Student'); //mang id cac user thuoc don vi
+            
+            $conditions = array('Attend.student_id' => $users);
+            $results = $this->find('all', array('conditions' => $conditions, 'recursive' => -1));
+            $results = Set::classicExtract($results, '{n}.Attend.course_id');
+        }
+
+        return $results;
     }
 
 }

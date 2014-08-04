@@ -10,62 +10,154 @@ App::uses('AppController', 'Controller');
  */
 class UsersController extends AppController {
 
+    public $components = array('Recaptcha.Recaptcha');
+    public $helpers = array('Recaptcha.Recaptcha');
+
+    public function fill_selectbox($department_id = null) {
+        //$this->autoRender = false;
+        $conditions = array('User.id' => NULL);
+        if ($department_id) {
+            $parent_node_id = $this->User->getUserIdByDepartmentId($department_id);
+            $conditions = array('User.id' => $parent_node_id);
+        }
+        $users = $this->User->find('list', array('conditions' => $conditions));
+        $users = Set::merge($users, array("" => "-- Tất cả --"));
+        $this->set(array(
+            'users' => $users,
+            '_serialize' => array('users')
+        ));
+    }
+
     public function login() {
+        $login_times = 1;
+        if ($this->Session->check('login_times')) {
+            $login_times = $this->Session->read('login_times') + 1;
+            $this->Session->write('login_times', $login_times);
+        } else {
+            $this->Session->write('login_times', $login_times);
+        }
         if ($this->request->is('post')) {
-            if ($this->Auth->login()) {
-                $this->Session->setFlash('Đăng nhập thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'), 'auth');
-                $this->User->id=$this->Auth->user('id');
-                $this->User->saveField('User.last_login', date("Y-m-d H:i:s"));
-                return $this->redirect($this->Auth->redirectUrl());
-            } else {
-                //$this->Session->setFlash('Tài khoản không đúng!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'), 'auth');
-                /* Ket noi ldap kiem tra tai khoan */
-                $username = $this->request->data['User']['username'];
-                $password = $this->request->data['User']['password'];
-
-                $user = $this->User->find('first', array('conditions' => array('User.username' => $username), 'recursive' => -1));
-                App::uses('ldap', 'Lib');
-                $ldap = new ldap();
-                if (!empty($user)) {
-                    /* Password khong hop le */
-
-                    if ($ldap->auth($username, $password)) {
-                        /* Tai khoan hop le tren LDAP */
-                        /* Doi mat khau */
-                        $user['User']['password'] = $password;
-                        $this->User->id = $user['User']['id'];
-                        $this->User->saveField('password', $password);
-                        if ($this->Auth->login($user['User'])) {
-
-                            $this->Session->setFlash('Đăng nhập thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'), 'auth');
-                            $this->User->id=$this->Auth->user('id');
-                            $this->User->saveField('last_login', date("Y-m-d H:i:s"));
-                            return $this->redirect($this->Auth->redirectUrl());
-                        } else {
-                            $this->Session->setFlash('Cập nhật tài khoản thành không thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
-                            return $this->redirect($this->Auth->redirectUrl());
-                        }
+            if ($login_times > 3) {
+                if ($this->Recaptcha->verify()) {
+                    if ($this->Auth->login()) {
+                        $this->Session->setFlash('Đăng nhập thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'), 'auth');
+                        $this->User->id = $this->Auth->user('id');
+                        $this->User->saveField('last_login', date("Y-m-d H:i:s"));
+                        return $this->redirect($this->Auth->redirectUrl());
                     } else {
-                        $this->Session->setFlash('Tài khoản đăng nhập không đúng!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                        //$this->Session->setFlash('Tài khoản không đúng!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'), 'auth');
+                        /* Ket noi ldap kiem tra tai khoan */
+                        $username = $this->request->data['User']['username'];
+                        $password = $this->request->data['User']['password'];
+
+                        $user = $this->User->find('first', array('conditions' => array('User.username' => $username), 'recursive' => -1));
+                        App::uses('ldap', 'Lib');
+                        $ldap = new ldap();
+                        if (!empty($user)) {
+                            /* Password khong hop le */
+
+                            if ($ldap->auth($username, $password)) {
+                                /* Tai khoan hop le tren LDAP */
+                                /* Doi mat khau */
+                                $user['User']['password'] = $password;
+                                $this->User->id = $user['User']['id'];
+                                $this->User->saveField('password', $password);
+                                if ($this->Auth->login($user['User'])) {
+
+                                    $this->Session->setFlash('Đăng nhập thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'), 'auth');
+                                    $this->User->id = $this->Auth->user('id');
+                                    $this->User->saveField('last_login', date("Y-m-d H:i:s"));
+                                    return $this->redirect($this->Auth->redirectUrl());
+                                } else {
+                                    $this->Session->setFlash('Cập nhật tài khoản thành không thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                                    return $this->redirect($this->Auth->redirectUrl());
+                                }
+                            } else {
+                                $this->Session->setFlash('Tài khoản đăng nhập không đúng!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                            }
+                        } else {
+                            if ($ldap->auth($username, $password)) {
+                                $ldap_user = $ldap->getInfo($username, $password);
+                                $this->User->create();
+                                $this->request->data['User']['name'] = $ldap_user['name'];
+                                $this->request->data['User']['email'] = $ldap_user['email'];
+                                $this->request->data['User']['activated'] = 1;
+                                $this->request->data['Group']['Group']['0'] = $this->User->Group->getGroupIdByAlias('student');
+
+                                if ($this->User->save($this->request->data)) {
+                                    $user = $this->User->find('first', array('conditions' => array('User.username' => $username), 'recursive' => -1));
+                                    if ($this->Auth->login($user['User'])) {
+                                        $this->Session->setFlash('Vui lòng cập nhật thông tin!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                                        //$this->redirect(array())
+                                        return $this->redirect($this->Auth->redirectUrl());
+                                    }
+                                } else {
+                                    $this->Session->setFlash('Không thể lưu thông tin User');
+                                }
+                            }
+                        }
                     }
                 } else {
-                    if ($ldap->auth($username, $password)) {
-                        $ldap_user = $ldap->getInfo($username, $password);
-                        $this->User->create();
-                        $this->request->data['User']['name'] = $ldap_user['name'];
-                        $this->request->data['User']['email'] = $ldap_user['email'];
-                        $this->request->data['User']['activated'] = 1;
-                        $this->request->data['Group']['Group']['0'] = $this->User->Group->getGroupIdByAlias('student');
+                    // display the raw API error
+                    $this->Session->setFlash('Bạn nhập chưa đúng captcha.','alert',array('plugin'=>'BoostCake','class'=>'alert-warning'));
+                    return $this->redirect($this->request->referer());
+                }
+            } else {
+                if ($this->Auth->login()) {
+                    $this->Session->setFlash('Đăng nhập thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'), 'auth');
+                    $this->User->id = $this->Auth->user('id');
+                    $this->User->saveField('last_login', date("Y-m-d H:i:s"));
+                    return $this->redirect($this->Auth->redirectUrl());
+                } else {
+                    //$this->Session->setFlash('Tài khoản không đúng!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'), 'auth');
+                    /* Ket noi ldap kiem tra tai khoan */
+                    $username = $this->request->data['User']['username'];
+                    $password = $this->request->data['User']['password'];
 
-                        if ($this->User->save($this->request->data)) {
-                            $user = $this->User->find('first', array('conditions' => array('User.username' => $username), 'recursive' => -1));
+                    $user = $this->User->find('first', array('conditions' => array('User.username' => $username), 'recursive' => -1));
+                    App::uses('ldap', 'Lib');
+                    $ldap = new ldap();
+                    if (!empty($user)) {
+                        /* Password khong hop le */
+
+                        if ($ldap->auth($username, $password)) {
+                            /* Tai khoan hop le tren LDAP */
+                            /* Doi mat khau */
+                            $user['User']['password'] = $password;
+                            $this->User->id = $user['User']['id'];
+                            $this->User->saveField('password', $password);
                             if ($this->Auth->login($user['User'])) {
-                                $this->Session->setFlash('Vui lòng cập nhật thông tin!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
-                                //$this->redirect(array())
+
+                                $this->Session->setFlash('Đăng nhập thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'), 'auth');
+                                $this->User->id = $this->Auth->user('id');
+                                $this->User->saveField('last_login', date("Y-m-d H:i:s"));
+                                return $this->redirect($this->Auth->redirectUrl());
+                            } else {
+                                $this->Session->setFlash('Cập nhật tài khoản thành không thành công!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
                                 return $this->redirect($this->Auth->redirectUrl());
                             }
                         } else {
-                            $this->Session->setFlash('Không thể lưu thông tin User');
+                            $this->Session->setFlash('Tài khoản đăng nhập không đúng!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
+                        }
+                    } else {
+                        if ($ldap->auth($username, $password)) {
+                            $ldap_user = $ldap->getInfo($username, $password);
+                            $this->User->create();
+                            $this->request->data['User']['name'] = $ldap_user['name'];
+                            $this->request->data['User']['email'] = $ldap_user['email'];
+                            $this->request->data['User']['activated'] = 1;
+                            $this->request->data['Group']['Group']['0'] = $this->User->Group->getGroupIdByAlias('student');
+
+                            if ($this->User->save($this->request->data)) {
+                                $user = $this->User->find('first', array('conditions' => array('User.username' => $username), 'recursive' => -1));
+                                if ($this->Auth->login($user['User'])) {
+                                    $this->Session->setFlash('Vui lòng cập nhật thông tin!', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-success'));
+                                    //$this->redirect(array())
+                                    return $this->redirect($this->Auth->redirectUrl());
+                                }
+                            } else {
+                                $this->Session->setFlash('Không thể lưu thông tin User');
+                            }
                         }
                     }
                 }
@@ -147,12 +239,12 @@ class UsersController extends AppController {
             $this->Session->setFlash('User là tập huấn viên của ' . $completedCourse . ' khóa học hoàn thành.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             $this->redirect($this->referer());
         }
-        if ($this->User->isAdmin($id)&&$id!=Configure::read('MASTER_USERNAME')) {
+        if ($this->User->isAdmin($id) && $id != Configure::read('MASTER_USERNAME')) {
             $this->Session->setFlash('User là ADMIN của hệ thống.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             $this->redirect($this->referer());
         }
-        
-        if ($this->Auth->user('id')==$id) {
+
+        if ($this->Auth->user('id') == $id) {
             $this->Session->setFlash('Bạn không thể tự xóa chính mình.', 'alert', array('plugin' => 'BoostCake', 'class' => 'alert-warning'));
             $this->redirect($this->referer());
         }

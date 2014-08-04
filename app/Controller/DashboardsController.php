@@ -12,7 +12,7 @@ class DashboardsController extends AppController {
 
     public function home() {
         if ($this->Auth->loggedIn()) {
-            $user = $this->User->find('first', array('contain' => array('Group'), 'conditions' => array('User.id' => $this->Auth->user('id'))));
+            $user = $this->User->find('first', array('contain' => array('Group'=>array('order'=>array('Group.name'=>'asc'))), 'conditions' => array('User.id' => $this->Auth->user('id'))));
             if (count($user['Group']) == 1) {
                 $this->redirect("/{$user['Group'][0]['alias']}/dashboards/home");
             }
@@ -54,16 +54,66 @@ class DashboardsController extends AppController {
     }
 
     public function truongdonvi_home() {
+        if (!empty($this->request->data)) {
+            $this->autoRender = false;
+            $khoang_thoi_gian = $this->request->data['khoang_thoi_gian'];
+            $conditions = array();
+            if (!empty($khoang_thoi_gian)) {
+                $khoang_thoi_gian = explode('-', $khoang_thoi_gian);
+                $start = DateTime::createFromFormat('Y/m/d', trim($khoang_thoi_gian[0]));
+                $end = DateTime::createFromFormat('Y/m/d', trim($khoang_thoi_gian[1]));
+                $conditions = Set::merge($conditions, array('Course.created >=' => $start->format('Y-m-d')));
+                $conditions = Set::merge($conditions, array('Course.created <=' => $end->format('Y-m-d')));
+            }
+            if (!empty($this->request->data['Course']['chapter_id'])) {
+                $conditions = Set::merge($conditions, array('Course.chapter_id' => $this->request->data['Course']['chapter_id']));
+            } else {
+                if (!empty($this->request->data['Course']['field_id'])) {
+                    $chapter_id_array = $this->Course->Chapter->getChapterByField_id($this->request->data['Course']['field_id']);
+                    $conditions = Set::merge($conditions, array('Course.chapter_id' => $chapter_id_array));
+                }
+            }
+            if (!empty($this->request->data['Course']['status'])) {
+                $conditions = Set::merge($conditions, array('Course.status' => $this->request->data['Course']['status']));
+            }
+
+            if (!empty($this->request->data['Course']['teacher_id'])) {
+                $conditions = Set::merge($conditions, array('Course.teacher_id' => $this->request->data['Course']['teacher_id']));
+            }
+
+            if (!empty($this->request->data['Course']['user_id'])) {
+                $enrolled_courses = $this->Attend->getEnrolledCourses($this->request->data['Course']['user_id']);
+                $conditions = Set::merge($conditions, array('Course.id' => $enrolled_courses));
+            } else {
+                if (!empty($this->request->data['Course']['department_id'])) {
+                    $course_id_array = $this->Attend->getEnrolledCoursesByDepartment($this->request->data['Course']['department_id']);
+
+                    $conditions = Set::merge($conditions, array('Course.id' => $course_id_array));
+                }
+            }
+            $contain = array(
+                'Chapter' => array('fields' => array('id', 'name', 'field_id'), 'Field' => array('id', 'name')),
+                'Teacher' => array('fields' => array('id', 'name')),
+                'Attend' => array(
+                    'Student' => array('fields' => array('id', 'name', 'department_id'), 'Department' => array('id', 'name')))
+            );
+
+            $courses = $this->Course->find('all', array('conditions' => $conditions, 'contain' => $contain));
+            $this->set(compact('courses'));
+            $this->render('ket_qua_thong_ke');
+        }
+
         $donVis = $this->Department->find('all', array('recursive' => -1, 'conditions' => array('Department.truong_don_vi_id' => $this->Auth->user('id'))));
         $parent_node_id = Set::classicExtract($donVis, '{n}.Department.id');
         $children_node_id = array();
         for ($i = 0; $i < count($parent_node_id); $i++) {
+
             $children = $this->Department->children($parent_node_id[$i]);
             $children = Set::classicExtract($children, '{n}.Department.id');
             $children_node_id = Set::merge($children_node_id, $children);
         }
         $parent_node_id = Set::merge($parent_node_id, $children_node_id);
-        
+        $users = $this->User->find('list', array('conditions' => array('User.department_id' => $parent_node_id), 'recursive' => -1));
         $donVis = $this->Department->generateTreeList(
                 array('Department.id' => $parent_node_id), null, null, '----- '
         );
@@ -71,7 +121,7 @@ class DashboardsController extends AppController {
 
         $fields = $this->Field->find('list');
         $teachers = $this->User->find('list', array('conditions' => array('User.id' => $this->User->getTeacherIdArray())));
-        $this->set(compact('donVis', 'fields', 'teachers'));
+        $this->set(compact('donVis', 'fields', 'teachers', 'users'));
     }
 
     public function manager_home() {

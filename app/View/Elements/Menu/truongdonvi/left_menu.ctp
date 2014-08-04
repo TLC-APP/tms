@@ -22,7 +22,9 @@ echo $this->Html->script('jquery.form');
         <fieldset>
             <legend><h3>Thống kê theo</h3></legend>
             <?php
-            echo $this->Form->input('department_id', array('empty' => '-- Đơn vị --', 'options' => $donVis,'escape'=>false));
+            echo $this->Form->input('department_id', array('options' => $donVis, 'escape' => false));
+            echo $this->Form->input('user_id', array('empty' => '-- Tên người tham gia --', 'options' => $users));
+
             echo $this->Form->input('field_id', array('empty' => '-- Lĩnh vực --', 'options' => $fields));
             echo $this->Form->input('chapter_id', array('empty' => '-- Chuyên đề --', 'required' => false));
             echo $this->Form->input('teacher_id', array('empty' => '-- Tập huấn bởi --'));
@@ -64,6 +66,7 @@ echo $this->Html->script('jquery.form');
         $("#CourseFieldId").select2();
         $("#CourseStatus").select2();
         $("#CourseDepartmentId").select2();
+        $("#CourseUserId").select2();
 
         //Date range picker
         $('#reservation').daterangepicker(
@@ -77,7 +80,7 @@ echo $this->Html->script('jquery.form');
             e.preventDefault(); // prevent native submit
             $('#ket_qua').parent().append('<div class="overlay"></div><div class="loading-img"></div>');
             $(this).ajaxSubmit({
-                url: '<?php echo SUB_DIR; ?>/manager/courses/thong_ke',
+                url: '<?php echo SUB_DIR; ?>/truongdonvi/dashboards/home',
                 success: response
             });
             return false;
@@ -103,6 +106,26 @@ echo $this->Html->script('jquery.form');
                         $.each(data, function(i, value) {
                             $.each(value, function(index, text) {
                                 chapterbox.append($('<option>').text(text).attr('value', index));
+                            });
+
+                        });
+                    });
+        });
+
+        /**/
+        var department_div = $('#CourseDepartmentId');
+        var user_div = $('#CourseUserId');
+        department_div.change(function() {
+            user_div.empty();
+            var department_id = (this.value);
+            $.ajax({
+                url: "<?php echo SUB_DIR; ?>/users/fill_selectbox/" + department_id + ".json"
+            })
+                    .done(function(data) {
+
+                        $.each(data, function(i, value) {
+                            $.each(value, function(index, text) {
+                                user_div.append($('<option>').text(text).attr('value', index));
                             });
 
                         });

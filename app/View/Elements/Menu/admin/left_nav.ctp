@@ -91,10 +91,10 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Danh sách</span>', array('controller' => 'users', 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
-                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm người dùng</span>', array('controller' => 'users', 'action' => 'add', 'admin' => true), array('escape' => false)); ?></li>
-                   <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm nhóm</span>', array('controller' => 'groups', 'action' => 'add', 'admin' => true), array('escape' => false)); ?></li>
-                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Danh sách nhóm</span>', array('plugin'=>'acl_manager','controller' => 'groups', 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Danh sách</span>', array('plugin'=>false,'controller' => 'users', 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm người dùng</span>', array('plugin'=>false,'controller' => 'users', 'action' => 'add', 'admin' => true), array('escape' => false)); ?></li>
+                   <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Thêm nhóm</span>', array('plugin'=>false,'controller' => 'groups', 'action' => 'add', 'admin' => true), array('escape' => false)); ?></li>
+                    <li><?php echo $this->Html->link('<i class="fa fa-angle-double-right"></i> <span>Danh sách nhóm</span>', array('plugin'=>false,'controller' => 'groups', 'action' => 'index', 'admin' => true), array('escape' => false)); ?></li>
                 </ul>
             </li>
             

@@ -8,7 +8,7 @@ CakePlugin::load('Authorize');
 CakePlugin::load('AclManager', array('bootstrap' => true));
 CakePlugin::load('Upload');
 CakePlugin::load('TinymceElfinder');
-
+CakePlugin::load('Recaptcha');
 Configure::write('Dispatcher.filters', array(
     'AssetDispatcher',
     'CacheDispatcher'
@@ -97,3 +97,6 @@ if (!defined("THOI_GIAN_MOT_BUOI_HOC")) {
 if (!defined("FILE_DIR")) {
     define("FILE_DIR", 'files');
 }
+
+Configure::write('Recaptcha.publicKey', '6Lcu2fcSAAAAAJu1YYHevg-_4FYwOlYScisKh2Xu');
+Configure::write('Recaptcha.privateKey', '6Lcu2fcSAAAAAFYGmxDB7-2qlQZ2PHZybSZ0YVoZ');

@@ -458,7 +458,7 @@ class CoursesController extends AppController {
             'Teacher' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'HocHam', 'HocVi'),
             'Chapter' => array('Attachment'),
             'Attachment',
-            'Attend' => array('Student' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'fields' => array('id', 'student_id', 'course_id')))
+            'Attend' => array('Student' => array('fields' => array('id', 'name', 'email', 'phone_number')), 'fields' => array('id', 'student_id', 'course_id'))
         );
         $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
         $rooms = $this->Course->CoursesRoom->Room->find('list');
@@ -1183,6 +1183,24 @@ class CoursesController extends AppController {
             $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id));
             $this->request->data = $this->Course->find('first', $options);
         }
+    }
+
+    public function truongdonvi_view($id = null) {
+
+        if (!$this->Course->exists($id)) {
+            throw new NotFoundException(__('Invalid course'));
+        }
+        $contain = array(
+            'User' => array('fields' => array('id', 'name')),
+            'CoursesRoom' => array('conditions' => array('CoursesRoom.start is not null'), 'order' => array('CoursesRoom.priority' => 'ASC')),
+            'Teacher' => array('fields' => array('id', 'name', 'email', 'phone_number'), 'HocHam', 'HocVi'),
+            'Chapter' => array('Attachment'),
+            'Attachment'
+        );
+        $options = array('conditions' => array('Course.' . $this->Course->primaryKey => $id), 'contain' => $contain);
+//$rooms = $this->Course->CoursesRoom->Room->find('list');
+        $course = $this->Course->find('first', $options);
+        $this->set(compact('course'));
     }
 
 }
