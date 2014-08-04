@@ -3,20 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/DashboardsController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/truongdonvi_view.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/ChaptersController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/DepartmentsController.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/admin/left_nav.ctp</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Common/loggedInMenu.ctp</file>
             <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Config/bootstrap.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Widgets/fields_manager/course/view/course_registering_students.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Dashboards/truongdonvi_home.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Courses/student_view.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Elements/Menu/truongdonvi/left_menu.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Users/login.ctp</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Model/User.php</file>
-            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Config/database.php</file>
             <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/Controller/UsersController.php</file>
+            <file>file:/D:/WampDeveloper/Websites/thgv.local/webroot/app/View/Users/login.ctp</file>
         </group>
     </open-files>
 </project-private>

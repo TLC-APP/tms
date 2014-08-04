@@ -11,7 +11,7 @@
             <label for="exampleInputPassword2" class="sr-only">Mật khẩu</label>
             <input type="password" id="UserPassword" placeholder="Mật khẩu" class="form-control" name="data[User][password]">                                </div>
         <?php
-            if ($this->Session->check('login_times') && $this->Session->read('login_times') > 3) {
+            if ($this->Session->check('login_times') && $this->Session->read('login_times') >=3) {
                 echo $this->Recaptcha->display();
             }
             ?>
