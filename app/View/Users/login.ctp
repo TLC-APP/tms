@@ -20,7 +20,6 @@
                 <input type="hidden" id="UserRemember_" name="data[User][remember]"><input type="checkbox" id="UserRemember" name="data[User][remember]">Ghi nhớ
             </label>
             
-
         </div>
         <div class="form-group">
             <button class="btn btn-success btn-block" type="submit">Thực hiện</button>                                    
